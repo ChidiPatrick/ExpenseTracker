@@ -1,0 +1,26 @@
+.navComponentWrapper {
+  background-color: rgb(253, 248, 248);
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 10px;
+  font-size: 13px;
+}
+.navElement {
+  display: flex;
+  justify-content: space-between;
+}
+.navLink {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  color: rgb(95, 79, 79);
+}
+.navTitle {
+}
+.navIcon {
+  font-size: 25px;
+}

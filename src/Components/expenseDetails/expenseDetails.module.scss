@@ -1,0 +1,73 @@
+.expenseDetailsWrapper {
+  background-color: rgb(243, 228, 200);
+  height: 100vh;
+}
+.navigator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: rgb(255, 251, 251);
+}
+.expenseDetailsContainer {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  grid-template-rows: repeat(3, 50px);
+  justify-items: center;
+  align-items: center;
+  margin-top: 100px;
+}
+.category,
+.date,
+.amount {
+  color: rgb(0, 0, 129);
+  width: 100px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid 1px rgb(204, 204, 204);
+  //   border-right: solid 1px rgb(204, 204, 204);
+}
+.date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.inputElement {
+  padding: 10px;
+  background-color: transparent;
+  font-size: 18px;
+  border: none;
+  border-bottom: solid 1px rgb(204, 204, 204);
+}
+.currentDate {
+  padding: 10px;
+  border-bottom: solid 1px rgb(204, 204, 204);
+  width: 90%;
+}
+.category {
+  border-bottom: solid 1px rgb(204, 204, 204);
+}
+.dateWrapper,
+.categoryWrapper,
+.amountWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.detailsLeft {
+  border-right: solid 1px rgb(204, 204, 204);
+}
+.detailsLeft,
+.detailsRight {
+  border-top: solid 1px rgb(204, 204, 204);
+}
+.date,
+.currentDate {
+  padding: 10px;
+}
+.currentDate,
+.inputElement {
+  text-align: center;
+}
