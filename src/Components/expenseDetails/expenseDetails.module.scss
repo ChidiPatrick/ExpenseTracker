@@ -9,10 +9,13 @@
   padding: 15px;
   background-color: rgb(255, 251, 251);
 }
+.detailsParentContainer {
+  display: grid;
+  justify-content: center;
+}
 .expenseDetailsContainer {
   display: grid;
-  grid-template-columns: 100px 1fr;
-  grid-template-rows: repeat(3, 50px);
+  grid-template-columns: 140px 250px;
   justify-items: center;
   align-items: center;
   margin-top: 100px;
@@ -21,12 +24,13 @@
 .date,
 .amount {
   color: rgb(0, 0, 129);
-  width: 100px;
+  width: 120px;
   padding: 10px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   border-bottom: solid 1px rgb(204, 204, 204);
+  border-right: solid 1px rgb(204, 204, 204);
   //   border-right: solid 1px rgb(204, 204, 204);
 }
 .date {
@@ -35,12 +39,21 @@
   align-items: center;
 }
 .inputElement {
-  padding: 10px;
+  padding: 10px 0;
   background-color: transparent;
   font-size: 18px;
   border: none;
   border-bottom: solid 1px rgb(204, 204, 204);
 }
+.categoryLink {
+  text-decoration: none;
+  color: red;
+  border-bottom: solid 1px rgb(204, 204, 204);
+  padding: 10px 0;
+  width: 100%;
+  text-align: center;
+}
+
 .currentDate {
   padding: 10px;
   border-bottom: solid 1px rgb(204, 204, 204);
@@ -62,6 +75,12 @@
 .detailsLeft,
 .detailsRight {
   border-top: solid 1px rgb(204, 204, 204);
+}
+.detailsRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-self: start;
 }
 .date,
 .currentDate {
