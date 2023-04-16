@@ -15,7 +15,11 @@ const expenseSlice = createSlice({
         parseInt(state.expenseTotal) + parseInt(action.payload)
       ).toFixed(2);
     },
+    updateExpenseArray(state, action) {
+      state.expenseArray = action.payload;
+    },
   },
 });
-export const { getExpenseObj, addExpense } = expenseSlice.actions;
+export const { getExpenseObj, addExpense, updateExpenseArray } =
+  expenseSlice.actions;
 export default expenseSlice.reducer;

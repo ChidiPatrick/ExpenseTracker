@@ -6,8 +6,22 @@
 }
 .categories {
   background-color: #fff;
+  margin-top: 30px;
 }
 .Category {
-  border-bottom: solid 1px grey;
+  border-bottom: solid 1px rgb(224, 224, 224);
   padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 30px;
+}
+.categoryTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgb(68, 51, 37);
+  margin-left: 10px;
+}
+.categoryIcon {
+  font-size: 20px;
 }

@@ -1,0 +1,101 @@
+.addCategoryWrapper {
+  background-color: rgb(211, 192, 178);
+  padding: 10px;
+  position: relative;
+}
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  height: 40px;
+}
+.addCategoryContainer {
+  background-color: #fff;
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 150px 230px;
+}
+.categoryDetails {
+  border-right: solid 1px grey;
+  font-size: 18px;
+}
+.categoryName,
+.categoryIcon,
+.categoryColor {
+  padding: 10px;
+  border-bottom: solid 1px grey;
+  display: flex;
+  justify-content: center;
+}
+.inputsContainer,
+.categoryDetails {
+  display: flex;
+  flex-direction: column;
+}
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.iconLink,
+.colorPickerLink {
+  //   padding: 10px;
+  display: flex;
+  align-items: center;
+}
+.iconLink,
+.colorPickerLink {
+  display: inline-block;
+  //   padding: 10px;
+  color: gray;
+}
+.nameInputElement {
+  border: none;
+  font-size: 18px;
+}
+.linkContainer,
+.nameInputElement {
+  border-bottom: solid 1px grey;
+  padding: 10px;
+}
+.colorPickerWrapper {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+}
+.colorPickerContainer {
+  width: 80%;
+  margin: 0 auto;
+  background-color: #fff;
+  height: 400px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+.colorPickerHeader {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.btnsWrapper {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 40px;
+}
