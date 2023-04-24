@@ -5,10 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getExpenseObj, addExpense, updateExpenseArray } from "./expenseSlice";
 import SignUpComponent from "../signUpComponent/signUp";
 import { getSelectedCategory } from "../categoryComponent/categorySlice";
+import { addDoc, setDoc, doc, arrayUnion } from "firebase/firestore";
+import { db } from "../Firebase";
 //////////////////////////////////////////////////////////////////////////
 /////Expense Details Component/////////////////////
 const ExpenseDetails = () => {
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.signUp.userId);
   const categories = useSelector((state) => state.expense.expenseArray);
   console.log(categories);
   const currCategory = useSelector((state) => state.categories.currCategory);
@@ -16,8 +19,16 @@ const ExpenseDetails = () => {
   const amountRef = useRef();
   const noteRef = useRef();
   const date = new Date();
+
+  const expenseArrayRef = doc(
+    db,
+    "users",
+    `${userId}`,
+    `expenseCollection`,
+    `expenses`
+  );
   ////////////Save Entered Expense //////////////////////////
-  const saveExpense = () => {
+  const saveExpense = async () => {
     ////Check for existing category ///////////////
     let updatedSelectedCategoryObj = {};
 
@@ -27,6 +38,15 @@ const ExpenseDetails = () => {
     ///Add New Category if it doesn't exist/////////////
     console.log(selectedCategory);
     if (selectedCategory === undefined) {
+      //////// TO BE IMPLEMENTED LATER ///////////////////////
+      // await setDoc(expenseArrayRef, {
+      //   expenseArray: arrayUnion({
+      //     category: currCategory,
+      //     expenseAmount: parseInt(amountRef.current.value),
+      //     date: date.toDateString(),
+      //     expenseNote: noteRef.current.value,
+      //   }),
+      // });
       dispatch(
         getExpenseObj({
           category: currCategory,

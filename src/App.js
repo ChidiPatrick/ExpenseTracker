@@ -13,6 +13,7 @@ import Emojis from "./Components/emojiFolder/emoji";
 import ColorPicker from "./Components/colorPicker/colorPicker";
 import Transactions from "./Components/transactions/transactions";
 import PageNotFound from "./Components/pageNotFound/pageNotFound";
+import { GetExpenseArray } from "./Components/expenseDetails/expenseSlice";
 function App() {
   const dispatch = useDispatch();
   onAuthStateChanged(auth, (user) => {
@@ -20,6 +21,8 @@ function App() {
       console.log(user.uid);
       dispatch(getUserId(user.uid));
       dispatch(GetCategories(user.uid));
+      /// To Be Implemented Later ////////
+      // dispatch(GetExpenseArray(user.uid));
     }
   });
   return (

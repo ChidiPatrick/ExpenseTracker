@@ -12,13 +12,17 @@ const Emojis = () => {
     dispatch(setCategoryEmoji(emojidata.emoji));
     dispatch(hideEmoji());
   };
+  const closeEmojiUI = () => {
+    dispatch(hideEmoji());
+  };
   return (
     <div className={styles.emojiWrapper}>
-      <nav className={styles.emojiNav}>
-        <span>back</span>
-        <h3 className={styles.emojiHeader}>Icons</h3>
-      </nav>
       <div className={styles.emojiContainerWrapper}>
+        <nav className={styles.emojiNav}>
+          <span className={styles.closeEmoji} onClick={closeEmojiUI}>
+            X
+          </span>
+        </nav>
         <EmojiPicker onEmojiClick={handleEmojiClick} width={"100%"} />
       </div>
     </div>

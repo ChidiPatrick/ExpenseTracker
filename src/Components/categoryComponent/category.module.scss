@@ -2,8 +2,6 @@
   background-color: rgb(177, 145, 145);
   min-height: 100vh;
 }
-.categoryNav {
-}
 .categories {
   background-color: #fff;
   margin-top: 30px;
@@ -24,4 +22,38 @@
 }
 .categoryIcon {
   font-size: 20px;
+}
+.noCategoryUI {
+  height: 100vh;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  // background-color: rgb(228, 228, 228);
+}
+.categoryMessageWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+}
+.addCategoryBtn {
+  padding: 10px;
+  margin-top: 30px;
+  width: 200px;
+  border-radius: 10px;
+  border: none;
+  height: 50px;
+  font-size: 20px;
+  background-color: #fff;
+  text-decoration: none;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // background-color: rgb(94, 50, 19);
+  // color: #fff;
 }

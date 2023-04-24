@@ -31,9 +31,20 @@ const Category = () => {
   const getCategory = (e) => {
     console.log(e.target.innerText);
     dispatch(getSelectedCategory(e.target.innerText));
-    // navigate(-1);
+    navigate("/expenseTracker");
   };
-
+  const noCategoryUI = (
+    <div className={styles.noCategoryUI}>
+      <div className={styles.categoryMessageWrapper}>
+        No categories added
+        <br />
+        Add category
+      </div>
+      <Link to="/addCategory" replace className={styles.addCategoryBtn}>
+        + Add Category
+      </Link>
+    </div>
+  );
   return (
     <div className={styles.categoryContainer}>
       <nav className={styles.categoryNav}>
@@ -42,7 +53,7 @@ const Category = () => {
         </Link>
       </nav>
       <NavComponent />
-      <div className={styles.categories}>
+      {/* <div className={styles.categories}>
         <div className={styles.Category} onClick={getCategory}>
           <ImSpoonKnife className={styles.categoryIcon} />
           <div className={styles.categoryTitle}>Eating out</div>
@@ -88,6 +99,8 @@ const Category = () => {
           <ImTv className={styles.categoryIcon} />
           <div className={styles.categoryTitle}>Movies</div>
         </div>
+</div> */}
+      <div className={styles.categories}>
         {categories.length >= 1
           ? categories.map((category, index) => {
               return (
@@ -105,10 +118,8 @@ const Category = () => {
                 </div>
               );
             })
-          : null}
+          : noCategoryUI}
       </div>
-
-      <div></div>
     </div>
   );
 };

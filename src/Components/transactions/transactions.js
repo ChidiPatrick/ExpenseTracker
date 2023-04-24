@@ -2,12 +2,19 @@ import React from "react";
 import styles from "./transactions.module.scss";
 import NavComponent from "../navigationComponent/navComponent";
 import { useParams } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import EditExpense from "../editExpenseComponent/editExpense";
+import { showEditUI } from "../expenseDetails/expenseSlice";
 const Transactions = () => {
   const params = useParams();
+  const dispatch = useDispatch;
   const expenseArray = useSelector((state) => state.expense.expenseArray);
   console.log(expenseArray);
   console.log(params);
+  const showEditUIHandler = () => {
+    console.log("Clicked");
+    dispatchEvent(showEditUI());
+  };
   return (
     <div className={styles.transactionsWrapper}>
       <NavComponent />
@@ -26,31 +33,35 @@ const Transactions = () => {
           </div>
           <div className={styles.expenseAmount}>£102.00</div>
         </div>
-        {expenseArray.map((expense, index) => {
-          return (
-            <div className={styles.transactionHistory}>
-              <div className={styles.categoryLeft}>
-                <div>Icon</div>
-                <div className={styles.expenseDetails}>
-                  {expense.expenseNote === "" ? (
-                    <div className={styles.expenseCategory}>
-                      {expense.category}
-                    </div>
-                  ) : (
-                    <div className={styles.expenseCategory}>
-                      {expense.expenseNote}
-                    </div>
-                  )}
-
-                  <div className={styles.date}>{expense.date}</div>
+        <div>
+          {expenseArray.map((expense, index) => {
+            return (
+              <div
+                className={styles.transactionHistory}
+                onClick={showEditUIHandler}
+              >
+                <div className={styles.categoryLeft}>
+                  <div>Icon</div>
+                  <div className={styles.expenseDetails}>
+                    {expense.expenseNote === "" ? (
+                      <div className={styles.expenseCategory}>
+                        {expense.category}
+                      </div>
+                    ) : (
+                      <div className={styles.expenseCategory}>
+                        {expense.expenseNote}
+                      </div>
+                    )}
+                    <div className={styles.date}>{expense.date}</div>
+                  </div>
+                </div>
+                <div className={styles.expenseAmount}>
+                  {expense.expenseAmount}
                 </div>
               </div>
-              <div className={styles.expenseAmount}>
-                {expense.expenseAmount}
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
         <div className={styles.transactionHistory}>
           <div className={styles.categoryLeft}>
             <div>Icon</div>
@@ -62,6 +73,7 @@ const Transactions = () => {
           <div className={styles.expenseAmount}>£120,200.00</div>
         </div>
       </div>
+      <EditExpense />
     </div>
   );
 };

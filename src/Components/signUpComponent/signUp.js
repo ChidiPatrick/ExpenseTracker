@@ -10,7 +10,18 @@ import { db } from "../Firebase";
 ////////////////////////////////////////////////////////
 const SignupForm = () => {
   // const userId = useSelector((state) => state.signup.userId);
-
+  const createExpenseCollection = async (userId) => {
+    const expenseDetailsRef = doc(
+      db,
+      "users",
+      `${userId}`,
+      `expenseCollection`,
+      `expenses`
+    );
+    await setDoc(expenseDetailsRef, {
+      expenseArray: [],
+    });
+  };
   const addCateGories = async (userId) => {
     console.log("addCategory function called!");
     const categoryRef = doc(
@@ -20,6 +31,7 @@ const SignupForm = () => {
       `categoryCollection`,
       `categories`
     );
+
     await setDoc(categoryRef, {
       categories: [
         // { icon: "HiGift", category: "Gift" },
@@ -38,13 +50,15 @@ const SignupForm = () => {
   };
   const signUpUser = async (values) => {
     try {
-      await createUserWithEmailAndPassword(
-        auth,
-        values.email,
-        values.password
-      ).then((res) => {
-        addCateGories(res.user.uid);
-      });
+      let userId = "";
+      await createUserWithEmailAndPassword(auth, values.email, values.password)
+        .then((res) => {
+          addCateGories(res.user.uid);
+          userId = res.user.uid;
+        })
+        .then((res) => {
+          createExpenseCollection(userId);
+        });
     } catch (err) {
       console.log(err);
     }
