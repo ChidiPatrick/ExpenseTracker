@@ -6,6 +6,11 @@ import { useSelector } from "react-redux";
 const IncomeExpenseUI = () => {
   const currCategory = useSelector((state) => state.expense.expenseArray);
   const expenseTotal = useSelector((state) => state.expense.expenseTotal);
+  const categoriesArray = useSelector(
+    (state) => state.categories.categoriesArray
+  );
+  console.log(categoriesArray);
+
   return (
     <div className={styles.incomeExpenseWrapper}>
       <div className={styles.incomeExpenseInnerWrapper}>

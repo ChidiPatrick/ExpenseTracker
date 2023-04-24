@@ -1,6 +1,6 @@
 import React, { Ref } from "react";
 import styles from "./category.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getSelectedCategory } from "./categorySlice";
@@ -20,21 +20,24 @@ import NavComponent from "../navigationComponent/navComponent";
 const Category = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const categoriesObj = useSelector(
     (state) => state.categories.categoriesArray
   );
   const categories = categoriesObj.categories;
-  console.log(categoriesObj.categories);
+
+  console.log(categories);
   ////// Get Category //////////////////
   const getCategory = (e) => {
     console.log(e.target.innerText);
     dispatch(getSelectedCategory(e.target.innerText));
-    navigate(-1);
+    // navigate(-1);
   };
+
   return (
     <div className={styles.categoryContainer}>
       <nav className={styles.categoryNav}>
-        <Link to="/category/addCategory" className={styles.backLink}>
+        <Link to="/addCategory" replace className={styles.backLink}>
           +
         </Link>
       </nav>
@@ -85,7 +88,27 @@ const Category = () => {
           <ImTv className={styles.categoryIcon} />
           <div className={styles.categoryTitle}>Movies</div>
         </div>
+        {categories.length >= 1
+          ? categories.map((category, index) => {
+              return (
+                <div
+                  className={styles.Category}
+                  key={index}
+                  onClick={getCategory}
+                >
+                  <div className={styles.categoryIcon}>
+                    {category.categoryEmojiRef}
+                  </div>
+                  <div className={styles.categoryTitle}>
+                    {category.categoryTitle}
+                  </div>
+                </div>
+              );
+            })
+          : null}
       </div>
+
+      <div></div>
     </div>
   );
 };

@@ -14,6 +14,7 @@ const ExpenseDetails = () => {
   const currCategory = useSelector((state) => state.categories.currCategory);
   const categoryRef = useRef();
   const amountRef = useRef();
+  const noteRef = useRef();
   const date = new Date();
   ////////////Save Entered Expense //////////////////////////
   const saveExpense = () => {
@@ -31,11 +32,13 @@ const ExpenseDetails = () => {
           category: currCategory,
           expenseAmount: parseInt(amountRef.current.value),
           date: date.toDateString(),
+          expenseNote: noteRef.current.value,
         })
       );
       dispatch(addExpense(amountRef.current.value));
       dispatch(getSelectedCategory(""));
       amountRef.current.value = "";
+      noteRef.current.value = "";
       return;
     }
     ///////// Update category if it exists //////////////////////
@@ -75,7 +78,7 @@ const ExpenseDetails = () => {
           <div className={styles.detailsRight}>
             <div className={styles.currentDate}>{date.toDateString()}</div>
             <Link
-              to="category"
+              to="/category"
               className={styles.categoryLink}
               ref={categoryRef}
             >
@@ -91,6 +94,7 @@ const ExpenseDetails = () => {
               <input
                 className={styles.inputElement}
                 type="text"
+                ref={noteRef}
                 placeholder="Enter a note(optional)"
               />
             </div>
