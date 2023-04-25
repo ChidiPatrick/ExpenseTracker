@@ -25,7 +25,6 @@ const Category = () => {
     (state) => state.categories.categoriesArray
   );
   const categories = categoriesObj.categories;
-
   console.log(categories);
   ////// Get Category //////////////////
   const getCategory = (e) => {
@@ -101,7 +100,7 @@ const Category = () => {
         </div>
 </div> */}
       <div className={styles.categories}>
-        {categories.length >= 1
+        {categories !== undefined
           ? categories.map((category, index) => {
               return (
                 <div

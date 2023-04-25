@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getExpenseObj, addExpense, updateExpenseArray } from "./expenseSlice";
 import SignUpComponent from "../signUpComponent/signUp";
 import { getSelectedCategory } from "../categoryComponent/categorySlice";
-import { addDoc, setDoc, doc, arrayUnion } from "firebase/firestore";
+import { addDoc, setDoc, doc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from "../Firebase";
 //////////////////////////////////////////////////////////////////////////
 /////Expense Details Component/////////////////////
@@ -27,6 +27,12 @@ const ExpenseDetails = () => {
     `expenseCollection`,
     `expenses`
   );
+  const updateExpenseArrayObj = async (newTotal, expenseRef, expenseArray) => {
+    const categoryIndex = expenseArray.find((obj) => {
+      // return obj.
+    });
+    await updateDoc(expenseRef, {});
+  };
   ////////////Save Entered Expense //////////////////////////
   const saveExpense = async () => {
     ////Check for existing category ///////////////
@@ -38,15 +44,14 @@ const ExpenseDetails = () => {
     ///Add New Category if it doesn't exist/////////////
     console.log(selectedCategory);
     if (selectedCategory === undefined) {
-      //////// TO BE IMPLEMENTED LATER ///////////////////////
-      // await setDoc(expenseArrayRef, {
-      //   expenseArray: arrayUnion({
-      //     category: currCategory,
-      //     expenseAmount: parseInt(amountRef.current.value),
-      //     date: date.toDateString(),
-      //     expenseNote: noteRef.current.value,
-      //   }),
-      // });
+      await setDoc(expenseArrayRef, {
+        expenseArray: arrayUnion({
+          category: currCategory,
+          expenseAmount: parseInt(amountRef.current.value),
+          date: date.toDateString(),
+          expenseNote: noteRef.current.value,
+        }),
+      });
       dispatch(
         getExpenseObj({
           category: currCategory,
@@ -76,6 +81,7 @@ const ExpenseDetails = () => {
       dispatch(updateExpenseArray(newCategories));
       dispatch(addExpense(amountRef.current.value));
       dispatch(getSelectedCategory(""));
+
       amountRef.current.value = "";
     }
   };

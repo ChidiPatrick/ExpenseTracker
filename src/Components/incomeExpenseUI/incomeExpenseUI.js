@@ -6,11 +6,13 @@ import { useSelector } from "react-redux";
 const IncomeExpenseUI = () => {
   const currCategory = useSelector((state) => state.expense.expenseArray);
   const expenseTotal = useSelector((state) => state.expense.expenseTotal);
+  const expenseArrayObj = useSelector((state) => state.expense.expenseObj);
   const categoriesArray = useSelector(
     (state) => state.categories.categoriesArray
   );
-  console.log(categoriesArray);
-
+  console.log(expenseArrayObj.expenseArray);
+  const expenseArray = expenseArrayObj.expenseArray;
+  console.log(expenseArray);
   return (
     <div className={styles.incomeExpenseWrapper}>
       <div className={styles.incomeExpenseInnerWrapper}>
@@ -23,16 +25,20 @@ const IncomeExpenseUI = () => {
             <span className={styles.expense}>Expense</span>
             <span className={styles.expenseAmount}>{expenseTotal}</span>
           </div>
-          {currCategory.map((expenseObj, index) => {
-            return (
-              <div className={styles.expenseCategories} key={index}>
-                <span className={styles.expense}>{expenseObj.category}</span>
-                <span className={styles.expenseAmount}>
-                  {expenseObj.expenseAmount.toFixed(2)}
-                </span>
-              </div>
-            );
-          })}
+          {expenseArray !== undefined
+            ? expenseArray.map((expenseObj, index) => {
+                return (
+                  <div className={styles.expenseCategories} key={index}>
+                    <span className={styles.expense}>
+                      {expenseObj.category}
+                    </span>
+                    <span className={styles.expenseAmount}>
+                      {expenseObj.expenseAmount.toFixed(2)}
+                    </span>
+                  </div>
+                );
+              })
+            : null}
         </div>
         <div className={styles.dottedLine}></div>
         <div className={styles.balanceWrapper}>
@@ -45,7 +51,11 @@ const IncomeExpenseUI = () => {
           <span className={styles.add}>+</span>
           <span>Expense</span>
         </Link>
-        <Link className={styles.btnTransparent} to="transactionDetails">
+        <Link
+          className={styles.btnTransparent}
+          to="/transactionDetails"
+          replace
+        >
           <span className={styles.add}>+</span>
           <span>Income</span>
         </Link>

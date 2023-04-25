@@ -7,13 +7,13 @@ import EditExpense from "../editExpenseComponent/editExpense";
 import { showEditUI } from "../expenseDetails/expenseSlice";
 const Transactions = () => {
   const params = useParams();
-  const dispatch = useDispatch;
+  const dispatch = useDispatch();
   const expenseArray = useSelector((state) => state.expense.expenseArray);
   console.log(expenseArray);
   console.log(params);
   const showEditUIHandler = () => {
     console.log("Clicked");
-    dispatchEvent(showEditUI());
+    dispatch(showEditUI());
   };
   return (
     <div className={styles.transactionsWrapper}>
@@ -22,7 +22,10 @@ const Transactions = () => {
         <div className={styles.salary}>£150,000.00</div>
         <div className={styles.expenseTotal}>£690.00</div>
       </div>
-      <div className={styles.transactionsContaiiner}>
+      <div
+        className={styles.transactionsContaiiner}
+        onClick={showEditUIHandler}
+      >
         <div className={styles.transactionHistory}>
           <div className={styles.categoryLeft}>
             <div>Icon</div>

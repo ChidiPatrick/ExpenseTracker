@@ -14,6 +14,13 @@ const EditExpense = () => {
   const handleClose = () => {
     dispatch(hideEditUI());
   };
+  //Algorithm for editing expense
+  //1. Select the expense object by click
+  //2. Extract the object from the arrat of expense object
+  //3. Assign new value to the extracted object
+  //4. Add the updated object to the Array of expense objects
+  //5. Update the store and the database
+  //6. Fetch the current Array of expense objects
   return (
     <div
       className={
@@ -21,7 +28,7 @@ const EditExpense = () => {
       }
     >
       <div className={styles.navigator}>
-        <div>X</div>
+        <div onClick={handleClose}>X</div>
         <button className={styles.saveBtn}>Done</button>
       </div>
       <div className={styles.detailsParentContainer}>
@@ -46,7 +53,7 @@ const EditExpense = () => {
               placeholder=" Enter Amount"
               type="number"
               ref={amountRef}
-              value="Movies"
+              value={200}
             />
             <div>
               <input
@@ -54,7 +61,7 @@ const EditExpense = () => {
                 type="text"
                 ref={noteRef}
                 placeholder="Enter a note(optional)"
-                value={"some notes"}
+                value="some notes"
               />
             </div>
           </div>

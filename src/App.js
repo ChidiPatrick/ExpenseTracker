@@ -21,8 +21,7 @@ function App() {
       console.log(user.uid);
       dispatch(getUserId(user.uid));
       dispatch(GetCategories(user.uid));
-      /// To Be Implemented Later ////////
-      // dispatch(GetExpenseArray(user.uid));
+      dispatch(GetExpenseArray(user.uid));
     }
   });
   return (
