@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./incomeExpenseUI.module.scss";
 import { Button } from "../buttons/buttons";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Spinner from "../spinner/spinner";
 const IncomeExpenseUI = () => {
   const currCategory = useSelector((state) => state.expense.expenseArray);
   const expenseTotal = useSelector((state) => state.expense.expenseTotal);
@@ -13,7 +14,16 @@ const IncomeExpenseUI = () => {
   console.log(expenseArrayObj.expenseArray);
   const expenseArray = expenseArrayObj.expenseArray;
   console.log(expenseArray);
-  return (
+  let totalExpense = 0;
+  useEffect(() => {
+    if (expenseArray !== undefined) {
+      const totalSummation = expenseArray.map((obj) => {
+        totalExpense = totalExpense + obj.expenseAmount;
+        return null;
+      });
+    }
+  }, [expenseArray]);
+  const incomeExpenseUI = (
     <div className={styles.incomeExpenseWrapper}>
       <div className={styles.incomeExpenseInnerWrapper}>
         <div className={styles.incomeWrapper}>
@@ -23,7 +33,9 @@ const IncomeExpenseUI = () => {
         <div className={styles.expenseWrapper}>
           <div className={styles.expenseHeader}>
             <span className={styles.expense}>Expense</span>
-            <span className={styles.expenseAmount}>{expenseTotal}</span>
+            <span className={styles.expenseAmount}>
+              {totalExpense.toFixed(2)}
+            </span>
           </div>
           {expenseArray !== undefined
             ? expenseArray.map((expenseObj, index) => {
@@ -62,5 +74,6 @@ const IncomeExpenseUI = () => {
       </div>
     </div>
   );
+  return expenseArray && categoriesArray ? incomeExpenseUI : <Spinner />;
 };
 export default IncomeExpenseUI;

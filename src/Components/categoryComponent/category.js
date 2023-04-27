@@ -1,4 +1,4 @@
-import React, { Ref } from "react";
+import React, { Ref, useRef } from "react";
 import styles from "./category.module.scss";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,13 +14,14 @@ import { BsFillFuelPumpFill, BsCart4 } from "react-icons/bs";
 import { FaChild } from "react-icons/fa";
 import { BsGiftFill, BsMusicPlayerFill } from "react-icons/bs";
 import NavComponent from "../navigationComponent/navComponent";
+import AddIncome from "../addIncome/addIncome";
 // BsGiftFill
 // BsMusicPlayerFill
 ///////////////---CATEGORY COMPONENT---/////////////////
 const Category = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const categoryTitleRef = useRef();
   const categoriesObj = useSelector(
     (state) => state.categories.categoriesArray
   );
@@ -28,8 +29,9 @@ const Category = () => {
   console.log(categories);
   ////// Get Category //////////////////
   const getCategory = (e) => {
-    console.log(e.target.innerText);
-    dispatch(getSelectedCategory(e.target.innerText));
+    console.log(e.target.childNodes[1].innerText);
+    dispatch(getSelectedCategory(e.target.childNodes[1].innerText));
+    console.log(categoryTitleRef);
     navigate("/expenseTracker");
   };
   const noCategoryUI = (
@@ -52,53 +54,6 @@ const Category = () => {
         </Link>
       </nav>
       <NavComponent />
-      {/* <div className={styles.categories}>
-        <div className={styles.Category} onClick={getCategory}>
-          <ImSpoonKnife className={styles.categoryIcon} />
-          <div className={styles.categoryTitle}>Eating out</div>
-        </div>
-        <div className={styles.Category} onClick={getCategory}>
-          <BsFillFuelPumpFill className={styles.categoryIcon} />
-          <div className={styles.categoryTitle}>Fuel</div>
-        </div>
-        <div className={styles.Category} onClick={getCategory}>
-          <IoIosShirt className={styles.categoryIcon} />
-          <div className={styles.categoryTitle}>Clothes</div>
-        </div>
-
-        <div className={styles.Category} onClick={getCategory}>
-          <BsMusicPlayerFill className={styles.categoryIcon} />
-          <div className={styles.categoryTitle}>Entainment</div>
-        </div>
-        <div className={styles.Category} onClick={getCategory}>
-          <BsGiftFill className={styles.categoryIcon} />
-          <div className={styles.categoryTitle}>Gifts</div>
-        </div>
-        <div className={styles.Category} onClick={getCategory}>
-          <FaChild className={styles.categoryIcon} />
-          <div className={styles.categoryTitle}>Kids</div>
-        </div>
-        <div className={styles.Category} onClick={getCategory}>
-          <HiBriefcase className={styles.categoryIcon} />
-          <div className={styles.categoryTitle}>Holidays</div>
-        </div>
-        <div className={styles.Category} onClick={getCategory}>
-          <BsCart4 className={styles.categoryIcon} />
-          <div className={styles.categoryTitle}>Shopping</div>
-        </div>
-        <div className={styles.Category} onClick={getCategory}>
-          <MdDirectionsRun className={styles.categoryIcon} />
-          <div className={styles.categoryTitle}>Sports</div>
-        </div>
-        <div className={styles.Category} onClick={getCategory}>
-          <MdDirectionsBus className={styles.categoryIcon} />
-          <div className={styles.categoryTitle}>Travel</div>
-        </div>
-        <div className={styles.Category} onClick={getCategory}>
-          <ImTv className={styles.categoryIcon} />
-          <div className={styles.categoryTitle}>Movies</div>
-        </div>
-</div> */}
       <div className={styles.categories}>
         {categories !== undefined
           ? categories.map((category, index) => {
@@ -111,7 +66,7 @@ const Category = () => {
                   <div className={styles.categoryIcon}>
                     {category.categoryEmojiRef}
                   </div>
-                  <div className={styles.categoryTitle}>
+                  <div ref={categoryTitleRef} className={styles.categoryTitle}>
                     {category.categoryTitle}
                   </div>
                 </div>
@@ -119,6 +74,7 @@ const Category = () => {
             })
           : noCategoryUI}
       </div>
+      <AddIncome />
     </div>
   );
 };

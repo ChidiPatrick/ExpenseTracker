@@ -14,6 +14,8 @@ import ColorPicker from "./Components/colorPicker/colorPicker";
 import Transactions from "./Components/transactions/transactions";
 import PageNotFound from "./Components/pageNotFound/pageNotFound";
 import { GetExpenseArray } from "./Components/expenseDetails/expenseSlice";
+import AddIncome from "./Components/addIncome/addIncome";
+
 function App() {
   const dispatch = useDispatch();
   onAuthStateChanged(auth, (user) => {
@@ -31,14 +33,10 @@ function App() {
         <Route path="/expenseTracker" element={<ExpenseDetails />} />
         {/* <Route path="/expenseTracker" element={<Category />} /> */}
         <Route path="/category" element={<Category />} />
-        {/* <Route path="/category">
-          <Route path="/category/:id" element={<Category />} />
-        </Route> */}
         <Route path="/addCategory" element={<AddCategory />} />
-        {/* <Route path="/icons" element={<Emojis />} /> */}
-        {/* <Route path="/colorPicker" element={<ColorPicker />} /> */}
         <Route path="/transactions" element={<Transactions />} />
         <Route path="*" element={<PageNotFound />} />
+        <Route path="/addIncome" element={<AddIncome />} />
       </Routes>
     </div>
   );
