@@ -18,11 +18,12 @@ const ExpenseDetails = () => {
   const expenseArray = expensesObj.expenseArray;
   console.log(expenseArray);
   const currCategory = useSelector((state) => state.categories.currCategory);
+  const salary = useSelector((state) => state.expense.salary);
   const categoryRef = useRef();
   const amountRef = useRef();
   const noteRef = useRef();
   const date = new Date();
-  console.log(currCategory);
+  console.log(salary);
   const expenseArrayRef = doc(
     db,
     "users",

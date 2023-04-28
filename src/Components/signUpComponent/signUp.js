@@ -22,6 +22,19 @@ const SignupForm = () => {
       expenseArray: [],
     });
   };
+  const createSalaryCollection = async (userId) => {
+    const salaryRef = doc(
+      db,
+      "users",
+      `${userId}`,
+      `salaryCollection`,
+      `salaries`
+    );
+    await setDoc(salaryRef, {
+      salary: 0,
+    });
+  };
+
   const addCateGories = async (userId) => {
     console.log("addCategory function called!");
     const categoryRef = doc(
@@ -33,19 +46,7 @@ const SignupForm = () => {
     );
 
     await setDoc(categoryRef, {
-      categories: [
-        // { icon: "HiGift", category: "Gift" },
-        // { icon: "IoIosBus", category: "Travel" },
-        // { icon: "HiTag", category: "General" },
-        // { icon: "ImSpoonKnife", category: "Eating out" },
-        // { icon: "HiBriefcase", category: "Holiday" },
-        // { icon: "IoIosShirt", category: "Clothing" },
-        // { icon: " MdDirectionsRun", category: "Sports" },
-        // { icon: " BsCart4", category: "Shopping" },
-        // { icon: " BsFillFuelPumpFill", category: "Fuel" },
-        // { icon: " ImTv", category: "Movies" },
-        // { icon: "IoIosBody", category: "Kids" },
-      ],
+      categories: [],
     });
   };
   const signUpUser = async (values) => {
@@ -58,6 +59,9 @@ const SignupForm = () => {
         })
         .then((res) => {
           createExpenseCollection(userId);
+        })
+        .then((res) => {
+          createSalaryCollection(userId);
         });
     } catch (err) {
       console.log(err);

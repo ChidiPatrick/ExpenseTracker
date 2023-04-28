@@ -7,6 +7,9 @@ const initialState = {
   expenseTotal: 0,
   expenseObj: [],
   displayEditUI: false,
+  salary: 0,
+  salaryBalance: 0,
+  showFeedBackUI: false,
 };
 
 export const GetExpenseArray = createAsyncThunk(
@@ -22,6 +25,23 @@ export const GetExpenseArray = createAsyncThunk(
     const expenses = await getDoc(expenseRef);
     if (expenses.exists()) {
       dispatch(getExpenses(expenses.data()));
+    }
+  }
+);
+export const GetSalary = createAsyncThunk(
+  "salary/getSalary",
+  async (userId, { dispatch, getState }) => {
+    const salaryRef = doc(
+      db,
+      "users",
+      `${userId}`,
+      `salaryCollection`,
+      `salaries`
+    );
+    const salary = await getDoc(salaryRef);
+    if (salary.exists()) {
+      console.log(salary.data());
+      dispatch(getSalary(salary.data()));
     }
   }
 );
@@ -49,6 +69,21 @@ const expenseSlice = createSlice({
     hideEditUI(state, action) {
       state.displayEditUI = false;
     },
+    getSalary(state, action) {
+      state.salary = action.payload;
+    },
+    showFeedBackMessage(state, action) {
+      state.showFeedBackUI = true;
+    },
+    hideFeedBackUI(state, action) {
+      state.showFeedBackUI = false;
+    },
+    setTotalExpenses(state, action) {
+      state.expenseTotal = action.payload;
+    },
+    setBalance(state, action) {
+      state.salaryBalance = action.payload;
+    },
   },
 });
 export const {
@@ -58,5 +93,10 @@ export const {
   getExpenses,
   hideEditUI,
   showEditUI,
+  getSalary,
+  showFeedBackMessage,
+  hideFeedBackUI,
+  setTotalExpenses,
+  setBalance,
 } = expenseSlice.actions;
 export default expenseSlice.reducer;
