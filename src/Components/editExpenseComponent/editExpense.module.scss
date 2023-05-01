@@ -2,9 +2,6 @@
   background-color: rgb(159, 156, 156);
   height: 100vh;
   padding: 10px;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 .navigator {
   display: flex;
@@ -34,6 +31,7 @@
 .expenseDetailsContainer {
   display: grid;
   grid-template-columns: 140px 250px;
+  // grid-template-columns: repeat(2, 1fr);
   justify-items: center;
   align-items: center;
   // margin-top: 100px;
@@ -102,11 +100,13 @@
   border-top: solid 1px rgb(204, 204, 204);
   font-size: 18px;
   height: 180px;
+  align-self: stretch;
 }
+
 .detailsRight {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
   justify-self: start;
   // width: 180px;
 }

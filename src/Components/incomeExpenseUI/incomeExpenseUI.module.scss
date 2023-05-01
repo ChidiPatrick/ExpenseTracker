@@ -61,3 +61,14 @@
   border-radius: 10px;
   text-decoration: none;
 }
+.completedBar,
+.barContainer {
+  border-radius: 100px;
+}
+.barContainer {
+  background-color: red;
+  border-radius: 100px;
+}
+.completedBar {
+  background-color: greenyellow;
+}

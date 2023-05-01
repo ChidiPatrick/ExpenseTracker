@@ -1,23 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./transactions.module.scss";
 import NavComponent from "../navigationComponent/navComponent";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import EditExpense from "../editExpenseComponent/editExpense";
-import { showEditUI } from "../expenseDetails/expenseSlice";
+import {
+  showEditUI,
+  getSelectedTransaction,
+} from "../expenseDetails/expenseSlice";
+import {
+  activateOnTransactionUI,
+  deactivateOnTransactionUI,
+} from "../categoryComponent/categorySlice";
 const Transactions = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const expenseArray = useSelector((state) => state.expense.expenseArray);
+  const displayEditUI = useSelector((state) => state.expense.displayEditUI);
   console.log(expenseArray);
   console.log(params);
-  const showEditUIHandler = () => {
-    console.log("Clicked");
+  useEffect(() => {
+    dispatch(activateOnTransactionUI());
+    return () => {
+      dispatch(deactivateOnTransactionUI());
+    };
+  }, []);
+  //////// Handlers ///////////////////
+  const showEditUIHandler = (index, expenseArray) => {
+    // const newExpenseArray = [...expenseArray];
+    // const selectedTransaction = newExpenseArray[index];
+    // dispatch(getSelectedTransaction(selectedTransaction));
     dispatch(showEditUI());
   };
-  return (
-    <div className={styles.transactionsWrapper}>
-      <NavComponent />
+  const transactions = (
+    <>
       <div className={styles.salaryAndExpense}>
         <div className={styles.salary}>£150,000.00</div>
         <div className={styles.expenseTotal}>£690.00</div>
@@ -41,7 +57,8 @@ const Transactions = () => {
             return (
               <div
                 className={styles.transactionHistory}
-                onClick={showEditUIHandler}
+                key={index}
+                onClick={() => showEditUIHandler(index, expenseArray)}
               >
                 <div className={styles.categoryLeft}>
                   <div>Icon</div>
@@ -76,7 +93,12 @@ const Transactions = () => {
           <div className={styles.expenseAmount}>£120,200.00</div>
         </div>
       </div>
-      <EditExpense />
+    </>
+  );
+  return (
+    <div className={styles.transactionsWrapper}>
+      <NavComponent />
+      {displayEditUI !== true ? transactions : <EditExpense />}
     </div>
   );
 };

@@ -7,9 +7,23 @@ import {
   HiOutlineCollection,
 } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 const NavComponent = () => {
+  const onTransactionUI = useSelector(
+    (state) => state.categories.onTransactionUI
+  );
+
   return (
     <div className={styles.navComponentWrapper}>
+      <div className={styles.dynamicAddBtnWrapper}>
+        <Link
+          className={styles.dynamicAddLink}
+          to={onTransactionUI === true ? "/expenseTracker" : "/addCategory"}
+          replace
+        >
+          +
+        </Link>
+      </div>
       <nav className={styles.navElement}>
         <Link to="/" replace className={styles.navLink}>
           <HiCash className={styles.navIcon} />

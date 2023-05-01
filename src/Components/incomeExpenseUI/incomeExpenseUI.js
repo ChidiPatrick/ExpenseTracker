@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../spinner/spinner";
 import SignupForm from "../signUpComponent/signUp";
 import { setTotalExpenses, setBalance } from "../expenseDetails/expenseSlice";
+import ProgressBar from "@ramonak/react-progress-bar";
+import { setSpendingPercentage } from "../expenseDetails/expenseSlice";
 const IncomeExpenseUI = () => {
   const dispatch = useDispatch();
   const currCategory = useSelector((state) => state.expense.expenseArray);
@@ -14,6 +16,9 @@ const IncomeExpenseUI = () => {
   const salaryObj = useSelector((state) => state.expense.salary);
   const totalExpense = useSelector((state) => state.expense.expenseTotal);
   const salaryBalance = useSelector((state) => state.expense.salaryBalance);
+  const spendingPercentage = useSelector(
+    (state) => state.expense.spendingPercentage
+  );
   const salary = salaryObj.salary;
   const categoriesArray = useSelector(
     (state) => state.categories.categoriesArray
@@ -23,11 +28,15 @@ const IncomeExpenseUI = () => {
   console.log(expenseArray);
 
   useEffect(() => {
-    let totalExpense = 0;
     if (expenseArray !== undefined) {
+      let totalExpense = 0;
+      let spendingPercentage = 0;
       const totalSummation = expenseArray.map((obj) => {
         totalExpense = totalExpense + obj.expenseAmount;
       });
+      spendingPercentage = (totalExpense / salary) * 100;
+      dispatch(setSpendingPercentage(spendingPercentage));
+      console.log(spendingPercentage);
     }
     const newBalance = salary - totalExpense;
     dispatch(setTotalExpenses(totalExpense));
@@ -35,6 +44,11 @@ const IncomeExpenseUI = () => {
   }, [expenseArray]);
   const incomeExpenseUI = (
     <div className={styles.incomeExpenseWrapper}>
+      <ProgressBar
+        barContainerClassName={styles.barContainer}
+        completed={100 - spendingPercentage}
+        completedClassName={styles.completedBar}
+      />
       <div className={styles.incomeExpenseInnerWrapper}>
         <div className={styles.incomeWrapper}>
           <span className={styles.income}>Income</span>

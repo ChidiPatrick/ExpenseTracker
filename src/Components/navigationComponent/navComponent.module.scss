@@ -24,3 +24,16 @@
 .navIcon {
   font-size: 25px;
 }
+.dynamicAddBtnWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.dynamicAddLink {
+  text-decoration: none;
+  font-size: 40px;
+  background-color: transparent;
+  border: none;
+  color: chocolate;
+}

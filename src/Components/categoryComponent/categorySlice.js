@@ -9,6 +9,8 @@ const initialState = {
   selectedCategoryEmoji: "",
   displayEmoji: false,
   displayColorPicker: false,
+  onTransactionUI: false,
+  onCategoryUI: false,
 };
 export const GetCategories = createAsyncThunk(
   "category/getCategories",
@@ -60,6 +62,18 @@ const CategorySlice = createSlice({
     hideColorPicker(state, action) {
       state.displayColorPicker = false;
     },
+    activateOnTransactionUI(state, action) {
+      state.onTransactionUI = true;
+    },
+    deactivateOnTransactionUI(state, action) {
+      state.onTransactionUI = false;
+    },
+    activateOnCategoryUI(state, action) {
+      state.onCategoryUI = true;
+    },
+    deactivateOnCategoryUI(state, action) {
+      state.onCategoryUI = false;
+    },
   },
 });
 export const {
@@ -73,5 +87,9 @@ export const {
   hideEmoji,
   showColorPicker,
   hideColorPicker,
+  activateOnCategoryUI,
+  deactivateOnCategoryUI,
+  activateOnTransactionUI,
+  deactivateOnTransactionUI,
 } = CategorySlice.actions;
 export default CategorySlice.reducer;

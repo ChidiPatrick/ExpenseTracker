@@ -10,6 +10,8 @@ const initialState = {
   salary: 0,
   salaryBalance: 0,
   showFeedBackUI: false,
+  selectedTransaction: {},
+  spendingPercentage: 0,
 };
 
 export const GetExpenseArray = createAsyncThunk(
@@ -84,6 +86,12 @@ const expenseSlice = createSlice({
     setBalance(state, action) {
       state.salaryBalance = action.payload;
     },
+    getSelectedTransaction(state, action) {
+      state.selectedTransaction = action.payload;
+    },
+    setSpendingPercentage(state, action) {
+      state.spendingPercentage = action.payload;
+    },
   },
 });
 export const {
@@ -98,5 +106,7 @@ export const {
   hideFeedBackUI,
   setTotalExpenses,
   setBalance,
+  getSelectedTransaction,
+  setSpendingPercentage,
 } = expenseSlice.actions;
 export default expenseSlice.reducer;
