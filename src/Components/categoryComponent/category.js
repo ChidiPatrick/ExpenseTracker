@@ -29,8 +29,8 @@ const Category = () => {
   console.log(categories);
   ////// Get Category //////////////////
   const getCategory = (e) => {
-    console.log(e.target.childNodes[1].innerText);
-    dispatch(getSelectedCategory(e.target.childNodes[1].innerText));
+    console.log(e.target.innerText);
+    dispatch(getSelectedCategory(e.target.innerText));
     console.log(categoryTitleRef);
     navigate("/expenseTracker");
   };
@@ -58,15 +58,15 @@ const Category = () => {
         {categories !== undefined
           ? categories.map((category, index) => {
               return (
-                <div
-                  className={styles.Category}
-                  key={index}
-                  onClick={getCategory}
-                >
+                <div className={styles.Category} key={index}>
                   <div className={styles.categoryIcon}>
                     {category.categoryEmojiRef}
                   </div>
-                  <div ref={categoryTitleRef} className={styles.categoryTitle}>
+                  <div
+                    ref={categoryTitleRef}
+                    onClick={getCategory}
+                    className={styles.categoryTitle}
+                  >
                     {category.categoryTitle}
                   </div>
                 </div>

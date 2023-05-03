@@ -16,6 +16,7 @@ import PageNotFound from "./Components/pageNotFound/pageNotFound";
 import { GetExpenseArray } from "./Components/expenseDetails/expenseSlice";
 import AddIncome from "./Components/addIncome/addIncome";
 import { GetSalary } from "./Components/expenseDetails/expenseSlice";
+import CurrencySelector from "./Components/currencySelector/currencySelector";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ function App() {
         <Route path="/transactions" element={<Transactions />} />
         <Route path="*" element={<PageNotFound />} />
         <Route path="/addIncome" element={<AddIncome />} />
+        <Route path="/currencySelector" element={<CurrencySelector />} />
       </Routes>
     </div>
   );

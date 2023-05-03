@@ -2,7 +2,12 @@ import React, { useRef } from "react";
 import styles from "./expenseDetails.module.scss";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getExpenseObj, addExpense, updateExpenseArray } from "./expenseSlice";
+import {
+  getExpenseObj,
+  addExpense,
+  updateExpenseArray,
+  GetSalary,
+} from "./expenseSlice";
 import SignUpComponent from "../signUpComponent/signUp";
 import { getSelectedCategory } from "../categoryComponent/categorySlice";
 import { addDoc, setDoc, doc, arrayUnion, updateDoc } from "firebase/firestore";
@@ -19,6 +24,7 @@ const ExpenseDetails = () => {
   console.log(expenseArray);
   const currCategory = useSelector((state) => state.categories.currCategory);
   const salary = useSelector((state) => state.expense.salary);
+  const totalExpenses = useSelector((state) => state.expense.expenseTotal);
   const categoryRef = useRef();
   const amountRef = useRef();
   const noteRef = useRef();
@@ -30,6 +36,13 @@ const ExpenseDetails = () => {
     `${userId}`,
     `expenseCollection`,
     `expenses`
+  );
+  const totalExpenseRef = doc(
+    db,
+    "users",
+    `${userId}`,
+    `salaryCollection`,
+    `salaries`
   );
   console.log(currCategory);
   ////////////Save Entered Expense //////////////////////////
@@ -47,6 +60,10 @@ const ExpenseDetails = () => {
             expenseNote: noteRef.current.value,
           },
         ],
+      });
+      await updateDoc(totalExpenseRef, {
+        totalExpenses:
+          parseInt(totalExpenses) + parseInt(amountRef.current.value),
       });
       dispatch(GetExpenseArray());
       amountRef.current.value = "";
@@ -73,7 +90,12 @@ const ExpenseDetails = () => {
             },
           ],
         });
+        await updateDoc(totalExpenseRef, {
+          totalExpenses:
+            parseInt(totalExpenses) + parseInt(amountRef.current.value),
+        });
         dispatch(GetExpenseArray());
+        dispatch(GetSalary(userId));
       } else if (selectedCategoryObj.category === currCategory) {
         const oldExpenseArray = [...expenseArray];
         const newExpenseAmount =
@@ -83,8 +105,13 @@ const ExpenseDetails = () => {
           expenseAmount: newExpenseAmount,
         };
         oldExpenseArray[categoryObjIndex] = updatedSelectedCategoryObj;
+        await updateDoc(totalExpenseRef, {
+          totalExpenses:
+            parseInt(totalExpenses) + parseInt(amountRef.current.value),
+        });
         dispatch(updateExpenseArray(oldExpenseArray));
         dispatch(addExpense(amountRef.current.value));
+        dispatch(GetSalary(userId));
         dispatch(getSelectedCategory(""));
         const response = await updateDoc(expenseArrayRef, {
           expenseArray: [...oldExpenseArray],

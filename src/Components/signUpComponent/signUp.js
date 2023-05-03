@@ -20,6 +20,7 @@ const SignupForm = () => {
     );
     await setDoc(expenseDetailsRef, {
       expenseArray: [],
+      currencySymbol: "$",
     });
   };
   const createSalaryCollection = async (userId) => {
@@ -32,6 +33,7 @@ const SignupForm = () => {
     );
     await setDoc(salaryRef, {
       salary: 0,
+      totalExpense: 0,
     });
   };
 

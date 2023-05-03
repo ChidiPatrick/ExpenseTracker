@@ -12,47 +12,54 @@ const IncomeExpenseUI = () => {
   const dispatch = useDispatch();
   const currCategory = useSelector((state) => state.expense.expenseArray);
   const expenseTotal = useSelector((state) => state.expense.expenseTotal);
-  const expenseArrayObj = useSelector((state) => state.expense.expenseObj);
-  const salaryObj = useSelector((state) => state.expense.salary);
+  const expenseArray = useSelector((state) => state.expense.expenseObj);
+  const salary = useSelector((state) => state.expense.salary);
   const totalExpense = useSelector((state) => state.expense.expenseTotal);
   const salaryBalance = useSelector((state) => state.expense.salaryBalance);
-  const spendingPercentage = useSelector(
-    (state) => state.expense.spendingPercentage
-  );
-  const salary = salaryObj.salary;
+  const currencySymbol = useSelector((state) => state.expense.currencySymbol);
   const categoriesArray = useSelector(
     (state) => state.categories.categoriesArray
   );
-  console.log(totalExpense);
-  const expenseArray = expenseArrayObj.expenseArray;
   console.log(expenseArray);
-
-  useEffect(() => {
-    if (expenseArray !== undefined) {
-      let totalExpense = 0;
-      let spendingPercentage = 0;
-      const totalSummation = expenseArray.map((obj) => {
-        totalExpense = totalExpense + obj.expenseAmount;
-      });
-      spendingPercentage = (totalExpense / salary) * 100;
-      dispatch(setSpendingPercentage(spendingPercentage));
-      console.log(spendingPercentage);
-    }
-    const newBalance = salary - totalExpense;
-    dispatch(setTotalExpenses(totalExpense));
-    dispatch(setBalance(newBalance));
-  }, [expenseArray]);
+  const spendingPercentage = (totalExpense / salary) * 100;
+  console.log(categoriesArray, expenseArray);
+  const balance = salary - totalExpense;
+  // useEffect(() => {
+  //   let totalExpense = 0;
+  //   let spendingPercentage = 0;
+  //   if (expenseArray !== undefined) {
+  //     const totalSummation = expenseArray.map((obj) => {
+  //       totalExpense = totalExpense + obj.expenseAmount;
+  //     });
+  //     spendingPercentage = (totalExpense / salary) * 100;
+  //     dispatch(
+  //       setSpendingPercentage(
+  //         spendingPercentage === NaN || spendingPercentage === undefined
+  //           ? 0
+  //           : spendingPercentage
+  //       )
+  //     );
+  //     console.log(spendingPercentage);
+  //     const newBalance = salary - totalExpense;
+  //     dispatch(setTotalExpenses(totalExpense));
+  //     dispatch(setBalance(newBalance));
+  //   }
+  // }, [expenseArray]);
   const incomeExpenseUI = (
     <div className={styles.incomeExpenseWrapper}>
-      <ProgressBar
-        barContainerClassName={styles.barContainer}
-        completed={100 - spendingPercentage}
-        completedClassName={styles.completedBar}
-      />
+      <div className={styles.ProgressBarWrapper}>
+        <ProgressBar
+          barContainerClassName={styles.barContainer}
+          completed={(100 - spendingPercentage).toFixed(2)}
+          // completedClassName={styles.completedBar}
+          bgColor="rgb(127, 255, 127)"
+        />
+      </div>
       <div className={styles.incomeExpenseInnerWrapper}>
         <div className={styles.incomeWrapper}>
           <span className={styles.income}>Income</span>
           <span className={styles.incomeAmount}>
+            {currencySymbol}
             {salary !== undefined ? salary.toFixed(2) : 0}
           </span>
         </div>
@@ -60,6 +67,7 @@ const IncomeExpenseUI = () => {
           <div className={styles.expenseHeader}>
             <span className={styles.expense}>Expense</span>
             <span className={styles.expenseAmount}>
+              {currencySymbol}
               {totalExpense.toFixed(2)}
             </span>
           </div>
@@ -71,6 +79,7 @@ const IncomeExpenseUI = () => {
                       {expenseObj.category}
                     </span>
                     <span className={styles.expenseAmount}>
+                      {currencySymbol}
                       {expenseObj.expenseAmount.toFixed(2)}
                     </span>
                   </div>
@@ -82,7 +91,8 @@ const IncomeExpenseUI = () => {
         <div className={styles.balanceWrapper}>
           <span className={styles.balance}>Balance</span>
           <span className={styles.balanceAmount}>
-            {salaryBalance.toFixed(2)}
+            {currencySymbol}
+            {balance.toFixed(2)}
           </span>
         </div>
       </div>

@@ -12,6 +12,7 @@ const initialState = {
   showFeedBackUI: false,
   selectedTransaction: {},
   spendingPercentage: 0,
+  currencySymbol: "",
 };
 
 export const GetExpenseArray = createAsyncThunk(
@@ -26,7 +27,9 @@ export const GetExpenseArray = createAsyncThunk(
     );
     const expenses = await getDoc(expenseRef);
     if (expenses.exists()) {
-      dispatch(getExpenses(expenses.data()));
+      console.log(expenses.data());
+      dispatch(getExpenses(expenses.data().expenseArray));
+      dispatch(getCurrencySymbol(expenses.data().currencySymbol));
     }
   }
 );
@@ -42,8 +45,9 @@ export const GetSalary = createAsyncThunk(
     );
     const salary = await getDoc(salaryRef);
     if (salary.exists()) {
-      console.log(salary.data());
-      dispatch(getSalary(salary.data()));
+      console.log(salary.data().salary);
+      dispatch(getSalary(salary.data().salary));
+      dispatch(getTotalExpenses(salary.data().totalExpenses));
     }
   }
 );
@@ -92,6 +96,12 @@ const expenseSlice = createSlice({
     setSpendingPercentage(state, action) {
       state.spendingPercentage = action.payload;
     },
+    getTotalExpenses(state, action) {
+      state.expenseTotal = action.payload;
+    },
+    getCurrencySymbol(state, action) {
+      state.currencySymbol = action.payload;
+    },
   },
 });
 export const {
@@ -108,5 +118,7 @@ export const {
   setBalance,
   getSelectedTransaction,
   setSpendingPercentage,
+  getTotalExpenses,
+  getCurrencySymbol,
 } = expenseSlice.actions;
 export default expenseSlice.reducer;

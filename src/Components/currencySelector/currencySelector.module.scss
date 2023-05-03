@@ -1,0 +1,26 @@
+.countryAndCurrency {
+  background-color: #fff;
+  height: 100vh;
+  width: 100%;
+}
+.currencySymbolWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: solid 1px grey;
+}
+.currencyInput {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: solid 3px chocolate;
+}
+.currencyLabel {
+  margin-left: 15px;
+  font-size: 25px;
+  color: chocolate;
+  width: 100%;
+  // border-top: solid 1px grey;
+
+  padding: 10px;
+}

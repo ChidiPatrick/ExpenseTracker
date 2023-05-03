@@ -12,6 +12,7 @@ import {
   activateOnTransactionUI,
   deactivateOnTransactionUI,
 } from "../categoryComponent/categorySlice";
+import CurrencySelector from "../currencySelector/currencySelector";
 const Transactions = () => {
   const params = useParams();
   const dispatch = useDispatch();
@@ -98,6 +99,7 @@ const Transactions = () => {
   return (
     <div className={styles.transactionsWrapper}>
       <NavComponent />
+      <CurrencySelector />
       {displayEditUI !== true ? transactions : <EditExpense />}
     </div>
   );
