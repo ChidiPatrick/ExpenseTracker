@@ -5,12 +5,18 @@ import { getCurrencySymbol } from "../expenseDetails/expenseSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../Firebase";
+import NavComponent from "../navigationComponent/navComponent";
+import { useNavigate } from "react-router";
 /////////////////////////////////////////////
 const CurrencySelector = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userId = useSelector((state) => state.signUp.userId);
   const currencyObj = currencyToSymbolMap;
-
+  const currCurrencySymbol = useSelector(
+    (state) => state.expense.currencySymbol
+  );
+  console.log(currCurrencySymbol);
   const currencyArray = Object.values(currencyObj);
   const currencySymbolRef = doc(
     db,
@@ -35,9 +41,12 @@ const CurrencySelector = () => {
     console.log("Got here");
     dispatch(getCurrencySymbol(newCurrencySymbol));
   };
+
   return (
-    <div>
-      <h2>Currency Symbol</h2>
+    <div className={styles.parentWrapper}>
+      <NavComponent />
+      <div onClick={() => navigate(-1)}>X</div>
+      <h2 className={styles.currencySymbolHeader}>Currency Symbol</h2>
       <div className={styles.countryAndCurrency}>
         {currencyArray.map((currency, index) => {
           if (index === 6) {
@@ -49,7 +58,6 @@ const CurrencySelector = () => {
                   name="currency"
                   key={index}
                   value={currency}
-                  defaultChecked
                   id={`radio${index}`}
                 />
                 <label
@@ -84,7 +92,7 @@ const CurrencySelector = () => {
         })}
       </div>
       <div className={styles.cancelBtnWrapper}>
-        <button>CANCEL</button>
+        <button className={styles.cancelBtn}>CANCEL</button>
       </div>
     </div>
   );

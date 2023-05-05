@@ -10,9 +10,11 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import { setSpendingPercentage } from "../expenseDetails/expenseSlice";
 const IncomeExpenseUI = () => {
   const dispatch = useDispatch();
-  const currCategory = useSelector((state) => state.expense.expenseArray);
+  const monthlyExpenseArray = useSelector(
+    (state) => state.expense.expenseArray
+  );
   const expenseTotal = useSelector((state) => state.expense.expenseTotal);
-  const expenseArray = useSelector((state) => state.expense.expenseObj);
+  const expenseObj = useSelector((state) => state.expense.expenseObj);
   const salary = useSelector((state) => state.expense.salary);
   const totalExpense = useSelector((state) => state.expense.expenseTotal);
   const salaryBalance = useSelector((state) => state.expense.salaryBalance);
@@ -20,10 +22,10 @@ const IncomeExpenseUI = () => {
   const categoriesArray = useSelector(
     (state) => state.categories.categoriesArray
   );
-  console.log(expenseArray);
-  const spendingPercentage = (totalExpense / salary) * 100;
-  console.log(categoriesArray, expenseArray);
-  const balance = salary - totalExpense;
+  console.log(monthlyExpenseArray);
+  // const spendingPercentage = (totalExpense / salary) * 100;
+  // console.log(categoriesArray, expenseArray);
+  // const balance = salary - totalExpense;
   // useEffect(() => {
   //   let totalExpense = 0;
   //   let spendingPercentage = 0;
@@ -50,7 +52,7 @@ const IncomeExpenseUI = () => {
       <div className={styles.ProgressBarWrapper}>
         <ProgressBar
           barContainerClassName={styles.barContainer}
-          completed={(100 - spendingPercentage).toFixed(2)}
+          // completed={(100 - spendingPercentage).toFixed(2)}
           // completedClassName={styles.completedBar}
           bgColor="rgb(127, 255, 127)"
         />
@@ -60,7 +62,7 @@ const IncomeExpenseUI = () => {
           <span className={styles.income}>Income</span>
           <span className={styles.incomeAmount}>
             {currencySymbol}
-            {salary !== undefined ? salary.toFixed(2) : 0}
+            {/* {salary !== undefined ? salary.toFixed(2) : 0} */}
           </span>
         </div>
         <div className={styles.expenseWrapper}>
@@ -68,11 +70,11 @@ const IncomeExpenseUI = () => {
             <span className={styles.expense}>Expense</span>
             <span className={styles.expenseAmount}>
               {currencySymbol}
-              {totalExpense.toFixed(2)}
+              {/* {totalExpense.toFixed(2)} */}
             </span>
           </div>
-          {expenseArray !== undefined
-            ? expenseArray.map((expenseObj, index) => {
+          {monthlyExpenseArray !== undefined
+            ? monthlyExpenseArray.map((expenseObj, index) => {
                 return (
                   <div className={styles.expenseCategories} key={index}>
                     <span className={styles.expense}>
@@ -80,7 +82,7 @@ const IncomeExpenseUI = () => {
                     </span>
                     <span className={styles.expenseAmount}>
                       {currencySymbol}
-                      {expenseObj.expenseAmount.toFixed(2)}
+                      {/* {expenseObj.expenseAmount.toFixed(2)} */}
                     </span>
                   </div>
                 );
@@ -92,7 +94,7 @@ const IncomeExpenseUI = () => {
           <span className={styles.balance}>Balance</span>
           <span className={styles.balanceAmount}>
             {currencySymbol}
-            {balance.toFixed(2)}
+            {/* {balance.toFixed(2)} */}
           </span>
         </div>
       </div>
@@ -113,6 +115,7 @@ const IncomeExpenseUI = () => {
       <SignupForm />
     </div>
   );
-  return expenseArray && categoriesArray ? incomeExpenseUI : <Spinner />;
+  // return monthlyExpenseArray && categoriesArray ? incomeExpenseUI : <Spinner />;
+  return incomeExpenseUI;
 };
 export default IncomeExpenseUI;

@@ -8,7 +8,7 @@ import { hideEditUI } from "../expenseDetails/expenseSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../Firebase";
 import { doc, updateDoc } from "firebase/firestore";
-import { GetExpenseArray } from "../expenseDetails/expenseSlice";
+import { GetExpenseObj } from "../expenseDetails/expenseSlice";
 
 ///////////////////////////////////////////////////////
 const EditExpense = () => {
@@ -43,7 +43,7 @@ const EditExpense = () => {
       expenseArray: updatedExpenseArray,
     });
     updateResponds.then((res) => {
-      dispatch(GetExpenseArray(userId));
+      dispatch(GetExpenseObj(userId));
     });
   };
   const handleDone = (index, expenseArray, userId) => {

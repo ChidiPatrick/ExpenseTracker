@@ -13,7 +13,7 @@ import Emojis from "./Components/emojiFolder/emoji";
 import ColorPicker from "./Components/colorPicker/colorPicker";
 import Transactions from "./Components/transactions/transactions";
 import PageNotFound from "./Components/pageNotFound/pageNotFound";
-import { GetExpenseArray } from "./Components/expenseDetails/expenseSlice";
+import { GetExpenseObj } from "./Components/expenseDetails/expenseSlice";
 import AddIncome from "./Components/addIncome/addIncome";
 import { GetSalary } from "./Components/expenseDetails/expenseSlice";
 import CurrencySelector from "./Components/currencySelector/currencySelector";
@@ -25,7 +25,7 @@ function App() {
       console.log(user.uid);
       dispatch(getUserId(user.uid));
       dispatch(GetCategories(user.uid));
-      dispatch(GetExpenseArray(user.uid));
+      dispatch(GetExpenseObj(user.uid));
       dispatch(GetSalary(user.uid));
     }
   });
@@ -53,7 +53,7 @@ function App() {
 //       console.log(user.uid);
 //       dispatch(getUserId(user.uid));
 //       dispatch(GetCategories(user.uid));
-//       dispatch(GetExpenseArray(user.uid));
+//       dispatch(GetExpenseObj(user.uid));
 //       dispatch(GetSalary(user.uid));
 //     }
 //   });

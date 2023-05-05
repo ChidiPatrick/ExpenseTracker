@@ -10,6 +10,7 @@ import { db } from "../Firebase";
 ////////////////////////////////////////////////////////
 const SignupForm = () => {
   // const userId = useSelector((state) => state.signup.userId);
+  const date = new Date();
   const createExpenseCollection = async (userId) => {
     const expenseDetailsRef = doc(
       db,
@@ -19,7 +20,11 @@ const SignupForm = () => {
       `expenses`
     );
     await setDoc(expenseDetailsRef, {
-      expenseArray: [],
+      expenseObj: {
+        date: date.toDateString(),
+        monthlyExpenseArray: [],
+        transactionArray: [],
+      },
       currencySymbol: "$",
     });
   };

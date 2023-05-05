@@ -12,24 +12,28 @@ import SignUpComponent from "../signUpComponent/signUp";
 import { getSelectedCategory } from "../categoryComponent/categorySlice";
 import { addDoc, setDoc, doc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from "../Firebase";
-import { GetExpenseArray } from "../expenseDetails/expenseSlice";
+import { GetExpenseObj } from "../expenseDetails/expenseSlice";
 //////////////////////////////////////////////////////////////////////////
 /////Expense Details Component/////////////////////
 const ExpenseDetails = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.signUp.userId);
-  const categories = useSelector((state) => state.expense.expenseArray);
-  const expensesObj = useSelector((state) => state.expense.expenseObj);
-  const expenseArray = expensesObj.expenseArray;
-  console.log(expenseArray);
+  // const categories = useSelector((state) => state.expense.expenseArray);
+  const monthlyExpenseArray = useSelector(
+    (state) => state.expense.expenseArray
+  );
+  // const expenseArray = expensesObj.expenseArray;
+  // console.log(expenseArray);
   const currCategory = useSelector((state) => state.categories.currCategory);
   const salary = useSelector((state) => state.expense.salary);
-  const totalExpenses = useSelector((state) => state.expense.expenseTotal);
+  const totalExpenses = useSelector((state) => state.expense.totalExpense);
+  const expenseObj = useSelector((state) => state.expense.expenseObj);
   const categoryRef = useRef();
   const amountRef = useRef();
   const noteRef = useRef();
   const date = new Date();
-  console.log(salary);
+  const testingDate = new Date(expenseObj.date);
+  console.log(totalExpenses);
   const expenseArrayRef = doc(
     db,
     "users",
@@ -44,43 +48,60 @@ const ExpenseDetails = () => {
     `salaryCollection`,
     `salaries`
   );
-  console.log(currCategory);
+  console.log(monthlyExpenseArray);
   ////////////Save Entered Expense //////////////////////////
   const saveExpense = async (expenseArray) => {
     ////Check for existing category ///////////////
     let updatedSelectedCategoryObj = {};
     let categoryObjIndex = null;
-    if (expenseArray.length === 0) {
-      await setDoc(expenseArrayRef, {
-        expenseArray: [
+    if (monthlyExpenseArray.length === 0) {
+      await updateDoc(expenseArrayRef, {
+        "expenseObj.monthlyExpenseArray": [
           {
-            category: currCategory,
-            expenseAmount: parseInt(amountRef.current.value),
             date: date.toDateString(),
-            expenseNote: noteRef.current.value,
+            expenseArray: [
+              {
+                category: currCategory,
+                expenseAmount: parseInt(amountRef.current.value),
+                date: date.toDateString(),
+                expenseNote: noteRef.current.value,
+              },
+            ],
+            transactions: [
+              {
+                category: currCategory,
+                expenseAmount: parseInt(amountRef.current.value),
+                date: date.toDateString(),
+                expenseNote: noteRef.current.value,
+              },
+            ],
           },
         ],
       });
+      console.log("Function called");
       await updateDoc(totalExpenseRef, {
-        totalExpenses:
+        totalExpense:
           parseInt(totalExpenses) + parseInt(amountRef.current.value),
       });
-      dispatch(GetExpenseArray());
+      dispatch(GetExpenseObj());
       amountRef.current.value = "";
       noteRef.current.value = "";
-    } else if (expenseArray.length >= 1) {
-      const selectedCategoryObj = expenseArray.find((categoryObj, index) => {
-        if (categoryObj.category === currCategory) {
-          categoryObjIndex = index;
-          return categoryObj;
-        } else {
-          return undefined;
+      return;
+    } else if (monthlyExpenseArray.length > 0) {
+      const selectedCategoryObj = monthlyExpenseArray.find(
+        (categoryObj, index) => {
+          if (categoryObj.category === currCategory) {
+            categoryObjIndex = index;
+            return categoryObj;
+          } else {
+            return undefined;
+          }
         }
-      });
+      );
       if (selectedCategoryObj === undefined) {
-        const oldExpenseArray = expenseArray;
+        const oldExpenseArray = monthlyExpenseArray;
         await updateDoc(expenseArrayRef, {
-          expenseArray: [
+          "expenseObj.monthlyExpenseArray": [
             ...oldExpenseArray,
             {
               category: currCategory,
@@ -94,10 +115,12 @@ const ExpenseDetails = () => {
           totalExpenses:
             parseInt(totalExpenses) + parseInt(amountRef.current.value),
         });
-        dispatch(GetExpenseArray());
+        dispatch(GetExpenseObj());
         dispatch(GetSalary(userId));
+        amountRef.current.value = "";
+        noteRef.current.value = "";
       } else if (selectedCategoryObj.category === currCategory) {
-        const oldExpenseArray = [...expenseArray];
+        const oldExpenseArray = [...monthlyExpenseArray];
         const newExpenseAmount =
           selectedCategoryObj.expenseAmount + parseInt(amountRef.current.value);
         updatedSelectedCategoryObj = {
@@ -109,15 +132,16 @@ const ExpenseDetails = () => {
           totalExpenses:
             parseInt(totalExpenses) + parseInt(amountRef.current.value),
         });
+        const response = await updateDoc(expenseArrayRef, {
+          "expenseObj.monthlyExpenseArray": [...oldExpenseArray],
+        });
         dispatch(updateExpenseArray(oldExpenseArray));
         dispatch(addExpense(amountRef.current.value));
         dispatch(GetSalary(userId));
         dispatch(getSelectedCategory(""));
-        const response = await updateDoc(expenseArrayRef, {
-          expenseArray: [...oldExpenseArray],
-        });
+
         response.then((res) => {
-          dispatch(GetExpenseArray());
+          dispatch(GetExpenseObj());
         });
         amountRef.current.value = "";
       }
@@ -129,7 +153,7 @@ const ExpenseDetails = () => {
         <Link to={"/"}>X</Link>
         <button
           className={styles.saveBtn}
-          onClick={() => saveExpense(expenseArray)}
+          onClick={() => saveExpense(monthlyExpenseArray)}
         >
           Done
         </button>
@@ -148,6 +172,7 @@ const ExpenseDetails = () => {
               to="/category"
               className={styles.categoryLink}
               ref={categoryRef}
+              replace
             >
               {currCategory === "" ? "Enter category" : currCategory}
             </Link>

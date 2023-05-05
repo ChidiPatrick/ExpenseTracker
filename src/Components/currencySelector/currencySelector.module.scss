@@ -1,3 +1,14 @@
+// .currencySymbolWrapper {
+//   background-color: greenyellow;
+//   display: flex;
+//   flex-direction: column;
+//   // justify-content: ;
+// }
+.parentWrapper {
+  padding: 10px;
+  position: relative;
+  background-color: #fff;
+}
 .countryAndCurrency {
   background-color: #fff;
   height: 100vh;
@@ -8,6 +19,7 @@
   justify-content: flex-start;
   align-items: center;
   border-bottom: solid 1px grey;
+  padding: 10px;
 }
 .currencyInput {
   width: 20px;
@@ -23,4 +35,27 @@
   // border-top: solid 1px grey;
 
   padding: 10px;
+}
+.currencySymbolHeader {
+  padding: 10px;
+  // text-align: center;
+}
+.cancelBtnWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  z-index: 30;
+  position: fixed;
+  left: 0;
+  top: 90%;
+  background-color: #fff;
+  padding: 10px;
+}
+.cancelBtn {
+  padding: 10px 0;
+  background-color: chocolate;
+  border: none;
+  border-radius: 100px;
+  width: 100px;
+  color: #fff;
 }

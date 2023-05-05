@@ -16,7 +16,7 @@ import CurrencySelector from "../currencySelector/currencySelector";
 const Transactions = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const expenseArray = useSelector((state) => state.expense.expenseArray);
+  const expenseArray = useSelector((state) => state.expense.expenseObj);
   const displayEditUI = useSelector((state) => state.expense.displayEditUI);
   console.log(expenseArray);
   console.log(params);
@@ -93,13 +93,13 @@ const Transactions = () => {
           </div>
           <div className={styles.expenseAmount}>£120,200.00</div>
         </div>
+        <CurrencySelector />
       </div>
     </>
   );
   return (
     <div className={styles.transactionsWrapper}>
       <NavComponent />
-      <CurrencySelector />
       {displayEditUI !== true ? transactions : <EditExpense />}
     </div>
   );

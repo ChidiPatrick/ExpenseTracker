@@ -4,7 +4,7 @@ import { db } from "../Firebase";
 
 const initialState = {
   currCategory: "",
-  categoriesArray: [],
+  categoriesArray: undefined,
   chartColor: "",
   selectedCategoryEmoji: "",
   displayEmoji: false,

@@ -3,9 +3,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../Firebase";
 const initialState = {
-  expenseArray: [],
-  expenseTotal: 0,
-  expenseObj: [],
+  expenseArray: undefined,
+  expenseObj: {},
+  totalExpense: 0,
   displayEditUI: false,
   salary: 0,
   salaryBalance: 0,
@@ -15,8 +15,8 @@ const initialState = {
   currencySymbol: "",
 };
 
-export const GetExpenseArray = createAsyncThunk(
-  "expense/getExpense",
+export const GetExpenseObj = createAsyncThunk(
+  "expense/getExpenseObj",
   async (userId, { dispatch, getState }) => {
     const expenseRef = doc(
       db,
@@ -25,11 +25,15 @@ export const GetExpenseArray = createAsyncThunk(
       `expenseCollection`,
       `expenses`
     );
-    const expenses = await getDoc(expenseRef);
-    if (expenses.exists()) {
-      console.log(expenses.data());
-      dispatch(getExpenses(expenses.data().expenseArray));
-      dispatch(getCurrencySymbol(expenses.data().currencySymbol));
+    const expensesObj = await getDoc(expenseRef);
+    if (expensesObj.exists()) {
+      console.log(expensesObj.data());
+      console.log(expensesObj.data().expenseObj);
+      dispatch(getExpenseObj(expensesObj.data().expenseObj));
+      dispatch(
+        getExpenseArray(expensesObj.data().expenseObj.monthlyExpenseArray)
+      );
+      dispatch(getCurrencySymbol(expensesObj.data().currencySymbol));
     }
   }
 );
@@ -66,8 +70,8 @@ const expenseSlice = createSlice({
     updateExpenseArray(state, action) {
       state.expenseArray = action.payload;
     },
-    getExpenses(state, action) {
-      state.expenseObj = action.payload;
+    getExpenseArray(state, action) {
+      state.expenseArray = action.payload;
     },
     showEditUI(state, action) {
       state.displayEditUI = true;
@@ -102,13 +106,16 @@ const expenseSlice = createSlice({
     getCurrencySymbol(state, action) {
       state.currencySymbol = action.payload;
     },
+    getExpenseObj(state, action) {
+      state.expenseObj = action.payload;
+    },
   },
 });
 export const {
   getExpenseObj,
   addExpense,
   updateExpenseArray,
-  getExpenses,
+  getExpenseArray,
   hideEditUI,
   showEditUI,
   getSalary,
