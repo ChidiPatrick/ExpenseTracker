@@ -13,15 +13,25 @@ import { getSelectedCategory } from "../categoryComponent/categorySlice";
 import { addDoc, setDoc, doc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from "../Firebase";
 import { GetExpenseObj } from "../expenseDetails/expenseSlice";
+import { object } from "yup";
 //////////////////////////////////////////////////////////////////////////
 /////Expense Details Component/////////////////////
 const ExpenseDetails = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.signUp.userId);
   // const categories = useSelector((state) => state.expense.expenseArray);
-  const monthlyExpenseArray = useSelector(
-    (state) => state.expense.expenseArray
-  );
+  const allExpenseArray = useSelector((state) => state.expense.expenseArray);
+  const monthlyExpenseArray = [...allExpenseArray];
+  console.log(monthlyExpenseArray);
+  const arrayLength = monthlyExpenseArray.length;
+  const objIndex = arrayLength - 1;
+  const currMonthObj = monthlyExpenseArray[objIndex];
+  const currMonthObjExpenseArray = currMonthObj.expenseArray;
+  console.log(monthlyExpenseArray[arrayLength - 1]);
+  console.log(currMonthObj.expenseArray);
+  console.log(currMonthObjExpenseArray);
+  console.log(`Currnet month`);
+  console.log(currMonthObj);
   // const expenseArray = expensesObj.expenseArray;
   // console.log(expenseArray);
   const currCategory = useSelector((state) => state.categories.currCategory);
@@ -48,17 +58,29 @@ const ExpenseDetails = () => {
     `salaryCollection`,
     `salaries`
   );
-  console.log(monthlyExpenseArray);
+  const firstExpenseObjMonth = new Date(expenseObj.date).getMonth();
+  console.log(firstExpenseObjMonth);
+  // const expenseObjArray = Object.values(expenseObj.expenses);
+  console.log(expenseObj);
   ////////////Save Entered Expense //////////////////////////
   const saveExpense = async (expenseArray) => {
     ////Check for existing category ///////////////
     let updatedSelectedCategoryObj = {};
     let categoryObjIndex = null;
+    let selectedCategoryObj = null;
+    let currentIndex = null;
+    let arrayLength = monthlyExpenseArray.length;
+    let objIndex = arrayLength - 1;
+    let currMonthObj = monthlyExpenseArray[arrayLength - 1];
+    let currMonthObjExpenseArray = currMonthObj.expenseArray;
+    const currentMonth = new Date().getMonth();
+    // const expenseObjArray = Object.values(expenseObj.expens);
+
     if (monthlyExpenseArray.length === 0) {
       await updateDoc(expenseArrayRef, {
-        "expenseObj.monthlyExpenseArray": [
+        "expenseObj.monthlyExpenses": [
           {
-            date: date.toDateString(),
+            dateCreated: date.toDateString(),
             expenseArray: [
               {
                 category: currCategory,
@@ -87,22 +109,34 @@ const ExpenseDetails = () => {
       amountRef.current.value = "";
       noteRef.current.value = "";
       return;
-    } else if (monthlyExpenseArray.length > 0) {
-      const selectedCategoryObj = monthlyExpenseArray.find(
-        (categoryObj, index) => {
-          if (categoryObj.category === currCategory) {
+    } else if (monthlyExpenseArray.length >= 1) {
+      const selectedCategoryObj = currMonthObjExpenseArray.find(
+        (expenseObj, index) => {
+          if (expenseObj.category === currCategory) {
             categoryObjIndex = index;
-            return categoryObj;
+            return expenseObj;
           } else {
             return undefined;
           }
         }
       );
       if (selectedCategoryObj === undefined) {
-        const oldExpenseArray = monthlyExpenseArray;
-        await updateDoc(expenseArrayRef, {
-          "expenseObj.monthlyExpenseArray": [
-            ...oldExpenseArray,
+        const oldExpenseArray = currMonthObjExpenseArray;
+        const newExpenseArray = [
+          ...oldExpenseArray,
+          {
+            category: currCategory,
+            expenseAmount: parseInt(amountRef.current.value),
+            date: date.toDateString(),
+            expenseNote: noteRef.current.value,
+          },
+        ];
+        //////// Update current month expensArray and monthlyExpenseArray ///////
+        currMonthObj = {
+          ...currMonthObj,
+          expenseArray: newExpenseArray,
+          transactions: [
+            ...currMonthObj.transactions,
             {
               category: currCategory,
               expenseAmount: parseInt(amountRef.current.value),
@@ -110,6 +144,10 @@ const ExpenseDetails = () => {
               expenseNote: noteRef.current.value,
             },
           ],
+        };
+        monthlyExpenseArray[objIndex] = currMonthObj;
+        await updateDoc(expenseArrayRef, {
+          "expenseObj.monthlyExpenses": [...monthlyExpenseArray],
         });
         await updateDoc(totalExpenseRef, {
           totalExpenses:
@@ -119,30 +157,47 @@ const ExpenseDetails = () => {
         dispatch(GetSalary(userId));
         amountRef.current.value = "";
         noteRef.current.value = "";
-      } else if (selectedCategoryObj.category === currCategory) {
-        const oldExpenseArray = [...monthlyExpenseArray];
+      }
+      //////////////////////////////////////////////////////////////////////
+      else if (selectedCategoryObj.category === currCategory) {
+        // const oldExpenseArray = [...monthlyExpenseArray];
+        console.log("Function for selected category is called");
         const newExpenseAmount =
           selectedCategoryObj.expenseAmount + parseInt(amountRef.current.value);
+        console.log("new expense amount:" + newExpenseAmount);
         updatedSelectedCategoryObj = {
           ...selectedCategoryObj,
           expenseAmount: newExpenseAmount,
         };
-        oldExpenseArray[categoryObjIndex] = updatedSelectedCategoryObj;
+        const monthObjExpenseArray = [...currMonthObjExpenseArray];
+        monthObjExpenseArray[categoryObjIndex] = updatedSelectedCategoryObj;
+        currMonthObj = {
+          ...currMonthObj,
+          expenseArray: [...monthObjExpenseArray],
+          transactions: [
+            ...currMonthObj.transactions,
+            {
+              category: currCategory,
+              expenseAmount: parseInt(amountRef.current.value),
+              date: date.toDateString(),
+              expenseNote: noteRef.current.value,
+            },
+          ],
+        };
+        monthlyExpenseArray[objIndex] = currMonthObj;
         await updateDoc(totalExpenseRef, {
           totalExpenses:
             parseInt(totalExpenses) + parseInt(amountRef.current.value),
         });
-        const response = await updateDoc(expenseArrayRef, {
-          "expenseObj.monthlyExpenseArray": [...oldExpenseArray],
-        });
-        dispatch(updateExpenseArray(oldExpenseArray));
+
+        dispatch(updateExpenseArray(monthlyExpenseArray));
         dispatch(addExpense(amountRef.current.value));
         dispatch(GetSalary(userId));
         dispatch(getSelectedCategory(""));
-
-        response.then((res) => {
-          dispatch(GetExpenseObj());
+        await updateDoc(expenseArrayRef, {
+          "expenseObj.monthlyExpenses": monthlyExpenseArray,
         });
+        dispatch(GetExpenseObj());
         amountRef.current.value = "";
       }
     }

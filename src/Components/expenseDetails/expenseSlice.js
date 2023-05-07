@@ -25,15 +25,15 @@ export const GetExpenseObj = createAsyncThunk(
       `expenseCollection`,
       `expenses`
     );
-    const expensesObj = await getDoc(expenseRef);
-    if (expensesObj.exists()) {
-      console.log(expensesObj.data());
-      console.log(expensesObj.data().expenseObj);
-      dispatch(getExpenseObj(expensesObj.data().expenseObj));
+    const monthlyExpenseArray = await getDoc(expenseRef);
+    if (monthlyExpenseArray.exists()) {
+      console.log(monthlyExpenseArray.data());
+      console.log(monthlyExpenseArray.data().expenseObj);
+      dispatch(getExpenseObj(monthlyExpenseArray.data().expenseObj));
       dispatch(
-        getExpenseArray(expensesObj.data().expenseObj.monthlyExpenseArray)
+        getExpenseArray(monthlyExpenseArray.data().expenseObj.monthlyExpenses)
       );
-      dispatch(getCurrencySymbol(expensesObj.data().currencySymbol));
+      dispatch(getCurrencySymbol(monthlyExpenseArray.data().currencySymbol));
     }
   }
 );

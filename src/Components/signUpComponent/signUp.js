@@ -22,8 +22,7 @@ const SignupForm = () => {
     await setDoc(expenseDetailsRef, {
       expenseObj: {
         date: date.toDateString(),
-        monthlyExpenseArray: [],
-        transactionArray: [],
+        monthlyExpenses: [],
       },
       currencySymbol: "$",
     });
