@@ -11,6 +11,7 @@ const initialState = {
   displayColorPicker: false,
   onTransactionUI: false,
   onCategoryUI: false,
+  totalExpense: 0,
 };
 export const GetCategories = createAsyncThunk(
   "category/getCategories",
@@ -25,6 +26,25 @@ export const GetCategories = createAsyncThunk(
     const categories = await getDoc(categoryRef);
     if (categories.exists()) {
       dispatch(getCategories(categories.data()));
+    }
+  }
+);
+export const getTotalExpenses = createAsyncThunk(
+  "expenseTotal/getExpenseTotal",
+  async (userId, { dispatch, getState }) => {
+    const totalExpenseRef = doc(
+      db,
+      "users",
+      `${userId}`,
+      `salaryCollection`,
+      `salaries`
+    );
+    const salariesObj = await getDoc(totalExpenseRef);
+    if (salariesObj.exists()) {
+      console.log(salariesObj.data().totalExpense);
+      dispatch(getTotalExpense(salariesObj.data().totalExpense));
+    } else {
+      console.log("ref does not exist");
     }
   }
 );
@@ -74,6 +94,9 @@ const CategorySlice = createSlice({
     deactivateOnCategoryUI(state, action) {
       state.onCategoryUI = false;
     },
+    getTotalExpense(state, action) {
+      state.totalExpense = action.payload;
+    },
   },
 });
 export const {
@@ -91,5 +114,6 @@ export const {
   deactivateOnCategoryUI,
   activateOnTransactionUI,
   deactivateOnTransactionUI,
+  getTotalExpense,
 } = CategorySlice.actions;
 export default CategorySlice.reducer;

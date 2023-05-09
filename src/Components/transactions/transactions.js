@@ -18,7 +18,10 @@ const Transactions = () => {
   const dispatch = useDispatch();
   const expenseArray = useSelector((state) => state.expense.expenseObj);
   const displayEditUI = useSelector((state) => state.expense.displayEditUI);
-  console.log(expenseArray);
+  const currMonthTransactionArray = useSelector(
+    (state) => state.expense.currMonthTransactionArray
+  );
+  console.log(currMonthTransactionArray);
   console.log(params);
   useEffect(() => {
     dispatch(activateOnTransactionUI());
@@ -54,7 +57,7 @@ const Transactions = () => {
           <div className={styles.expenseAmount}>£102.00</div>
         </div>
         <div>
-          {expenseArray.map((expense, index) => {
+          {currMonthTransactionArray.map((expense, index) => {
             return (
               <div
                 className={styles.transactionHistory}

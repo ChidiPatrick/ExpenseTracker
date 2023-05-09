@@ -36,14 +36,15 @@ const ExpenseDetails = () => {
   // console.log(expenseArray);
   const currCategory = useSelector((state) => state.categories.currCategory);
   const salary = useSelector((state) => state.expense.salary);
-  const totalExpenses = useSelector((state) => state.expense.totalExpense);
+  const totalExpenses = useSelector((state) => state.categories.totalExpense);
   const expenseObj = useSelector((state) => state.expense.expenseObj);
   const categoryRef = useRef();
   const amountRef = useRef();
   const noteRef = useRef();
   const date = new Date();
-  const testingDate = new Date(expenseObj.date);
   console.log(totalExpenses);
+  const testingDate = new Date(expenseObj.date);
+  console.log(expenseObj);
   const expenseArrayRef = doc(
     db,
     "users",
@@ -64,7 +65,7 @@ const ExpenseDetails = () => {
   console.log(expenseObj);
   ////////////Save Entered Expense //////////////////////////
   const saveExpense = async (expenseArray) => {
-    ////Check for existing category ///////////////
+    ////Simplified complex data ///////////////
     let updatedSelectedCategoryObj = {};
     let categoryObjIndex = null;
     let selectedCategoryObj = null;
@@ -76,6 +77,7 @@ const ExpenseDetails = () => {
     const currentMonth = new Date().getMonth();
     // const expenseObjArray = Object.values(expenseObj.expens);
 
+    // Initial firestore data population /////////
     if (monthlyExpenseArray.length === 0) {
       await updateDoc(expenseArrayRef, {
         "expenseObj.monthlyExpenses": [
@@ -99,16 +101,43 @@ const ExpenseDetails = () => {
             ],
           },
         ],
+        "expenseObj.date": date.toDateString(),
       });
-      console.log("Function called");
+      let newTotal =
+        parseInt(totalExpenses) + parseInt(amountRef.current.value);
       await updateDoc(totalExpenseRef, {
-        totalExpense:
-          parseInt(totalExpenses) + parseInt(amountRef.current.value),
+        totalExpense: newTotal,
       });
       dispatch(GetExpenseObj());
       amountRef.current.value = "";
       noteRef.current.value = "";
       return;
+    } else if (currentMonth !== new Date(expenseObj.date).getMonth()) {
+      await updateDoc(expenseArrayRef, {
+        "expenseObj.monthlyExpenses": [
+          ...monthlyExpenseArray,
+          {
+            dateCreated: date.toDateString(),
+            expenseArray: [
+              {
+                category: currCategory,
+                expenseAmount: parseInt(amountRef.current.value),
+                date: date.toDateString(),
+                expenseNote: noteRef.current.value,
+              },
+            ],
+            transactions: [
+              {
+                category: currCategory,
+                expenseAmount: parseInt(amountRef.current.value),
+                date: date.toDateString(),
+                expenseNote: noteRef.current.value,
+              },
+            ],
+          },
+        ],
+        "expenseObj.date": date.toDateString(),
+      });
     } else if (monthlyExpenseArray.length >= 1) {
       const selectedCategoryObj = currMonthObjExpenseArray.find(
         (expenseObj, index) => {
@@ -149,9 +178,10 @@ const ExpenseDetails = () => {
         await updateDoc(expenseArrayRef, {
           "expenseObj.monthlyExpenses": [...monthlyExpenseArray],
         });
+        let newTotal =
+          parseInt(totalExpenses) + parseInt(amountRef.current.value);
         await updateDoc(totalExpenseRef, {
-          totalExpenses:
-            parseInt(totalExpenses) + parseInt(amountRef.current.value),
+          totalExpense: newTotal,
         });
         dispatch(GetExpenseObj());
         dispatch(GetSalary(userId));
@@ -185,9 +215,10 @@ const ExpenseDetails = () => {
           ],
         };
         monthlyExpenseArray[objIndex] = currMonthObj;
+        let newTotal =
+          parseInt(totalExpenses) + parseInt(amountRef.current.value);
         await updateDoc(totalExpenseRef, {
-          totalExpenses:
-            parseInt(totalExpenses) + parseInt(amountRef.current.value),
+          totalExpense: newTotal,
         });
 
         dispatch(updateExpenseArray(monthlyExpenseArray));

@@ -17,6 +17,7 @@ import { GetExpenseObj } from "./Components/expenseDetails/expenseSlice";
 import AddIncome from "./Components/addIncome/addIncome";
 import { GetSalary } from "./Components/expenseDetails/expenseSlice";
 import CurrencySelector from "./Components/currencySelector/currencySelector";
+import { getTotalExpenses } from "./Components/categoryComponent/categorySlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ function App() {
       dispatch(GetCategories(user.uid));
       dispatch(GetExpenseObj(user.uid));
       dispatch(GetSalary(user.uid));
+      dispatch(getTotalExpenses(user.uid));
     }
   });
 

@@ -5,7 +5,6 @@ import { db } from "../Firebase";
 const initialState = {
   expenseArray: undefined,
   expenseObj: {},
-  totalExpense: 0,
   displayEditUI: false,
   salary: 0,
   salaryBalance: 0,
@@ -13,6 +12,9 @@ const initialState = {
   selectedTransaction: {},
   spendingPercentage: 0,
   currencySymbol: "",
+  currMonthExpenseObj: null,
+  monthlyExpenseArrayLength: 0,
+  currMonthTransactionArray: null,
 };
 
 export const GetExpenseObj = createAsyncThunk(
@@ -30,10 +32,34 @@ export const GetExpenseObj = createAsyncThunk(
       console.log(monthlyExpenseArray.data());
       console.log(monthlyExpenseArray.data().expenseObj);
       dispatch(getExpenseObj(monthlyExpenseArray.data().expenseObj));
+      const currMonthExpenseArrayLength =
+        monthlyExpenseArray.data().expenseObj.monthlyExpenses.length;
       dispatch(
-        getExpenseArray(monthlyExpenseArray.data().expenseObj.monthlyExpenses)
+        getCurrMonthExpenseArray(
+          monthlyExpenseArray.data().expenseObj.monthlyExpenses[
+            currMonthExpenseArrayLength - 1
+          ].expenseArray
+        )
+      );
+      const currMonthTransactions =
+        monthlyExpenseArray.data().expenseObj.monthlyExpenses[
+          currMonthExpenseArrayLength - 1
+        ].transactions;
+      console.log(currMonthTransactions);
+      dispatch(
+        getCurrMonthTransactionArray(
+          monthlyExpenseArray.data().expenseObj.monthlyExpenses[
+            currMonthExpenseArrayLength - 1
+          ].transactions
+        )
       );
       dispatch(getCurrencySymbol(monthlyExpenseArray.data().currencySymbol));
+      // Check this during refactotring //////
+      dispatch(
+        getMonthlyArrayLength(
+          monthlyExpenseArray.data().expenseObj.monthlyExpenses.length
+        )
+      );
     }
   }
 );
@@ -64,13 +90,13 @@ const expenseSlice = createSlice({
     },
     addExpense(state, action) {
       state.expenseTotal = (
-        parseInt(state.expenseTotal) + parseInt(action.payload)
+        parseInt(state.totalExpense) + parseInt(action.payload)
       ).toFixed(2);
     },
     updateExpenseArray(state, action) {
       state.expenseArray = action.payload;
     },
-    getExpenseArray(state, action) {
+    getCurrMonthExpenseArray(state, action) {
       state.expenseArray = action.payload;
     },
     showEditUI(state, action) {
@@ -101,7 +127,7 @@ const expenseSlice = createSlice({
       state.spendingPercentage = action.payload;
     },
     getTotalExpenses(state, action) {
-      state.expenseTotal = action.payload;
+      state.totalExpense = action.payload;
     },
     getCurrencySymbol(state, action) {
       state.currencySymbol = action.payload;
@@ -109,13 +135,22 @@ const expenseSlice = createSlice({
     getExpenseObj(state, action) {
       state.expenseObj = action.payload;
     },
+    getCurrMonthExpenseObj(state, action) {
+      state.currMonthExpenseObj = action.payload;
+    },
+    getMonthlyArrayLength(state, action) {
+      state.monthlyExpenseArrayLength = action.payload;
+    },
+    getCurrMonthTransactionArray(state, action) {
+      state.currMonthTransactionArray = action.payload;
+    },
   },
 });
 export const {
   getExpenseObj,
   addExpense,
   updateExpenseArray,
-  getExpenseArray,
+  getCurrMonthExpenseArray,
   hideEditUI,
   showEditUI,
   getSalary,
@@ -127,5 +162,8 @@ export const {
   setSpendingPercentage,
   getTotalExpenses,
   getCurrencySymbol,
+  getCurrMonthExpenseObj,
+  getMonthlyArrayLength,
+  getCurrMonthTransactionArray,
 } = expenseSlice.actions;
 export default expenseSlice.reducer;

@@ -13,47 +13,56 @@ const IncomeExpenseUI = () => {
   const monthlyExpenseArray = useSelector(
     (state) => state.expense.expenseArray
   );
-  const expenseTotal = useSelector((state) => state.expense.expenseTotal);
+  const currMonthExpenseArray = useSelector(
+    (state) => state.expense.expenseArray
+  );
+  const currMonthExpenseObj = useSelector(
+    (state) => state.expense.currMonthExpenseObj
+  );
+  console.log(currMonthExpenseArray);
+  // const expenseArrayLength = useSelector(
+  //   (state) => state.expense.expenseArrayLength
+  // );
+  // const arrayLength = monthlyExpenseArray.length;
+  // const currMonthExpenseObj = monthlyExpenseArray[[expenseArrayLength - 1]];
+  // let currMonthExpenseArray;
+  // useEffect(() => {
+  //   if (currMonthExpenseObj.expenseArray === undefined) return;
+  //   else {
+  //     currMonthExpenseArray = currMonthExpenseObj.expenseArray;
+  //     console.log(currMonthExpenseArray);
+  //   }
+  // }, [currMonthExpenseObj]);
+  // const currMonthExpenseArray = currMonthExpenseObj.expenseArray;
+  // console.log(currMonthExpenseArray);
+  // const expenseTotal = useSelector((state) => state.expense.expenseTotal);
   const expenseObj = useSelector((state) => state.expense.expenseObj);
   const salary = useSelector((state) => state.expense.salary);
-  const totalExpense = useSelector((state) => state.expense.expenseTotal);
+  const totalExpense = useSelector((state) => state.categories.totalExpense);
   const salaryBalance = useSelector((state) => state.expense.salaryBalance);
   const currencySymbol = useSelector((state) => state.expense.currencySymbol);
   const categoriesArray = useSelector(
     (state) => state.categories.categoriesArray
   );
-  console.log(monthlyExpenseArray);
-  // const spendingPercentage = (totalExpense / salary) * 100;
-  // console.log(categoriesArray, expenseArray);
-  // const balance = salary - totalExpense;
+  // console.log(monthlyExpenseArray.length);
+  // let arrayLength;
   // useEffect(() => {
-  //   let totalExpense = 0;
-  //   let spendingPercentage = 0;
-  //   if (expenseArray !== undefined) {
-  //     const totalSummation = expenseArray.map((obj) => {
-  //       totalExpense = totalExpense + obj.expenseAmount;
-  //     });
-  //     spendingPercentage = (totalExpense / salary) * 100;
-  //     dispatch(
-  //       setSpendingPercentage(
-  //         spendingPercentage === NaN || spendingPercentage === undefined
-  //           ? 0
-  //           : spendingPercentage
-  //       )
-  //     );
-  //     console.log(spendingPercentage);
-  //     const newBalance = salary - totalExpense;
-  //     dispatch(setTotalExpenses(totalExpense));
-  //     dispatch(setBalance(newBalance));
-  //   }
-  // }, [expenseArray]);
+  //   if (monthlyExpenseArray === undefined || monthlyExpenseArray.length === 0)
+  //     return;
+  //   // arrayLength = monthlyExpenseArray.lengt;
+  //   console.log("I was just called sir");
+  // }, [monthlyExpenseArray]);
+  // console.log(arrayLength);
+  const spendingPercentage = (totalExpense / salary) * 100;
+  console.log(spendingPercentage);
+  const balance = salary - totalExpense;
   const incomeExpenseUI = (
     <div className={styles.incomeExpenseWrapper}>
       <div className={styles.ProgressBarWrapper}>
         <ProgressBar
           barContainerClassName={styles.barContainer}
-          // completed={(100 - spendingPercentage).toFixed(2)}
-          // completedClassName={styles.completedBar}
+          completed={(100 - spendingPercentage).toFixed(2)}
+          completedClassName={styles.completedBar}
           bgColor="rgb(127, 255, 127)"
         />
       </div>
@@ -62,7 +71,7 @@ const IncomeExpenseUI = () => {
           <span className={styles.income}>Income</span>
           <span className={styles.incomeAmount}>
             {currencySymbol}
-            {/* {salary !== undefined ? salary.toFixed(2) : 0} */}
+            {salary !== undefined ? salary.toFixed(2) : 0}
           </span>
         </div>
         <div className={styles.expenseWrapper}>
@@ -70,11 +79,11 @@ const IncomeExpenseUI = () => {
             <span className={styles.expense}>Expense</span>
             <span className={styles.expenseAmount}>
               {currencySymbol}
-              {/* {totalExpense.toFixed(2)} */}
+              {totalExpense.toFixed(2)}
             </span>
           </div>
-          {monthlyExpenseArray !== undefined
-            ? monthlyExpenseArray.map((expenseObj, index) => {
+          {currMonthExpenseArray !== undefined
+            ? currMonthExpenseArray.map((expenseObj, index) => {
                 return (
                   <div className={styles.expenseCategories} key={index}>
                     <span className={styles.expense}>
@@ -82,7 +91,7 @@ const IncomeExpenseUI = () => {
                     </span>
                     <span className={styles.expenseAmount}>
                       {currencySymbol}
-                      {/* {expenseObj.expenseAmount.toFixed(2)} */}
+                      {expenseObj.expenseAmount.toFixed(2)}
                     </span>
                   </div>
                 );
@@ -94,7 +103,7 @@ const IncomeExpenseUI = () => {
           <span className={styles.balance}>Balance</span>
           <span className={styles.balanceAmount}>
             {currencySymbol}
-            {/* {balance.toFixed(2)} */}
+            {balance.toFixed(2)}
           </span>
         </div>
       </div>
@@ -115,7 +124,7 @@ const IncomeExpenseUI = () => {
       <SignupForm />
     </div>
   );
-  // return monthlyExpenseArray && categoriesArray ? incomeExpenseUI : <Spinner />;
-  return incomeExpenseUI;
+  return expenseObj && categoriesArray ? incomeExpenseUI : <Spinner />;
+  // return incomeExpenseUI;
 };
 export default IncomeExpenseUI;
