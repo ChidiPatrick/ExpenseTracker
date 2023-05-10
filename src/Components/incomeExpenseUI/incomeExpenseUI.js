@@ -44,6 +44,7 @@ const IncomeExpenseUI = () => {
   const categoriesArray = useSelector(
     (state) => state.categories.categoriesArray
   );
+  // const currMonthExpenseObj = useSelector(state => state.expense.currMonthExpenseObj)
   // console.log(monthlyExpenseArray.length);
   // let arrayLength;
   // useEffect(() => {
@@ -52,7 +53,7 @@ const IncomeExpenseUI = () => {
   //   // arrayLength = monthlyExpenseArray.lengt;
   //   console.log("I was just called sir");
   // }, [monthlyExpenseArray]);
-  // console.log(arrayLength);
+  console.log(expenseObj);
   const spendingPercentage = (totalExpense / salary) * 100;
   console.log(spendingPercentage);
   const balance = salary - totalExpense;
@@ -91,7 +92,7 @@ const IncomeExpenseUI = () => {
                     </span>
                     <span className={styles.expenseAmount}>
                       {currencySymbol}
-                      {expenseObj.expenseAmount.toFixed(2)}
+                      {/* {expenseObj.expenseAmount.toFixed(2)} */}
                     </span>
                   </div>
                 );

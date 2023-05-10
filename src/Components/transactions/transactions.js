@@ -65,7 +65,6 @@ const Transactions = () => {
                 onClick={() => showEditUIHandler(index, expenseArray)}
               >
                 <div className={styles.categoryLeft}>
-                  <div>Icon</div>
                   <div className={styles.expenseDetails}>
                     {expense.expenseNote === "" ? (
                       <div className={styles.expenseCategory}>
@@ -76,7 +75,10 @@ const Transactions = () => {
                         {expense.expenseNote}
                       </div>
                     )}
-                    <div className={styles.date}>{expense.date}</div>
+                    <div className={styles.dateAndTimeWrapper}>
+                      <div className={styles.date}>{expense.date}</div>
+                      <div className={styles.time}>{expense.time}</div>
+                    </div>
                   </div>
                 </div>
                 <div className={styles.expenseAmount}>

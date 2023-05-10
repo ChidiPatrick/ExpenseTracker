@@ -51,12 +51,11 @@ const CurrencySelector = () => {
         {currencyArray.map((currency, index) => {
           if (index === 6) {
             return (
-              <div className={styles.currencySymbolWrapper}>
+              <div className={styles.currencySymbolWrapper} key={index}>
                 <input
                   className={styles.currencyInput}
                   type="radio"
                   name="currency"
-                  key={index}
                   value={currency}
                   id={`radio${index}`}
                 />
@@ -71,12 +70,11 @@ const CurrencySelector = () => {
             );
           }
           return (
-            <div className={styles.currencySymbolWrapper}>
+            <div className={styles.currencySymbolWrapper} key={index}>
               <input
                 className={styles.currencyInput}
                 type="radio"
                 name="currency"
-                key={index}
                 value={currency}
                 id={`radio${index}`}
               />

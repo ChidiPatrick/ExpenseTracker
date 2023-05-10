@@ -22,7 +22,29 @@ const SignupForm = () => {
     await setDoc(expenseDetailsRef, {
       expenseObj: {
         date: date.toDateString(),
-        monthlyExpenses: [],
+        monthlyExpenses: [
+          {
+            dateCreated: date.toDateString(),
+            expenseArray: [
+              {
+                category: "General",
+                expenseAmount: 0,
+                date: date.toDateString(),
+                expenseNote: "General Expense",
+                time: date.toLocaleTimeString(),
+              },
+            ],
+            transactions: [
+              {
+                category: "General",
+                expenseAmount: 0,
+                date: date.toDateString(),
+                expenseNote: "General Expense",
+                time: date.toLocaleTimeString(),
+              },
+            ],
+          },
+        ],
       },
       currencySymbol: "$",
     });
@@ -52,7 +74,13 @@ const SignupForm = () => {
     );
 
     await setDoc(categoryRef, {
-      categories: [],
+      categories: [
+        {
+          categoryEmojiRef: "⚙️",
+          categoryTitle: "General",
+          chartColor: "#cddc39",
+        },
+      ],
     });
   };
   const signUpUser = async (values) => {

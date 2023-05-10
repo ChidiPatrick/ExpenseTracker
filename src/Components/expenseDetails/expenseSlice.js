@@ -14,6 +14,7 @@ const initialState = {
   currencySymbol: "",
   currMonthExpenseObj: null,
   monthlyExpenseArrayLength: 0,
+  allMonthExpenseArray: null,
   currMonthTransactionArray: null,
 };
 
@@ -27,37 +28,43 @@ export const GetExpenseObj = createAsyncThunk(
       `expenseCollection`,
       `expenses`
     );
-    const monthlyExpenseArray = await getDoc(expenseRef);
-    if (monthlyExpenseArray.exists()) {
-      console.log(monthlyExpenseArray.data());
-      console.log(monthlyExpenseArray.data().expenseObj);
-      dispatch(getExpenseObj(monthlyExpenseArray.data().expenseObj));
+    const expenseData = await getDoc(expenseRef);
+    if (expenseData.exists()) {
+      console.log(expenseData.data());
+      console.log(expenseData.data().expenseObj);
+      dispatch(getExpenseObj(expenseData.data().expenseObj));
+      ///////////////// Simplification of data structure /////////////////////////////////
       const currMonthExpenseArrayLength =
-        monthlyExpenseArray.data().expenseObj.monthlyExpenses.length;
+        expenseData.data().expenseObj.monthlyExpenses.length;
+      const currMonthExpenseObj =
+        expenseData.data().expenseObj.monthlyExpenses[
+          currMonthExpenseArrayLength - 1
+        ];
+      ////////////////////////////////////////////////////
+      dispatch(getCurrMonthExpenseObj(currMonthExpenseObj));
       dispatch(
         getCurrMonthExpenseArray(
-          monthlyExpenseArray.data().expenseObj.monthlyExpenses[
+          expenseData.data().expenseObj.monthlyExpenses[
             currMonthExpenseArrayLength - 1
           ].expenseArray
         )
       );
-      const currMonthTransactions =
-        monthlyExpenseArray.data().expenseObj.monthlyExpenses[
-          currMonthExpenseArrayLength - 1
-        ].transactions;
-      console.log(currMonthTransactions);
       dispatch(
         getCurrMonthTransactionArray(
-          monthlyExpenseArray.data().expenseObj.monthlyExpenses[
+          expenseData.data().expenseObj.monthlyExpenses[
             currMonthExpenseArrayLength - 1
           ].transactions
         )
       );
-      dispatch(getCurrencySymbol(monthlyExpenseArray.data().currencySymbol));
+      dispatch(getCurrencySymbol(expenseData.data().currencySymbol));
+      dispatch(
+        getAllMonthsExpenseArray(expenseData.data().expenseObj.monthlyExpenses)
+      );
+
       // Check this during refactotring //////
       dispatch(
         getMonthlyArrayLength(
-          monthlyExpenseArray.data().expenseObj.monthlyExpenses.length
+          expenseData.data().expenseObj.monthlyExpenses.length
         )
       );
     }
@@ -144,6 +151,12 @@ const expenseSlice = createSlice({
     getCurrMonthTransactionArray(state, action) {
       state.currMonthTransactionArray = action.payload;
     },
+    // getCurrMonthExpenseObj(state, action) {
+    //   // state.currMonthExpenseObj = action.payload;
+    // },
+    getAllMonthsExpenseArray(state, action) {
+      state.allMonthExpenseArray = action.payload;
+    },
   },
 });
 export const {
@@ -165,5 +178,6 @@ export const {
   getCurrMonthExpenseObj,
   getMonthlyArrayLength,
   getCurrMonthTransactionArray,
+  getAllMonthsExpenseArray,
 } = expenseSlice.actions;
 export default expenseSlice.reducer;
