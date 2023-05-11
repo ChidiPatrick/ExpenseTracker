@@ -28,19 +28,7 @@ const ExpenseDetails = () => {
     (state) => state.expense.currMonthExpenseObj
   );
   console.log(currMonthExpenseObj);
-  // const monthlyExpenseArray = [...allMonthExpenseArray];
-  // console.log(monthlyExpenseArray);
-  // const arrayLength = monthlyExpenseArray.length;
-  // const objIndex = arrayLength - 1;
-  // const currMonthObj = monthlyExpenseArray[objIndex];
-  // const monthlyExpenseArray = currMonthObj.expenseArray;
-  // console.log(monthlyExpenseArray[arrayLength - 1]);
-  // console.log(currMonthObj);
-  // console.log(monthlyExpenseArray);
-  // console.log(`Currnet month`);
-  // console.log(currMonthObj);
-  // const expenseArray = expensesObj.expenseArray;
-  // console.log(expenseArray);
+  const monthlyExpenseArray = [...allMonthExpenseArray];
   const currCategory = useSelector((state) => state.categories.currCategory);
   const salary = useSelector((state) => state.expense.salary);
   const totalExpenses = useSelector((state) => state.categories.totalExpense);
@@ -71,7 +59,7 @@ const ExpenseDetails = () => {
   // const expenseObjArray = Object.values(expenseObj.expenses);
   console.log(expenseObj);
   ////////////Save Entered Expense //////////////////////////
-  const saveExpense = async (monthlyExpenseArray) => {
+  const saveExpense = async (monthlyExpenseArray, totalExpenses) => {
     ////Simplified complex data ///////////////
     let updatedSelectedCategoryObj = {};
     let categoryObjIndex = null;
@@ -79,13 +67,16 @@ const ExpenseDetails = () => {
     let currentIndex = null;
     let arrayLength = monthlyExpenseArray.length;
     let objIndex = arrayLength - 1;
-    let currMonthObj = monthlyExpenseArray[arrayLength - 1];
+    let currMonthObj = { ...monthlyExpenseArray[arrayLength - 1] };
     console.log(currMonthObj);
-    let currMonthExpenseArray = currMonthObj.expenseArray;
+    let currMonthExpenseArray = [...currMonthObj.expenseArray];
+    let currMonthTransactions = [...currMonthObj.transactions];
     const currentMonth = new Date().getMonth();
 
     // Initial firestore data population /////////
-    //?
+    //////////////////////////////////////////////
+    ///////////////////////////////////////////////
+    // Check out why firestore is not updating properly
     if (monthlyExpenseArray.length === 0) {
       await updateDoc(expenseArrayRef, {
         "expenseObj.monthlyExpenses": [
@@ -163,7 +154,7 @@ const ExpenseDetails = () => {
       );
       if (selectedCategoryObj === undefined) {
         const oldExpenseArray = currMonthExpenseArray;
-        const newExpenseArray = [
+        const updatedCurrMonthExpenseArray = [
           ...oldExpenseArray,
           {
             category: currCategory,
@@ -174,11 +165,11 @@ const ExpenseDetails = () => {
           },
         ];
         //////// Update current month expensArray and monthlyExpenseArray ///////
-        currMonthObj = {
+        const updatedCurrMonthExpenseObj = {
           ...currMonthObj,
-          expenseArray: newExpenseArray,
+          expenseArray: [...updatedCurrMonthExpenseArray],
           transactions: [
-            ...currMonthObj.transactions,
+            ...currMonthTransactions,
             {
               category: currCategory,
               expenseAmount: parseInt(amountRef.current.value),
@@ -188,9 +179,10 @@ const ExpenseDetails = () => {
             },
           ],
         };
-        monthlyExpenseArray[objIndex] = currMonthObj;
+        let newMonthlyExpenseArray = [...monthlyExpenseArray];
+        newMonthlyExpenseArray[objIndex] = updatedCurrMonthExpenseObj;
         await updateDoc(expenseArrayRef, {
-          "expenseObj.monthlyExpenses": [...monthlyExpenseArray],
+          "expenseObj.monthlyExpenses": [...newMonthlyExpenseArray],
         });
         let newTotal =
           parseInt(totalExpenses) + parseInt(amountRef.current.value);
@@ -205,31 +197,55 @@ const ExpenseDetails = () => {
       //////////////////////////////////////////////////////////////////////
       else if (selectedCategoryObj.category === currCategory) {
         // const oldExpenseArray = [...monthlyExpenseArray];
-        console.log("Function for selected category is called");
+        console.log("Selected category object is shown below:");
+        console.log(selectedCategoryObj);
         const newExpenseAmount =
-          selectedCategoryObj.expenseAmount + parseInt(amountRef.current.value);
+          parseInt(selectedCategoryObj.expenseAmount) +
+          parseInt(amountRef.current.value);
+        console.log(
+          "Old expense amount: " + " " + selectedCategoryObj.expenseAmount
+        );
+        console.log("New expense amount: " + " " + newExpenseAmount);
         updatedSelectedCategoryObj = {
           ...selectedCategoryObj,
+          date: date.toDateString(),
           expenseAmount: newExpenseAmount,
         };
-        const monthObjExpenseArray = [...monthlyExpenseArray];
-        monthObjExpenseArray[categoryObjIndex] = updatedSelectedCategoryObj;
-        const currCategoryObj = updatedSelectedCategoryObj;
-        currMonthExpenseArray[categoryObjIndex] = currCategory;
-        currMonthObj.expenseArray = currMonthExpenseArray;
-        monthlyExpenseArray[objIndex] = currMonthObj;
+        const newTransactionArray = [
+          ...currMonthTransactions,
+          {
+            category: currCategory,
+            expenseAmount: parseInt(amountRef.current.value),
+            date: date.toDateString(),
+            expenseNote: noteRef.current.value,
+            time: date.toLocaleTimeString(),
+          },
+        ];
+        let currMonthObjExpenseArray = [...currMonthExpenseArray];
+        currMonthObjExpenseArray[categoryObjIndex] = updatedSelectedCategoryObj;
+        // const currCategoryObj = updatedSelectedCategoryObj;
+        // const currMonthCategoryObj =
+        // currMonthExpenseArray[categoryObjIndex] = currCategoryObj;
+        currMonthObj.expenseArray = currMonthObjExpenseArray;
+        currMonthObj.transactions = newTransactionArray;
+        let updatedMonthlyExpenseArray = [...monthlyExpenseArray];
+        console.log("Monthly Expense array Before updating ");
+        console.log(updatedMonthlyExpenseArray);
+        updatedMonthlyExpenseArray[objIndex] = currMonthObj;
+        console.log("Monthly Expense array after updating ");
+        console.log(updatedMonthlyExpenseArray);
         let newTotal =
           parseInt(totalExpenses) + parseInt(amountRef.current.value);
         await updateDoc(totalExpenseRef, {
           totalExpense: newTotal,
         });
 
-        dispatch(updateExpenseArray(monthlyExpenseArray));
+        dispatch(updateExpenseArray(updatedMonthlyExpenseArray));
         dispatch(addExpense(amountRef.current.value));
         dispatch(GetSalary(userId));
         dispatch(getSelectedCategory(""));
         await updateDoc(expenseArrayRef, {
-          "expenseObj.monthlyExpenses": monthlyExpenseArray,
+          "expenseObj.monthlyExpenses": updatedMonthlyExpenseArray,
         });
         dispatch(GetExpenseObj());
         amountRef.current.value = "";
@@ -242,7 +258,7 @@ const ExpenseDetails = () => {
         <Link to={"/"}>X</Link>
         <button
           className={styles.saveBtn}
-          onClick={() => saveExpense(allExpenseArray)}
+          onClick={() => saveExpense(monthlyExpenseArray, totalExpenses)}
         >
           Done
         </button>

@@ -53,7 +53,7 @@ const IncomeExpenseUI = () => {
   //   // arrayLength = monthlyExpenseArray.lengt;
   //   console.log("I was just called sir");
   // }, [monthlyExpenseArray]);
-  console.log(expenseObj);
+  console.log(totalExpense);
   const spendingPercentage = (totalExpense / salary) * 100;
   console.log(spendingPercentage);
   const balance = salary - totalExpense;
@@ -72,7 +72,7 @@ const IncomeExpenseUI = () => {
           <span className={styles.income}>Income</span>
           <span className={styles.incomeAmount}>
             {currencySymbol}
-            {salary !== undefined ? salary.toFixed(2) : 0}
+            {salary.toFixed(2)}
           </span>
         </div>
         <div className={styles.expenseWrapper}>
@@ -92,7 +92,7 @@ const IncomeExpenseUI = () => {
                     </span>
                     <span className={styles.expenseAmount}>
                       {currencySymbol}
-                      {/* {expenseObj.expenseAmount.toFixed(2)} */}
+                      {expenseObj.expenseAmount.toFixed(2)}
                     </span>
                   </div>
                 );
@@ -125,7 +125,7 @@ const IncomeExpenseUI = () => {
       <SignupForm />
     </div>
   );
-  return expenseObj && categoriesArray ? incomeExpenseUI : <Spinner />;
-  // return incomeExpenseUI;
+  // return expenseObj && categoriesArray ? incomeExpenseUI : <Spinner />;
+  return incomeExpenseUI;
 };
 export default IncomeExpenseUI;
