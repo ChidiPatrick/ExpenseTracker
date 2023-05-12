@@ -43,7 +43,8 @@ function App() {
         <Route path="/transactions" element={<Transactions />} />
         <Route path="*" element={<PageNotFound />} />
         <Route path="/addIncome" element={<AddIncome />} />
-        <Route path="/currencySelector" element={<CurrencySelector />} />
+        <Route path="/currencySelectionPage" element={<CurrencySelector />} />
+        <Route path="/addIncome" element={<AddIncome />} />
       </Routes>
     </div>
   );

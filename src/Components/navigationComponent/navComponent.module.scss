@@ -29,6 +29,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-bottom: 20px;
 }
 .dynamicAddLink {
   text-decoration: none;
@@ -36,4 +37,55 @@
   background-color: transparent;
   border: none;
   color: chocolate;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.outlineMore {
+  font-size: 30px;
+  margin-left: 20px;
+}
+.moreOptionsWrapper {
+  background-color: #fff;
+  width: 200px;
+  min-height: 100px;
+  padding: 10px;
+  position: absolute;
+  top: 2%;
+  right: 0;
+  // display: flex;
+  // justify-content: flex-start;
+  // align-items: flex-start;
+}
+.list {
+  list-style: none;
+  margin: 10px 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0;
+}
+.linkItem {
+  padding: 10px;
+}
+.currencySymbolSelectionLink {
+  text-decoration: none;
+  color: rgb(80, 39, 10);
+  font-size: 18px;
+}
+.closeUIwrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.closeUIIcon {
+  font-size: 25px;
+  color: black;
+}
+.hidden {
+  display: none;
+  visibility: hidden;
 }

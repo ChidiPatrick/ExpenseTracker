@@ -48,11 +48,11 @@ const Category = () => {
   );
   return (
     <div className={styles.categoryContainer}>
-      <nav className={styles.categoryNav}>
+      {/* <nav className={styles.categoryNav}>
         <Link to="/addCategory" replace className={styles.backLink}>
           +
         </Link>
-      </nav>
+      </nav> */}
       <NavComponent />
       <div className={styles.categories}>
         {categories !== undefined

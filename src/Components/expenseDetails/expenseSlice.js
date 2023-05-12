@@ -16,6 +16,7 @@ const initialState = {
   monthlyExpenseArrayLength: 0,
   allMonthExpenseArray: null,
   currMonthTransactionArray: null,
+  displayMoreUI: false,
 };
 
 export const GetExpenseObj = createAsyncThunk(
@@ -157,6 +158,12 @@ const expenseSlice = createSlice({
     getAllMonthsExpenseArray(state, action) {
       state.allMonthExpenseArray = action.payload;
     },
+    showMoreUI(state, action) {
+      state.displayMoreUI = true;
+    },
+    hideMoreUI(state, action) {
+      state.displayMoreUI = false;
+    },
   },
 });
 export const {
@@ -179,5 +186,7 @@ export const {
   getMonthlyArrayLength,
   getCurrMonthTransactionArray,
   getAllMonthsExpenseArray,
+  showMoreUI,
+  hideMoreUI,
 } = expenseSlice.actions;
 export default expenseSlice.reducer;
