@@ -17,6 +17,9 @@ const initialState = {
   allMonthExpenseArray: null,
   currMonthTransactionArray: null,
   displayMoreUI: false,
+  currPosition: 0,
+  showForwardBtn: false,
+  chartArray: [],
 };
 
 export const GetExpenseObj = createAsyncThunk(
@@ -61,12 +64,27 @@ export const GetExpenseObj = createAsyncThunk(
       dispatch(
         getAllMonthsExpenseArray(expenseData.data().expenseObj.monthlyExpenses)
       );
+      dispatch(
+        setUpChartArray(
+          expenseData.data().expenseObj.monthlyExpenses[
+            currMonthExpenseArrayLength - 1
+          ].expenseArray
+        )
+      );
 
       // Check this during refactotring //////
       dispatch(
         getMonthlyArrayLength(
           expenseData.data().expenseObj.monthlyExpenses.length
         )
+      );
+      dispatch(
+        getCurrPosition(expenseData.data().expenseObj.monthlyExpenses.length)
+      );
+      console.log(
+        `Current position is: ${
+          expenseData.data().expenseObj.monthlyExpenses.length - 1
+        }`
       );
     }
   }
@@ -152,9 +170,6 @@ const expenseSlice = createSlice({
     getCurrMonthTransactionArray(state, action) {
       state.currMonthTransactionArray = action.payload;
     },
-    // getCurrMonthExpenseObj(state, action) {
-    //   // state.currMonthExpenseObj = action.payload;
-    // },
     getAllMonthsExpenseArray(state, action) {
       state.allMonthExpenseArray = action.payload;
     },
@@ -163,6 +178,17 @@ const expenseSlice = createSlice({
     },
     hideMoreUI(state, action) {
       state.displayMoreUI = false;
+    },
+    getCurrPosition(state, action) {
+      state.currPosition = action.payload - 1;
+    },
+    setUpChartArray(state, action) {
+      const newChartArray = [];
+      const chartArray = action.payload.map((obj, item) => {
+        if (obj.expenseAmount > 1)
+          newChartArray.push({ name: obj.category, value: obj.expenseAmount });
+      });
+      state.chartArray = newChartArray;
     },
   },
 });
@@ -188,5 +214,7 @@ export const {
   getAllMonthsExpenseArray,
   showMoreUI,
   hideMoreUI,
+  getCurrPosition,
+  setUpChartArray,
 } = expenseSlice.actions;
 export default expenseSlice.reducer;

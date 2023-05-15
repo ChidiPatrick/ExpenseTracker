@@ -1,5 +1,6 @@
 .transactionsWrapper {
-  background-color: rgb(216, 200, 189);
+  // background-color: rgb(216, 200, 189);
+  background-color: #fff;
   min-height: 100vh;
   position: relative;
 }
@@ -66,4 +67,10 @@
 }
 .time {
   color: green;
+  margin-left: 10px;
+}
+.btnMoveBack {
+}
+.hidden {
+  visibility: hidden;
 }

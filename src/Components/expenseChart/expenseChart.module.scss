@@ -1,0 +1,26 @@
+.expenseChartUI {
+  background-color: rgb(31, 29, 29);
+  // height: 100vh;
+  width: 100%;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  // flex-direction: column;
+  color: white;
+}
+.chartWrapper {
+  padding: 10px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.responsiveContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  // height: 400px;
+  // width: 400px;
+}

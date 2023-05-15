@@ -113,11 +113,7 @@ const IncomeExpenseUI = () => {
           <span className={styles.add}>+</span>
           <span>Expense</span>
         </Link>
-        <Link
-          className={styles.btnTransparent}
-          to="/transactionDetails"
-          replace
-        >
+        <Link className={styles.btnTransparent} to="/addIncome" replace>
           <span className={styles.add}>+</span>
           <span>Income</span>
         </Link>

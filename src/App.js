@@ -18,6 +18,7 @@ import AddIncome from "./Components/addIncome/addIncome";
 import { GetSalary } from "./Components/expenseDetails/expenseSlice";
 import CurrencySelector from "./Components/currencySelector/currencySelector";
 import { getTotalExpenses } from "./Components/categoryComponent/categorySlice";
+import ExpenseChart from "./Components/expenseChart/expenseChart";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ function App() {
         <Route path="/addIncome" element={<AddIncome />} />
         <Route path="/currencySelectionPage" element={<CurrencySelector />} />
         <Route path="/addIncome" element={<AddIncome />} />
+        <Route path="/expenseChart" element={<ExpenseChart />} />
       </Routes>
     </div>
   );

@@ -74,7 +74,7 @@ const Category = () => {
             })
           : noCategoryUI}
       </div>
-      <AddIncome />
+      {/* <AddIncome /> */}
     </div>
   );
 };
