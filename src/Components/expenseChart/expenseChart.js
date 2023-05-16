@@ -53,7 +53,7 @@ const ExpenseChart = () => {
   };
   return (
     <div className={styles.expenseChartUI}>
-      <h1>All Expense Chart</h1>
+      <h1 className={styles.expenseChartHeader}> Expense Chart</h1>
       <div className={styles.chartWrapper}>
         <ResponsiveContainer
           className={styles.responsiveContainer}
@@ -79,7 +79,7 @@ const ExpenseChart = () => {
                 />
               ))}
             </Pie>
-            <Tooltip />
+            {/* <Tooltip /> */}
             <Legend />
           </PieChart>
         </ResponsiveContainer>

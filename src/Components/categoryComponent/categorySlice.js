@@ -12,6 +12,7 @@ const initialState = {
   onTransactionUI: false,
   onCategoryUI: false,
   totalExpense: 0,
+  currCategoryColor: "",
 };
 export const GetCategories = createAsyncThunk(
   "category/getCategories",
@@ -97,6 +98,9 @@ const CategorySlice = createSlice({
     getTotalExpense(state, action) {
       state.totalExpense = action.payload;
     },
+    getCurrCategoryColor(state, action) {
+      state.currCategoryColor = action.payload;
+    },
   },
 });
 export const {
@@ -115,5 +119,6 @@ export const {
   activateOnTransactionUI,
   deactivateOnTransactionUI,
   getTotalExpense,
+  getCurrCategoryColor,
 } = CategorySlice.actions;
 export default CategorySlice.reducer;

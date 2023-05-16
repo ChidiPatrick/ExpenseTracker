@@ -59,7 +59,11 @@ const ExpenseDetails = () => {
   // const expenseObjArray = Object.values(expenseObj.expenses);
   console.log(expenseObj);
   ////////////Save Entered Expense //////////////////////////
-  const saveExpense = async (monthlyExpenseArray, totalExpenses) => {
+  const saveExpense = async (
+    monthlyExpenseArray,
+    totalExpenses,
+    currCategoryColor
+  ) => {
     ////Simplified complex data ///////////////
     let updatedSelectedCategoryObj = {};
     let categoryObjIndex = null;
@@ -89,6 +93,7 @@ const ExpenseDetails = () => {
                 date: date.toDateString(),
                 expenseNote: noteRef.current.value,
                 time: date.toLocaleTimeString(),
+                categoryColor: currCategoryColor,
               },
             ],
             transactions: [
@@ -126,6 +131,7 @@ const ExpenseDetails = () => {
                 date: date.toDateString(),
                 expenseNote: noteRef.current.value,
                 time: date.toLocaleTimeString(),
+                categoryColor: currCategoryColor,
               },
             ],
             transactions: [
@@ -162,6 +168,7 @@ const ExpenseDetails = () => {
             date: date.toDateString(),
             expenseNote: noteRef.current.value,
             time: date.toLocaleTimeString(),
+            categoryColor: currCategoryColor,
           },
         ];
         //////// Update current month expensArray and monthlyExpenseArray ///////

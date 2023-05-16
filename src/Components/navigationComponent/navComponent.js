@@ -53,7 +53,7 @@ const NavComponent = () => {
           <HiOutlineCollection className={styles.navIcon} />
           <span className={styles.navTitle}>Categories</span>
         </Link>
-        <Link className={styles.navLink}>
+        <Link to="/expenseChart" replace className={styles.navLink}>
           <HiUserGroup className={styles.navIcon} />
           <span className={styles.navTitle}>Categories</span>
         </Link>

@@ -3,7 +3,7 @@ import styles from "./category.module.scss";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getSelectedCategory } from "./categorySlice";
+import { getSelectedCategory, getCurrCategoryColor } from "./categorySlice";
 import { getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../Firebase";
 import { HiGift, HiShoppingCart, HiTag, HiBriefcase } from "react-icons/hi";
@@ -31,7 +31,15 @@ const Category = () => {
   const getCategory = (e) => {
     console.log(e.target.innerText);
     dispatch(getSelectedCategory(e.target.innerText));
-    console.log(categoryTitleRef);
+    const currCategoryColorObj = categories.find((obj, index) => {
+      if (obj.categoryTitle === e.target.innerText) {
+        dispatch(getCurrCategoryColor(obj.chartColor));
+        return obj;
+      } else {
+        return undefined;
+      }
+    });
+
     navigate("/expenseTracker");
   };
   const noCategoryUI = (
@@ -48,11 +56,6 @@ const Category = () => {
   );
   return (
     <div className={styles.categoryContainer}>
-      {/* <nav className={styles.categoryNav}>
-        <Link to="/addCategory" replace className={styles.backLink}>
-          +
-        </Link>
-      </nav> */}
       <NavComponent />
       <div className={styles.categories}>
         {categories !== undefined
@@ -74,7 +77,6 @@ const Category = () => {
             })
           : noCategoryUI}
       </div>
-      {/* <AddIncome /> */}
     </div>
   );
 };
