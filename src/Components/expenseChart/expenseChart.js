@@ -15,6 +15,7 @@ const ExpenseChart = () => {
     (state) => state.expense.expenseArray
   );
   const chartArray = useSelector((state) => state.expense.chartArray);
+  const chartColors = useSelector((state) => state.expense.chartColorArray);
   console.log(chartArray);
   const data = [
     { name: "General", value: 40 },
@@ -23,7 +24,7 @@ const ExpenseChart = () => {
     // { name: "Group D", value: 200 },
   ];
 
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28"];
+  const COLORS = [...chartColors];
 
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
@@ -63,7 +64,7 @@ const ExpenseChart = () => {
         >
           <PieChart width={600} height={300}>
             <Pie
-              data={data}
+              data={chartArray}
               cx="50%"
               cy="50%"
               labelLine={false}

@@ -20,6 +20,7 @@ const initialState = {
   currPosition: 0,
   showForwardBtn: false,
   chartArray: [],
+  chartColorArray: [],
 };
 
 export const GetExpenseObj = createAsyncThunk(
@@ -71,7 +72,13 @@ export const GetExpenseObj = createAsyncThunk(
           ].expenseArray
         )
       );
-
+      dispatch(
+        setExpenseChartColorsArray(
+          expenseData.data().expenseObj.monthlyExpenses[
+            currMonthExpenseArrayLength - 1
+          ].expenseArray
+        )
+      );
       // Check this during refactotring //////
       dispatch(
         getMonthlyArrayLength(
@@ -190,6 +197,13 @@ const expenseSlice = createSlice({
       });
       state.chartArray = newChartArray;
     },
+    setExpenseChartColorsArray(state, action) {
+      const newCategoryColorArray = [];
+      const colorArray = action.payload.map((obj, index) => {
+        newCategoryColorArray.push(obj.categoryColor);
+      });
+      state.chartColorArray = newCategoryColorArray;
+    },
   },
 });
 export const {
@@ -216,5 +230,6 @@ export const {
   hideMoreUI,
   getCurrPosition,
   setUpChartArray,
+  setExpenseChartColorsArray,
 } = expenseSlice.actions;
 export default expenseSlice.reducer;

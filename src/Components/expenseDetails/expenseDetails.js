@@ -33,6 +33,9 @@ const ExpenseDetails = () => {
   const salary = useSelector((state) => state.expense.salary);
   const totalExpenses = useSelector((state) => state.categories.totalExpense);
   const expenseObj = useSelector((state) => state.expense.expenseObj);
+  const currCategoryColor = useSelector(
+    (state) => state.categories.currCategoryColor
+  );
   const categoryRef = useRef();
   const amountRef = useRef();
   const noteRef = useRef();
@@ -58,6 +61,19 @@ const ExpenseDetails = () => {
   console.log(firstExpenseObjMonth);
   // const expenseObjArray = Object.values(expenseObj.expenses);
   console.log(expenseObj);
+  /////////////////////////////////////////////
+  ///////// HANDLERS ///////////////////////////
+  const updateMonthlyExpenseObjArray = async (newMonthlyExpenseArray) => {
+    let monthlyExpensesObjArray = [...newMonthlyExpenseArray];
+    await updateDoc(expenseArrayRef, {
+      "expenseObj.monthlyExpenses": newMonthlyExpenseArray,
+    });
+  };
+  const updateTotalExpenseAmount = async (newTotalExpense) => {
+    await updateDoc(totalExpenseRef, {
+      totalExpense: newTotalExpense,
+    });
+  };
   ////////////Save Entered Expense //////////////////////////
   const saveExpense = async (
     monthlyExpenseArray,
@@ -186,16 +202,23 @@ const ExpenseDetails = () => {
             },
           ],
         };
-        let newMonthlyExpenseArray = [...monthlyExpenseArray];
+        console.log(monthlyExpenseArray);
+        const newMonthlyExpenseArray = [...monthlyExpenseArray];
         newMonthlyExpenseArray[objIndex] = updatedCurrMonthExpenseObj;
-        await updateDoc(expenseArrayRef, {
+        console.log(newMonthlyExpenseArray);
+        const data = {
           "expenseObj.monthlyExpenses": [...newMonthlyExpenseArray],
-        });
+        };
+        await updateDoc(expenseArrayRef, data);
+        // updateMonthlyExpenseObjArray(newMonthlyExpenseArray);
+        console.log("got here!");
         let newTotal =
           parseInt(totalExpenses) + parseInt(amountRef.current.value);
+        console.log(newTotal);
         await updateDoc(totalExpenseRef, {
           totalExpense: newTotal,
         });
+
         dispatch(GetExpenseObj());
         dispatch(GetSalary(userId));
         amountRef.current.value = "";
@@ -252,7 +275,7 @@ const ExpenseDetails = () => {
         dispatch(GetSalary(userId));
         dispatch(getSelectedCategory(""));
         await updateDoc(expenseArrayRef, {
-          "expenseObj.monthlyExpenses": updatedMonthlyExpenseArray,
+          "expenseObj.monthlyExpenses": [...updatedMonthlyExpenseArray],
         });
         dispatch(GetExpenseObj());
         amountRef.current.value = "";
@@ -265,7 +288,9 @@ const ExpenseDetails = () => {
         <Link to={"/"}>X</Link>
         <button
           className={styles.saveBtn}
-          onClick={() => saveExpense(monthlyExpenseArray, totalExpenses)}
+          onClick={() =>
+            saveExpense(monthlyExpenseArray, totalExpenses, currCategoryColor)
+          }
         >
           Done
         </button>
