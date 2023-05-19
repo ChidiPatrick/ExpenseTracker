@@ -19,7 +19,8 @@ import { GetSalary } from "./Components/expenseDetails/expenseSlice";
 import CurrencySelector from "./Components/currencySelector/currencySelector";
 import { getTotalExpenses } from "./Components/categoryComponent/categorySlice";
 import ExpenseChart from "./Components/expenseChart/expenseChart";
-
+import LandingPage from "./Components/landingPage/landingPage";
+import SignupForm from "./Components/signUpComponent/signUp";
 function App() {
   const dispatch = useDispatch();
   onAuthStateChanged(auth, (user) => {
@@ -36,9 +37,10 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Spending />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/ExpenseSummary" element={<Spending />} />
         <Route path="/expenseTracker" element={<ExpenseDetails />} />
-        {/* <Route path="/expenseTracker" element={<Category />} /> */}
+        <Route path="/signUpPage" element={<SignupForm />} />
         <Route path="/category" element={<Category />} />
         <Route path="/addCategory" element={<AddCategory />} />
         <Route path="/transactions" element={<Transactions />} />

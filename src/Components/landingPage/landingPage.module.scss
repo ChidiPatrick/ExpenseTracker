@@ -1,0 +1,107 @@
+.landingPageWrapper {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+    url("../images/expense-analysis.jpg");
+  background-position: center;
+  min-height: 100vh;
+  color: #fff;
+}
+.landingPageHeader {
+  height: 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.heading {
+  text-align: center;
+  line-height: 2;
+  margin-bottom: 10px;
+}
+.measured {
+  color: skyblue;
+}
+.getsManaged {
+  font-size: 30px;
+  color: orange;
+}
+.originator {
+  font-style: italic;
+  color: mintcream;
+  font-size: 20px;
+  //   width: 80%;
+  //   margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.expenses {
+  color: red;
+}
+.track {
+  color: greenyellow;
+}
+.signInForm {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  height: 300px;
+}
+.label {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: 10px auto;
+  font-size: 20px;
+}
+.inputElement {
+  padding: 10px;
+  border-radius: 100px;
+  border: none;
+  font-size: 20px;
+  margin-top: 10px;
+}
+.linksWrapper {
+  margin-top: 20px;
+}
+.innerWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+}
+.logInBtn,
+.signUpLink {
+  width: 120px;
+  font-size: 20px;
+  border-radius: 100px;
+  padding: 10px;
+}
+.logInBtn {
+  border: none;
+  background-color: orange;
+  color: #fff;
+}
+.signUpLink {
+  border: solid 1px orange;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.forgottenPasswordWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px 10px 10px;
+  margin-top: 10px;
+}
+.forgottenPassword {
+  color: greenyellow;
+  // margin-bottom: 20px;
+  padding: 0 10px;
+}
+.required {
+  color: red;
+}
