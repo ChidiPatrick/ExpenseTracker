@@ -7,10 +7,15 @@ import { auth } from "../Firebase";
 import { updateDoc, doc, setDoc } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { db } from "../Firebase";
+import { useNavigate } from "react-router";
 ////////////////////////////////////////////////////////
 const SignupForm = () => {
   // const userId = useSelector((state) => state.signup.userId);
   const date = new Date();
+  const navigate = useNavigate();
+  const handleCancel = () => {
+    navigate("/");
+  };
   const createExpenseCollection = async (userId) => {
     const expenseDetailsRef = doc(
       db,
@@ -118,7 +123,9 @@ const SignupForm = () => {
     }),
     onSubmit: (values) => {
       console.log("Submitted!");
-      signUpUser(values);
+      signUpUser(values).then(() => {
+        navigate("/ExpenseSummary");
+      });
     },
   });
   return (
@@ -187,9 +194,14 @@ const SignupForm = () => {
       {formik.errors.password ? (
         <div className={styles.required}>{formik.errors.password}</div>
       ) : null}
-      <button className={styles.btnSubmit} type="submit">
-        Submit
-      </button>
+      <div className={styles.btnWrapper}>
+        <button className={styles.btnSubmit} type="submit">
+          Submit
+        </button>
+        <button onClick={handleCancel} className={styles.btnSubmit}>
+          cancle
+        </button>
+      </div>
     </form>
   );
 };

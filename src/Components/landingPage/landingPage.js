@@ -93,7 +93,11 @@ const LandingPage = () => {
             </Link>
           </div>
           <div className={styles.forgottenPasswordWrapper}>
-            <Link className={styles.forgottenPassword}>
+            <Link
+              to={"/resetPassword"}
+              replace
+              className={styles.forgottenPassword}
+            >
               Forgotten Password?
             </Link>
           </div>

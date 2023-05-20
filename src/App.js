@@ -21,6 +21,7 @@ import { getTotalExpenses } from "./Components/categoryComponent/categorySlice";
 import ExpenseChart from "./Components/expenseChart/expenseChart";
 import LandingPage from "./Components/landingPage/landingPage";
 import SignupForm from "./Components/signUpComponent/signUp";
+import ResetPassword from "./Components/signUpComponent/forgottenPassword";
 function App() {
   const dispatch = useDispatch();
   onAuthStateChanged(auth, (user) => {
@@ -49,6 +50,7 @@ function App() {
         <Route path="/currencySelectionPage" element={<CurrencySelector />} />
         <Route path="/addIncome" element={<AddIncome />} />
         <Route path="/expenseChart" element={<ExpenseChart />} />
+        <Route path="/resetPassword" element={<ResetPassword />} />
       </Routes>
     </div>
   );
