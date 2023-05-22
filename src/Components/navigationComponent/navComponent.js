@@ -41,7 +41,7 @@ const NavComponent = () => {
         {/* </div> */}
       </div>
       <nav className={styles.navElement}>
-        <Link to="/" replace className={styles.navLink}>
+        <Link to="/ExpenseSummary" replace className={styles.navLink}>
           <HiCash className={styles.navIcon} />
           <span className={styles.navTitle}>Spending</span>
         </Link>

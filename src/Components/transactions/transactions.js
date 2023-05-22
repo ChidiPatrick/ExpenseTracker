@@ -14,8 +14,6 @@ import {
   activateOnTransactionUI,
   deactivateOnTransactionUI,
 } from "../categoryComponent/categorySlice";
-import CurrencySelector from "../currencySelector/currencySelector";
-import ExpenseChart from "../expenseChart/expenseChart";
 const Transactions = () => {
   const params = useParams();
   const dispatch = useDispatch();
@@ -251,7 +249,6 @@ const Transactions = () => {
   );
   return (
     <div className={styles.transactionsWrapper}>
-      <ExpenseChart />
       <NavComponent />
       {displayEditUI !== true ? transactions : <EditExpense />}
     </div>

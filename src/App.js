@@ -6,7 +6,7 @@ import Category from "./Components/categoryComponent/category";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Components/Firebase";
 import { getUserId } from "./Components/signUpComponent/signUpSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GetCategories } from "./Components/categoryComponent/categorySlice";
 import AddCategory from "./Components/addCategory/addCategory";
 import Emojis from "./Components/emojiFolder/emoji";
@@ -15,18 +15,21 @@ import Transactions from "./Components/transactions/transactions";
 import PageNotFound from "./Components/pageNotFound/pageNotFound";
 import { GetExpenseObj } from "./Components/expenseDetails/expenseSlice";
 import AddIncome from "./Components/addIncome/addIncome";
-import { GetSalary } from "./Components/expenseDetails/expenseSlice";
+import { GetSalary, getUser } from "./Components/expenseDetails/expenseSlice";
 import CurrencySelector from "./Components/currencySelector/currencySelector";
 import { getTotalExpenses } from "./Components/categoryComponent/categorySlice";
 import ExpenseChart from "./Components/expenseChart/expenseChart";
 import LandingPage from "./Components/landingPage/landingPage";
 import SignupForm from "./Components/signUpComponent/signUp";
 import ResetPassword from "./Components/signUpComponent/forgottenPassword";
+import { useState } from "react";
 function App() {
   const dispatch = useDispatch();
+  const [activeUser, setActiveUser] = useState(null);
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log(user.uid);
+      setActiveUser(user);
+      dispatch(getUser(user));
       dispatch(getUserId(user.uid));
       dispatch(GetCategories(user.uid));
       dispatch(GetExpenseObj(user.uid));

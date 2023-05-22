@@ -8,7 +8,7 @@ import SignupForm from "../signUpComponent/signUp";
 import { setTotalExpenses, setBalance } from "../expenseDetails/expenseSlice";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { setSpendingPercentage } from "../expenseDetails/expenseSlice";
-import LandingPage from "../landingPage/landingPage";
+
 const IncomeExpenseUI = () => {
   const dispatch = useDispatch();
   const monthlyExpenseArray = useSelector(
@@ -60,7 +60,6 @@ const IncomeExpenseUI = () => {
   const balance = salary - totalExpense;
   const incomeExpenseUI = (
     <div className={styles.incomeExpenseWrapper}>
-      <LandingPage />
       <div className={styles.ProgressBarWrapper}>
         <ProgressBar
           barContainerClassName={styles.barContainer}
@@ -120,10 +119,9 @@ const IncomeExpenseUI = () => {
           <span>Income</span>
         </Link>
       </div>
-      <SignupForm />
     </div>
   );
-  // return expenseObj && categoriesArray ? incomeExpenseUI : <Spinner />;
-  return incomeExpenseUI;
+  return expenseObj && categoriesArray ? incomeExpenseUI : <Spinner />;
+  // return incomeExpenseUI;
 };
 export default IncomeExpenseUI;

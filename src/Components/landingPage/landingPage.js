@@ -11,6 +11,8 @@ const LandingPage = () => {
     await signInWithEmailAndPassword(auth, values.email, values.password).then(
       (res) => {
         console.log("Called");
+        console.log("Submitted!");
+        navigate("/ExpenseSummary");
       }
     );
   };
@@ -26,12 +28,7 @@ const LandingPage = () => {
         .required("Required"),
     }),
     onSubmit: (values) => {
-      console.log("Submitted!");
-      handleSignIn(values).then((user) => {
-        if (user) {
-          navigate("/ExpenseSummary");
-        }
-      });
+      handleSignIn(values);
     },
   });
 
