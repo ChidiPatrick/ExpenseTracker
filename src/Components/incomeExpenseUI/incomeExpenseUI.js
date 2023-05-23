@@ -21,22 +21,6 @@ const IncomeExpenseUI = () => {
     (state) => state.expense.currMonthExpenseObj
   );
   console.log(currMonthExpenseArray);
-  // const expenseArrayLength = useSelector(
-  //   (state) => state.expense.expenseArrayLength
-  // );
-  // const arrayLength = monthlyExpenseArray.length;
-  // const currMonthExpenseObj = monthlyExpenseArray[[expenseArrayLength - 1]];
-  // let currMonthExpenseArray;
-  // useEffect(() => {
-  //   if (currMonthExpenseObj.expenseArray === undefined) return;
-  //   else {
-  //     currMonthExpenseArray = currMonthExpenseObj.expenseArray;
-  //     console.log(currMonthExpenseArray);
-  //   }
-  // }, [currMonthExpenseObj]);
-  // const currMonthExpenseArray = currMonthExpenseObj.expenseArray;
-  // console.log(currMonthExpenseArray);
-  // const expenseTotal = useSelector((state) => state.expense.expenseTotal);
   const expenseObj = useSelector((state) => state.expense.expenseObj);
   const salary = useSelector((state) => state.expense.salary);
   const totalExpense = useSelector((state) => state.categories.totalExpense);
@@ -45,15 +29,6 @@ const IncomeExpenseUI = () => {
   const categoriesArray = useSelector(
     (state) => state.categories.categoriesArray
   );
-  // const currMonthExpenseObj = useSelector(state => state.expense.currMonthExpenseObj)
-  // console.log(monthlyExpenseArray.length);
-  // let arrayLength;
-  // useEffect(() => {
-  //   if (monthlyExpenseArray === undefined || monthlyExpenseArray.length === 0)
-  //     return;
-  //   // arrayLength = monthlyExpenseArray.lengt;
-  //   console.log("I was just called sir");
-  // }, [monthlyExpenseArray]);
   console.log(totalExpense);
   const spendingPercentage = (totalExpense / salary) * 100;
   console.log(spendingPercentage);
@@ -62,10 +37,16 @@ const IncomeExpenseUI = () => {
     <div className={styles.incomeExpenseWrapper}>
       <div className={styles.ProgressBarWrapper}>
         <ProgressBar
-          barContainerClassName={styles.barContainer}
-          completed={(100 - spendingPercentage).toFixed(2)}
-          completedClassName={styles.completedBar}
-          bgColor="rgb(127, 255, 127)"
+          // barContainerClassName={styles.barContainer}
+          // completed={40}
+          // completedClassName={styles.completedBar}
+          // maxCompleted={100}
+          // bgColor="orange"
+
+          completed={100 - spendingPercentage}
+          bgColor="#56b96d"
+          labelColor="#fff"
+          maxCompleted={100}
         />
       </div>
       <div className={styles.incomeExpenseInnerWrapper}>

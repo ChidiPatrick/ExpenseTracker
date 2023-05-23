@@ -22,6 +22,7 @@ const initialState = {
   chartArray: [],
   chartColorArray: [],
   user: null,
+  showPopUpMessage: false,
 };
 
 export const GetExpenseObj = createAsyncThunk(
@@ -208,6 +209,12 @@ const expenseSlice = createSlice({
     getUser(state, action) {
       state.user = action.payload;
     },
+    showPopUp(state, action) {
+      state.showPopUpMessage = true;
+    },
+    hidePopUp(state, action) {
+      state.showPopUpMessage = false;
+    },
   },
 });
 export const {
@@ -236,5 +243,7 @@ export const {
   setUpChartArray,
   setExpenseChartColorsArray,
   getUser,
+  showPopUp,
+  hidePopUp,
 } = expenseSlice.actions;
 export default expenseSlice.reducer;

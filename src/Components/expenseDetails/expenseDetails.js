@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styles from "./expenseDetails.module.scss";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,18 +14,22 @@ import { addDoc, setDoc, doc, arrayUnion, updateDoc } from "firebase/firestore";
 import { db } from "../Firebase";
 import { GetExpenseObj } from "../expenseDetails/expenseSlice";
 import { object } from "yup";
-
+import PopUP from "./popUpComp";
+import { showPopUp, hidePopUp } from "./expenseSlice";
 // import LandingPage from "../landingPage/landingPage";
 //////////////////////////////////////////////////////////////////////////
 /////Expense Details Component/////////////////////
 const ExpenseDetails = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.signUp.userId);
+  const showPopUp = useSelector((state) => state.expense.showPopUpMessage);
   const allMonthExpenseArray = useSelector(
     (state) => state.expense.allMonthExpenseArray
   );
+  const [displayMessage, setDisplayMessage] = useState(false);
+  const [showFieldStatus, setShowFieldStatus] = useState(false);
   const allExpenseArray = useSelector((state) => state.expense.expenseArray);
-  console.log(allExpenseArray);
+  console.log(showPopUp);
   const currMonthExpenseObj = useSelector(
     (state) => state.expense.currMonthExpenseObj
   );
@@ -76,12 +80,39 @@ const ExpenseDetails = () => {
       totalExpense: newTotalExpense,
     });
   };
+
+  const emptyFieldFeedBackHandler = () => {
+    setShowFieldStatus(true);
+    setTimeout(setShowFieldStatus(false), 5000);
+  };
+  const closePopup = () => {
+    console.log("Clicked");
+    setDisplayMessage(false);
+  };
+  // console.log(amountRef.current.innerText);
+
   ////////////Save Entered Expense //////////////////////////
   const saveExpense = async (
     monthlyExpenseArray,
     totalExpenses,
-    currCategoryColor
+    currCategoryColor,
+    salary
   ) => {
+    //// VALIDATE EXPENSE AMOUNT ////////
+    if (amountRef.current.value > salary) {
+      setDisplayMessage(true);
+      return;
+    }
+    if (
+      categoryRef.current.innerText === "General" &&
+      amountRef.current.innerText === ""
+    ) {
+      console.log("Called your function");
+      setShowFieldStatus(true);
+      setTimeout(setShowFieldStatus(false), 5000);
+      // emptyFieldFeedBackHandler();
+      return;
+    }
     ////Simplified complex data ///////////////
     let updatedSelectedCategoryObj = {};
     let categoryObjIndex = null;
@@ -255,9 +286,6 @@ const ExpenseDetails = () => {
         ];
         let currMonthObjExpenseArray = [...currMonthExpenseArray];
         currMonthObjExpenseArray[categoryObjIndex] = updatedSelectedCategoryObj;
-        // const currCategoryObj = updatedSelectedCategoryObj;
-        // const currMonthCategoryObj =
-        // currMonthExpenseArray[categoryObjIndex] = currCategoryObj;
         currMonthObj.expenseArray = currMonthObjExpenseArray;
         currMonthObj.transactions = newTransactionArray;
         let updatedMonthlyExpenseArray = [...monthlyExpenseArray];
@@ -281,23 +309,62 @@ const ExpenseDetails = () => {
         });
         dispatch(GetExpenseObj());
         amountRef.current.value = "";
+        noteRef.current.value = "";
       }
     }
   };
+  const popupUI = (
+    <div className={styles.popUpMessageWrapper}>
+      <div className={styles.innerWrapper}>
+        <h3 className={styles.popUpHeading}>Alert:</h3>
+        <p className={styles.popParagraph}>
+          No Salary or Bugdet added. <br />
+          <br />
+          <Link className={styles.addSalaryLink} to="/addIncome" replace>
+            Add
+          </Link>
+          Salary/Bugdet{" "}
+        </p>
+        <div className={styles.btnWrapper}>
+          <button
+            // disabled={tru}
+            onClick={closePopup}
+            className={styles.btnClose}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+  const emptyFieldFeedBack = (
+    <div className={styles.emptyFieldMessage}>
+      <p className={styles.emptyFieldParagraph}>
+        Input fields are empty, fill it up
+      </p>
+    </div>
+  );
   return (
     <div className={styles.expenseDetailsWrapper}>
+      {displayMessage === true ? popupUI : null}
       <div className={styles.navigator}>
         <Link to={"/"}>X</Link>
         <button
           className={styles.saveBtn}
           onClick={() =>
-            saveExpense(monthlyExpenseArray, totalExpenses, currCategoryColor)
+            saveExpense(
+              monthlyExpenseArray,
+              totalExpenses,
+              currCategoryColor,
+              salary
+            )
           }
         >
           Done
         </button>
       </div>
       <div className={styles.detailsParentContainer}>
+        {showFieldStatus === true ? emptyFieldFeedBack : null}
         <div className={styles.expenseDetailsContainer}>
           <div className={styles.detailsLeft}>
             <div className={styles.date}>Date</div>
@@ -332,7 +399,6 @@ const ExpenseDetails = () => {
           </div>
         </div>
       </div>
-      <SignUpComponent />
     </div>
   );
 };

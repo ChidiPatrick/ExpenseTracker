@@ -2,6 +2,7 @@
   background-color: rgb(159, 156, 156);
   height: 100vh;
   padding: 10px;
+  position: relative;
 }
 .navigator {
   display: flex;
@@ -130,5 +131,55 @@
   background-color: transparent;
   font-size: 18px;
   border: none;
+  text-align: center;
+}
+.popUpMessageWrapper {
+  height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.innerWrapper {
+  width: 80%;
+  height: 250px;
+  background-color: #fff;
+  padding: 10px;
+  font-size: 20px;
+}
+.popUpHeading {
+  color: red;
+  // font-size: ;
+}
+.popParagraph {
+  text-align: center;
+}
+.btnWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.btnClose {
+  padding: 10px;
+  background-color: transparent;
+  color: chocolate;
+  width: 100px;
+  border: none;
+  border-radius: 100px;
+  font-size: 20px;
+}
+.addSalaryLink {
+  margin-right: 5px;
+  text-decoration: none;
+}
+.emptyFieldMessage {
+}
+.emptyFieldParagraph {
+  color: red;
+  font-size: 22px;
   text-align: center;
 }

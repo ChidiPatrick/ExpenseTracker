@@ -41,7 +41,10 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/"
+          element={activeUser !== null ? <Spending /> : <LandingPage />}
+        />
         <Route path="/ExpenseSummary" element={<Spending />} />
         <Route path="/expenseTracker" element={<ExpenseDetails />} />
         <Route path="/signUpPage" element={<SignupForm />} />
