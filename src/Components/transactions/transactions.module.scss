@@ -1,6 +1,6 @@
 .transactionsWrapper {
   // background-color: rgb(216, 200, 189);
-  background-color: #fff;
+  background-color: #312315;
   min-height: 100vh;
   position: relative;
 }
@@ -55,6 +55,7 @@
 }
 .expenseCategory {
   font-size: 20px;
+  font-weight: 600;
 }
 .dateAndTimeWrapper {
   width: 100%;
@@ -70,7 +71,19 @@
   margin-left: 10px;
 }
 .btnMoveBack {
+  padding: 10px;
+  background-color: transparent;
+  color: #fff;
+  border: none;
 }
 .hidden {
   visibility: hidden;
+}
+.btnWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  width: 80%;
+  margin: 0 auto;
 }

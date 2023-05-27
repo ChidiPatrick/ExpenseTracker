@@ -13,6 +13,7 @@ const initialState = {
   onCategoryUI: false,
   totalExpense: 0,
   currCategoryColor: "",
+  bntActive: false,
 };
 export const GetCategories = createAsyncThunk(
   "category/getCategories",
@@ -66,7 +67,7 @@ const CategorySlice = createSlice({
       state.selectedCategoryEmoji = action.payload;
     },
     resetSelectedCategoryColor(state, action) {
-      state.chartColor = "#fff";
+      state.chartColor = "";
     },
     resetSelectedCategoryEmoji(state, action) {
       state.selectedCategoryEmoji = "";
@@ -101,6 +102,12 @@ const CategorySlice = createSlice({
     getCurrCategoryColor(state, action) {
       state.currCategoryColor = action.payload;
     },
+    activateBtn(state, action) {
+      state.bntActive = true;
+    },
+    deactivateBtn(state, action) {
+      state.bntActive = false;
+    },
   },
 });
 export const {
@@ -120,5 +127,7 @@ export const {
   deactivateOnTransactionUI,
   getTotalExpense,
   getCurrCategoryColor,
+  activateBtn,
+  deactivateBtn,
 } = CategorySlice.actions;
 export default CategorySlice.reducer;

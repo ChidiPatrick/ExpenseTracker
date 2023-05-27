@@ -160,22 +160,25 @@ const Transactions = () => {
   /////////////////////////////////////////////////////
   const transactions = (
     <>
-      <button
-        className={currPosition === 0 ? styles.hidden : styles.btnMoveBack}
-        onClick={() => moveBack(allMonthsExpenseArray, currPosition)}
-      >
-        Move Back
-      </button>
-      <button
-        className={
-          currPosition + 1 === currTransactionArrayLength
-            ? styles.hidden
-            : styles.btnMoveBack
-        }
-        onClick={() => moveForward(allMonthsExpenseArray, currPosition)}
-      >
-        Forward
-      </button>
+      <div className={styles.btnWrapper}>
+        <button
+          className={currPosition === 0 ? styles.hidden : styles.btnMoveBack}
+          onClick={() => moveBack(allMonthsExpenseArray, currPosition)}
+        >
+          Move Back
+        </button>
+        <button
+          className={
+            currPosition + 1 === currTransactionArrayLength
+              ? styles.hidden
+              : styles.btnMoveBack
+          }
+          onClick={() => moveForward(allMonthsExpenseArray, currPosition)}
+        >
+          Forward
+        </button>
+      </div>
+
       <div className={styles.salaryAndExpense}>
         <div className={styles.salary}>
           {currencySymbol}
@@ -190,16 +193,6 @@ const Transactions = () => {
         className={styles.transactionsContaiiner}
         onClick={showEditUIHandler}
       >
-        <div className={styles.transactionHistory}>
-          <div className={styles.categoryLeft}>
-            <div>Icon</div>
-            <div className={styles.expenseDetails}>
-              <div className={styles.expenseCategory}>Expense Category</div>
-              <div className={styles.date}>Mon,17 Apr 2023</div>
-            </div>
-          </div>
-          <div className={styles.expenseAmount}>£102.00</div>
-        </div>
         <div>
           {currTransactionArray.map((expense, index) => {
             return (
@@ -232,16 +225,6 @@ const Transactions = () => {
               </div>
             );
           })}
-        </div>
-        <div className={styles.transactionHistory}>
-          <div className={styles.categoryLeft}>
-            <div>Icon</div>
-            <div className={styles.expenseDetails}>
-              <div className={styles.expenseCategory}>Salary</div>
-              <div className={styles.date}>Mon,17 Apr 2023</div>
-            </div>
-          </div>
-          <div className={styles.expenseAmount}>£120,200.00</div>
         </div>
         {/* <CurrencySelector /> */}
       </div>

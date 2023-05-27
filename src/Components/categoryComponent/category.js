@@ -3,7 +3,12 @@ import styles from "./category.module.scss";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getSelectedCategory, getCurrCategoryColor } from "./categorySlice";
+import {
+  getSelectedCategory,
+  getCurrCategoryColor,
+  activateBtn,
+  deactivateBtn,
+} from "./categorySlice";
 import { getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../Firebase";
 import { HiGift, HiShoppingCart, HiTag, HiBriefcase } from "react-icons/hi";
@@ -15,6 +20,7 @@ import { FaChild } from "react-icons/fa";
 import { BsGiftFill, BsMusicPlayerFill } from "react-icons/bs";
 import NavComponent from "../navigationComponent/navComponent";
 import AddIncome from "../addIncome/addIncome";
+
 // BsGiftFill
 // BsMusicPlayerFill
 ///////////////---CATEGORY COMPONENT---/////////////////
@@ -27,6 +33,9 @@ const Category = () => {
   );
   const categories = categoriesObj.categories;
   console.log(categories);
+  const categoryNameRef = useRef();
+  const selectIconRef = useRef();
+  const selectColor = useRef();
   ////// Get Category //////////////////
   const getCategory = (e) => {
     console.log(e.target.innerText);

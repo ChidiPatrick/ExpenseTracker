@@ -46,29 +46,34 @@
   margin-left: 20px;
 }
 .moreOptionsWrapper {
-  background-color: #fff;
-  width: 200px;
-  min-height: 100px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+  width: 100%;
+  min-height: 100vh;
   padding: 10px;
   position: absolute;
-  top: 2%;
+  top: 0;
   right: 0;
-  // display: flex;
-  // justify-content: flex-start;
-  // align-items: flex-start;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
 }
 .list {
   list-style: none;
   margin: 10px 0;
-  width: 100%;
+  width: 250px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
   padding: 0;
+  background-color: #fff;
+  border-radius: 10px;
 }
 .linkItem {
   padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 .currencySymbolSelectionLink {
   text-decoration: none;
@@ -76,16 +81,21 @@
   font-size: 18px;
 }
 .closeUIwrapper {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  // width: 100%;
+  padding: 10px;
+  align-self: flex-end;
 }
 .closeUIIcon {
   font-size: 25px;
   color: black;
+  // align-self: flex-end;
 }
 .hidden {
   display: none;
   visibility: hidden;
+}
+.shortCutWrapper {
+  height: 100vh;
+  background-color: green;
+  // width: 100%;
 }

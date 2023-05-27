@@ -37,12 +37,6 @@ const IncomeExpenseUI = () => {
     <div className={styles.incomeExpenseWrapper}>
       <div className={styles.ProgressBarWrapper}>
         <ProgressBar
-          // barContainerClassName={styles.barContainer}
-          // completed={40}
-          // completedClassName={styles.completedBar}
-          // maxCompleted={100}
-          // bgColor="orange"
-
           completed={100 - spendingPercentage}
           bgColor="#56b96d"
           labelColor="#fff"
@@ -59,7 +53,7 @@ const IncomeExpenseUI = () => {
         </div>
         <div className={styles.expenseWrapper}>
           <div className={styles.expenseHeader}>
-            <span className={styles.expense}>Expense</span>
+            <span className={styles.expense}>Expenses</span>
             <span className={styles.expenseAmount}>
               {currencySymbol}
               {totalExpense.toFixed(2)}

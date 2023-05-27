@@ -16,6 +16,8 @@ import { GetExpenseObj } from "../expenseDetails/expenseSlice";
 import { object } from "yup";
 import PopUP from "./popUpComp";
 import { showPopUp, hidePopUp } from "./expenseSlice";
+import { ImWarning } from "react-icons/im";
+import { HiXMark } from "react-icons/hi2";
 // import LandingPage from "../landingPage/landingPage";
 //////////////////////////////////////////////////////////////////////////
 /////Expense Details Component/////////////////////
@@ -56,6 +58,7 @@ const ExpenseDetails = () => {
     `expenseCollection`,
     `expenses`
   );
+  // console.log(amountRef.current.value);
   const totalExpenseRef = doc(
     db,
     "users",
@@ -102,14 +105,15 @@ const ExpenseDetails = () => {
     if (amountRef.current.value > salary) {
       setDisplayMessage(true);
       return;
-    }
-    if (
-      categoryRef.current.innerText === "General" &&
-      amountRef.current.innerText === ""
+    } else if (
+      (categoryRef.current.innerText === "General" ||
+        categoryRef.current.innerText !== "") &&
+      amountRef.current.value === ""
     ) {
       console.log("Called your function");
+      console.log(amountRef.current.value);
       setShowFieldStatus(true);
-      setTimeout(setShowFieldStatus(false), 5000);
+      // setTimeout(setShowFieldStatus(false), 5000);
       // emptyFieldFeedBackHandler();
       return;
     }
@@ -348,7 +352,9 @@ const ExpenseDetails = () => {
     <div className={styles.expenseDetailsWrapper}>
       {displayMessage === true ? popupUI : null}
       <div className={styles.navigator}>
-        <Link to={"/"}>X</Link>
+        <Link to={"/"}>
+          <HiXMark className={styles.cancelBtn} />
+        </Link>
         <button
           className={styles.saveBtn}
           onClick={() =>
@@ -365,38 +371,34 @@ const ExpenseDetails = () => {
       </div>
       <div className={styles.detailsParentContainer}>
         {showFieldStatus === true ? emptyFieldFeedBack : null}
-        <div className={styles.expenseDetailsContainer}>
-          <div className={styles.detailsLeft}>
-            <div className={styles.date}>Date</div>
-            <div className={styles.category}>Category</div>
-            <div className={styles.amount}>Amount</div>
-            <div className={styles.note}>Note</div>
+        <div className={styles.mainWrapper}>
+          <div className={[styles.item, styles.topItem].join(" ")}>Date</div>
+          <div className={[styles.leftItem, styles.topItem].join(" ")}>
+            {date.toDateString()}
           </div>
-          <div className={styles.detailsRight}>
-            <div className={styles.currentDate}>{date.toDateString()}</div>
-            <Link
-              to="/category"
-              className={styles.categoryLink}
-              ref={categoryRef}
-              replace
-            >
-              {currCategory === "" ? "Enter category" : currCategory}
-            </Link>
-            <input
-              className={styles.inputElement}
-              placeholder=" Enter Amount"
-              type="number"
-              ref={amountRef}
-            />
-            <div>
-              <input
-                className={styles.inputElement}
-                type="text"
-                ref={noteRef}
-                placeholder="Enter a note(optional)"
-              />
-            </div>
-          </div>
+          <div className={styles.item}>Category</div>
+          <Link
+            to="/category"
+            className={styles.leftItem}
+            ref={categoryRef}
+            replace
+          >
+            {currCategory === "" ? "Enter category" : currCategory}
+          </Link>
+          <div className={styles.item}>Amount</div>
+          <input
+            className={styles.leftItem}
+            placeholder=" Enter Amount"
+            type="number"
+            ref={amountRef}
+          />
+          <div className={styles.item}>Note</div>
+          <input
+            className={styles.leftItem}
+            type="text"
+            ref={noteRef}
+            placeholder="Enter a note(optional)"
+          />
         </div>
       </div>
     </div>

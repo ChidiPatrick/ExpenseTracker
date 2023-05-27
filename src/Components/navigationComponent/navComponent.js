@@ -63,14 +63,16 @@ const NavComponent = () => {
         className={
           displayMoreUI === true ? styles.moreOptionsWrapper : styles.hidden
         }
+        onClick={() => dispatch(hideMoreUI())}
       >
-        <div className={styles.closeUIwrapper}>
-          <AiOutlineClose
-            className={styles.closeUIIcon}
-            onClick={() => dispatch(hideMoreUI())}
-          />
-        </div>
+        {/* <div className={styles.shortCutWrapper}> */}
         <ul className={styles.list}>
+          <li className={[styles.linkItem, styles.closeUIwrapper].join(" ")}>
+            <AiOutlineClose
+              className={styles.closeUIIcon}
+              onClick={() => dispatch(hideMoreUI())}
+            />
+          </li>
           <li className={styles.linkItem}>
             <div
               onClick={navigateToCurrencyPage}
@@ -100,6 +102,7 @@ const NavComponent = () => {
           </li>
         </ul>
       </div>
+      {/* </div> */}
     </div>
   );
 };

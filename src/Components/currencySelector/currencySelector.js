@@ -41,7 +41,9 @@ const CurrencySelector = () => {
     console.log("Got here");
     dispatch(getCurrencySymbol(newCurrencySymbol));
   };
-
+  const cancelBtn = () => {
+    navigate("/ExpenseSummary");
+  };
   return (
     <div className={styles.parentWrapper}>
       <NavComponent />
@@ -90,7 +92,9 @@ const CurrencySelector = () => {
         })}
       </div>
       <div className={styles.cancelBtnWrapper}>
-        <button className={styles.cancelBtn}>CANCEL</button>
+        <button onClick={cancelBtn} className={styles.cancelBtn}>
+          CANCEL
+        </button>
       </div>
     </div>
   );

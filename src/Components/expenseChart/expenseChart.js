@@ -10,7 +10,10 @@ import {
   Legend,
 } from "recharts";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { HiChevronLeft, HiXMark } from "react-icons/hi2";
 const ExpenseChart = () => {
+  const navigate = useNavigate();
   const monthlyExpenseArray = useSelector(
     (state) => state.expense.expenseArray
   );
@@ -54,7 +57,15 @@ const ExpenseChart = () => {
   };
   return (
     <div className={styles.expenseChartUI}>
-      <h1 className={styles.expenseChartHeader}> Expense Chart</h1>
+      <nav
+        onClick={() => navigate("/ExpenseSummary")}
+        className={styles.navContainer}
+      >
+        <HiChevronLeft className={styles.moveBackBtn} />
+      </nav>
+      <h1 className={styles.expenseChartHeader}>
+        <span> Expense Chart</span>
+      </h1>
       <div className={styles.chartWrapper}>
         <ResponsiveContainer
           className={styles.responsiveContainer}
