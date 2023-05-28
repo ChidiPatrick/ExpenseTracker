@@ -6,7 +6,7 @@
 .emojiNav {
   background-color: #fff;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   padding: 10px;
   border-radius: 10px;
@@ -20,4 +20,9 @@
   margin-top: 40px;
 }
 .closeEmoji {
+}
+
+.cancleBtn {
+  font-size: 25px;
+  color: chocolate;
 }

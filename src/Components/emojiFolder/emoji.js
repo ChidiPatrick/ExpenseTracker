@@ -5,6 +5,7 @@ import { setCategoryEmoji } from "../categoryComponent/categorySlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { hideEmoji } from "../categoryComponent/categorySlice";
+import { HiXMark } from "react-icons/hi2";
 const Emojis = () => {
   const dispatch = useDispatch();
   const handleEmojiClick = (emojidata) => {
@@ -20,7 +21,7 @@ const Emojis = () => {
       <div className={styles.emojiContainerWrapper}>
         <nav className={styles.emojiNav}>
           <span className={styles.closeEmoji} onClick={closeEmojiUI}>
-            X
+            <HiXMark className={styles.cancleBtn} />
           </span>
         </nav>
         <EmojiPicker onEmojiClick={handleEmojiClick} width={"100%"} />

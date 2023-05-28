@@ -14,7 +14,51 @@ import {
   activateOnTransactionUI,
   deactivateOnTransactionUI,
 } from "../categoryComponent/categorySlice";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import Spinner from "../spinner/spinner";
+import { auth } from "../Firebase";
+import {
+  GetSalary,
+  getUser,
+  GetExpenseObj,
+} from "../expenseDetails/expenseSlice";
+import {
+  getTotalExpenses,
+  GetCategories,
+} from "../categoryComponent/categorySlice";
+import { onAuthStateChanged } from "firebase/auth";
+import { getUserId } from "../signUpComponent/signUpSlice";
 const Transactions = () => {
+  const [showLoader, setShowLoader] = useState(true);
+  // window.addEventListener("load", () => {
+  //   console.log("RELOADING!");
+  //   setTimeout(() => {
+  //     console.log("removing loader");
+  //     setShowLoader(false);
+  //   }, 5000);
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       setActiveUser(user);
+  //       dispatch(getUser(user));
+  //       dispatch(getUserId(user.uid));
+  //       dispatch(GetCategories(user.uid));
+  //       dispatch(GetExpenseObj(user.uid));
+  //       dispatch(GetSalary(user.uid));
+  //       dispatch(getTotalExpenses(user.uid));
+  //     }
+  //   });
+  // });
+  // onAuthStateChanged(auth, (user) => {
+  //   if (user) {
+  //     setActiveUser(user);
+  //     dispatch(getUser(user));
+  //     dispatch(getUserId(user.uid));
+  //     dispatch(GetCategories(user.uid));
+  //     dispatch(GetExpenseObj(user.uid));
+  //     dispatch(GetSalary(user.uid));
+  //     dispatch(getTotalExpenses(user.uid));
+  //   }
+  // });
   const params = useParams();
   const dispatch = useDispatch();
   const currencySymbol = useSelector((state) => state.expense.currencySymbol);
@@ -157,6 +201,7 @@ const Transactions = () => {
       return;
     }
   };
+
   /////////////////////////////////////////////////////
   const transactions = (
     <>
@@ -165,7 +210,7 @@ const Transactions = () => {
           className={currPosition === 0 ? styles.hidden : styles.btnMoveBack}
           onClick={() => moveBack(allMonthsExpenseArray, currPosition)}
         >
-          Move Back
+          <HiChevronLeft className={styles.btnIcon} />
         </button>
         <button
           className={
@@ -175,7 +220,7 @@ const Transactions = () => {
           }
           onClick={() => moveForward(allMonthsExpenseArray, currPosition)}
         >
-          Forward
+          <HiChevronRight className={styles.btnIcon} />
         </button>
       </div>
 

@@ -23,96 +23,107 @@ const initialState = {
   chartColorArray: [],
   user: null,
   showPopUpMessage: false,
+  getExpenseObjPending: null,
 };
 
 export const GetExpenseObj = createAsyncThunk(
   "expense/getExpenseObj",
   async (userId, { dispatch, getState }) => {
-    const expenseRef = doc(
-      db,
-      "users",
-      `${userId}`,
-      `expenseCollection`,
-      `expenses`
-    );
-    const expenseData = await getDoc(expenseRef);
-    if (expenseData.exists()) {
-      console.log(expenseData.data());
-      console.log(expenseData.data().expenseObj);
-      dispatch(getExpenseObj(expenseData.data().expenseObj));
-      ///////////////// Simplification of data structure /////////////////////////////////
-      const currMonthExpenseArrayLength =
-        expenseData.data().expenseObj.monthlyExpenses.length;
-      const currMonthExpenseObj =
-        expenseData.data().expenseObj.monthlyExpenses[
-          currMonthExpenseArrayLength - 1
-        ];
-      ////////////////////////////////////////////////////
-      dispatch(getCurrMonthExpenseObj(currMonthExpenseObj));
-      dispatch(
-        getCurrMonthExpenseArray(
+    try {
+      const expenseRef = doc(
+        db,
+        "users",
+        `${userId}`,
+        `expenseCollection`,
+        `expenses`
+      );
+      const expenseData = await getDoc(expenseRef);
+      if (expenseData.exists()) {
+        console.log(expenseData.data());
+        console.log(expenseData.data().expenseObj);
+        dispatch(getExpenseObj(expenseData.data().expenseObj));
+        ///////////////// Simplification of data structure /////////////////////////////////
+        const currMonthExpenseArrayLength =
+          expenseData.data().expenseObj.monthlyExpenses.length;
+        const currMonthExpenseObj =
           expenseData.data().expenseObj.monthlyExpenses[
             currMonthExpenseArrayLength - 1
-          ].expenseArray
-        )
-      );
-      dispatch(
-        getCurrMonthTransactionArray(
-          expenseData.data().expenseObj.monthlyExpenses[
-            currMonthExpenseArrayLength - 1
-          ].transactions
-        )
-      );
-      dispatch(getCurrencySymbol(expenseData.data().currencySymbol));
-      dispatch(
-        getAllMonthsExpenseArray(expenseData.data().expenseObj.monthlyExpenses)
-      );
-      dispatch(
-        setUpChartArray(
-          expenseData.data().expenseObj.monthlyExpenses[
-            currMonthExpenseArrayLength - 1
-          ].expenseArray
-        )
-      );
-      dispatch(
-        setExpenseChartColorsArray(
-          expenseData.data().expenseObj.monthlyExpenses[
-            currMonthExpenseArrayLength - 1
-          ].expenseArray
-        )
-      );
-      // Check this during refactotring //////
-      dispatch(
-        getMonthlyArrayLength(
-          expenseData.data().expenseObj.monthlyExpenses.length
-        )
-      );
-      dispatch(
-        getCurrPosition(expenseData.data().expenseObj.monthlyExpenses.length)
-      );
-      console.log(
-        `Current position is: ${
-          expenseData.data().expenseObj.monthlyExpenses.length - 1
-        }`
-      );
+          ];
+        ////////////////////////////////////////////////////
+        dispatch(getCurrMonthExpenseObj(currMonthExpenseObj));
+        dispatch(
+          getCurrMonthExpenseArray(
+            expenseData.data().expenseObj.monthlyExpenses[
+              currMonthExpenseArrayLength - 1
+            ].expenseArray
+          )
+        );
+        dispatch(
+          getCurrMonthTransactionArray(
+            expenseData.data().expenseObj.monthlyExpenses[
+              currMonthExpenseArrayLength - 1
+            ].transactions
+          )
+        );
+        dispatch(getCurrencySymbol(expenseData.data().currencySymbol));
+        dispatch(
+          getAllMonthsExpenseArray(
+            expenseData.data().expenseObj.monthlyExpenses
+          )
+        );
+        dispatch(
+          setUpChartArray(
+            expenseData.data().expenseObj.monthlyExpenses[
+              currMonthExpenseArrayLength - 1
+            ].expenseArray
+          )
+        );
+        dispatch(
+          setExpenseChartColorsArray(
+            expenseData.data().expenseObj.monthlyExpenses[
+              currMonthExpenseArrayLength - 1
+            ].expenseArray
+          )
+        );
+        // Check this during refactotring //////
+        dispatch(
+          getMonthlyArrayLength(
+            expenseData.data().expenseObj.monthlyExpenses.length
+          )
+        );
+        dispatch(
+          getCurrPosition(expenseData.data().expenseObj.monthlyExpenses.length)
+        );
+        console.log(
+          `Current position is: ${
+            expenseData.data().expenseObj.monthlyExpenses.length - 1
+          }`
+        );
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 );
 export const GetSalary = createAsyncThunk(
   "salary/getSalary",
   async (userId, { dispatch, getState }) => {
-    const salaryRef = doc(
-      db,
-      "users",
-      `${userId}`,
-      `salaryCollection`,
-      `salaries`
-    );
-    const salary = await getDoc(salaryRef);
-    if (salary.exists()) {
-      console.log(salary.data().salary);
-      dispatch(getSalary(salary.data().salary));
-      dispatch(getTotalExpenses(salary.data().totalExpenses));
+    try {
+      const salaryRef = doc(
+        db,
+        "users",
+        `${userId}`,
+        `salaryCollection`,
+        `salaries`
+      );
+      const salary = await getDoc(salaryRef);
+      if (salary.exists()) {
+        console.log(salary.data().salary);
+        dispatch(getSalary(salary.data().salary));
+        dispatch(getTotalExpenses(salary.data().totalExpenses));
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 );
@@ -215,6 +226,24 @@ const expenseSlice = createSlice({
     hidePopUp(state, action) {
       state.showPopUpMessage = false;
     },
+  },
+  extraReducers: (builder) => {
+    // builder
+    //   .addCase(FetchUserData.fulfilled, (state, action) => {
+    //     state.fetchedUserData = true;
+    //   })
+    //   .addCase(fetchUserSettings.fulfilled, (state, action) => {
+    //     state.fetchedSettingsData = true;
+    //   });
+    // builder
+    //   .addCase(GetExpenseObj.pending, (state, action) => {
+    //     console.log("called");
+    //     state.getExpenseObjPending = true;
+    //   })
+    //   .addCase(GetExpenseObj.fulfilled, (state, action) => {
+    //     console.log("called");
+    //     state.getExpenseObjPending = false;
+    //   });
   },
 });
 export const {

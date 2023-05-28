@@ -3,20 +3,16 @@ import styles from "./expenseDetails.module.scss";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getExpenseObj,
+  GetExpenseObj,
   addExpense,
   updateExpenseArray,
   GetSalary,
 } from "./expenseSlice";
 import SignUpComponent from "../signUpComponent/signUp";
 import { getSelectedCategory } from "../categoryComponent/categorySlice";
-import { addDoc, setDoc, doc, arrayUnion, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../Firebase";
-import { GetExpenseObj } from "../expenseDetails/expenseSlice";
-import { object } from "yup";
-import PopUP from "./popUpComp";
-import { showPopUp, hidePopUp } from "./expenseSlice";
-import { ImWarning } from "react-icons/im";
+
 import { HiXMark } from "react-icons/hi2";
 // import LandingPage from "../landingPage/landingPage";
 //////////////////////////////////////////////////////////////////////////
@@ -25,6 +21,10 @@ const ExpenseDetails = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.signUp.userId);
   const showPopUp = useSelector((state) => state.expense.showPopUpMessage);
+  const getExpenseObjPending = useSelector(
+    (state) => state.expense.getExpenseObjPending
+  );
+  console.log(getExpenseObjPending);
   const allMonthExpenseArray = useSelector(
     (state) => state.expense.allMonthExpenseArray
   );
@@ -167,7 +167,7 @@ const ExpenseDetails = () => {
       await updateDoc(totalExpenseRef, {
         totalExpense: newTotal,
       });
-      dispatch(GetExpenseObj());
+      dispatch(GetExpenseObj(userId));
       amountRef.current.value = "";
       noteRef.current.value = "";
       return;
@@ -256,7 +256,7 @@ const ExpenseDetails = () => {
           totalExpense: newTotal,
         });
 
-        dispatch(GetExpenseObj());
+        dispatch(GetExpenseObj(userId));
         dispatch(GetSalary(userId));
         amountRef.current.value = "";
         noteRef.current.value = "";
@@ -351,8 +351,8 @@ const ExpenseDetails = () => {
   return (
     <div className={styles.expenseDetailsWrapper}>
       {displayMessage === true ? popupUI : null}
-      <div className={styles.navigator}>
-        <Link to={"/"}>
+      <nav className={styles.navigator}>
+        <Link to="/ExpenseSummary">
           <HiXMark className={styles.cancelBtn} />
         </Link>
         <button
@@ -368,7 +368,14 @@ const ExpenseDetails = () => {
         >
           Done
         </button>
-      </div>
+      </nav>
+      {/* <div
+        className={
+          getExpenseObjPending === true ? styles.loader : styles.hidden
+        }
+      >
+        Loader
+      </div> */}
       <div className={styles.detailsParentContainer}>
         {showFieldStatus === true ? emptyFieldFeedBack : null}
         <div className={styles.mainWrapper}>
