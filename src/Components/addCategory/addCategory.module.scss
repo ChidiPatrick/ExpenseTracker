@@ -36,11 +36,12 @@
 .categoryName,
 .categoryIcon,
 .categoryColor {
-  padding: 10px;
+  padding: 20px;
   border-bottom: solid 1px grey;
   display: flex;
   justify-content: center;
   border-right: solid 1px black;
+  font-size: 20px;
 }
 .inputsContainer,
 .categoryDetails {

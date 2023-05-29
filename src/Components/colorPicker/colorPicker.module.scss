@@ -51,7 +51,7 @@
   width: 80%;
   margin: 0 auto;
   background-color: #fff;
-  height: 400px;
+  height: 500px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -64,7 +64,7 @@
   text-align: center;
   padding: 10px;
   font-size: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .btnsWrapper {
   width: 100%;
@@ -81,4 +81,12 @@
   padding: 10px;
   border: none;
   font-size: 20px;
+}
+.closeUI {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  font-size: 25px;
 }

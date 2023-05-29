@@ -1,6 +1,6 @@
 import React, { startTransition, useState } from "react";
 import styles from "./colorPicker.module.scss";
-import { CirclePicker } from "react-color";
+import { SketchPicker } from "react-color";
 import { setChartColor } from "../categoryComponent/categorySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -11,9 +11,11 @@ const ColorPicker = () => {
   const currColor = useSelector((state) => state.expense.chartColor);
   const [color, setColor] = useState("#fff");
   const handleColorChange = (color, event) => {
+    console.log(color.hex);
     setColor(color.hex);
+  };
+  const handleColorChangeComplete = (color, event) => {
     dispatch(setChartColor(color.hex));
-    dispatch(hideColorPicker());
   };
   const handleCancle = () => {
     dispatch(hideColorPicker());
@@ -21,8 +23,16 @@ const ColorPicker = () => {
   return (
     <div className={styles.colorPickerWrapper}>
       <div className={styles.colorPickerContainer}>
-        <div className={styles.colorPickerHeader}>Color Picker</div>
-        <CirclePicker onChange={handleColorChange} />
+        <div onClick={handleCancle} className={styles.closeUI}>
+          X
+        </div>
+        <div className={styles.colorPickerHeader}>Pick a Color</div>
+        <SketchPicker
+          color={color}
+          onChange={handleColorChange}
+          onChangeComplete={handleColorChangeComplete}
+          style={{ width: "300px" }}
+        />
         <div className={styles.btnsWrapper}>
           <button onClick={handleCancle} className={styles.colorBtn}>
             Cancel
