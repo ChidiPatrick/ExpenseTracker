@@ -1,5 +1,5 @@
 .expenseDetailsWrapper {
-  background-color: rgb(159, 156, 156);
+  background-color: rgb(229, 229, 229);
   height: 100vh;
   padding: 10px;
 }
@@ -27,6 +27,7 @@
   background-color: #fff;
   margin-top: 30px;
   padding: 10px;
+  box-shadow: 5px 5px 5px grey;
 }
 .expenseDetailsContainer {
   display: grid;
@@ -138,4 +139,20 @@
 .hidden {
   z-index: 0;
   visibility: hidden;
+}
+.deleteBtnWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+.deleteBtn {
+  padding: 10px;
+  width: 100px;
+  font-weight: 600;
+  font-size: 20px;
+  background-color: rgb(228, 6, 6);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
 }

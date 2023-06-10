@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 /////////////////////////////////////////////////////
 const initialState = {
   userId: "",
+  categoryFromEditUI: false,
 };
 const signUpSlice = createSlice({
   name: "signUpSlice",
@@ -11,7 +12,14 @@ const signUpSlice = createSlice({
     getUserId(state, action) {
       state.userId = action.payload;
     },
+    setCategoryFromEditUI(state, action) {
+      state.categoryFromEditUI = true;
+    },
+    resetCategoryFromEditUI(state, action) {
+      state.categoryFromEditUI = false;
+    },
   },
 });
-export const { getUserId } = signUpSlice.actions;
+export const { getUserId, resetCategoryFromEditUI, setCategoryFromEditUI } =
+  signUpSlice.actions;
 export default signUpSlice.reducer;

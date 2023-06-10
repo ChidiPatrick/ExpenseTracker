@@ -3,22 +3,28 @@ import styles from "./editExpense.module.scss";
 import expenseSlice, {
   updateExpenseArray,
 } from "../expenseDetails/expenseSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { hideEditUI } from "../expenseDetails/expenseSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../Firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { GetExpenseObj } from "../expenseDetails/expenseSlice";
-
+import { setCategoryFromEditUI } from "../signUpComponent/signUpSlice";
 ///////////////////////////////////////////////////////
 const EditExpense = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const categoryRef = useRef();
   const amountRef = useRef();
   const noteRef = useRef();
+
+  ////////////////// Selcectors ///////////////////////////
   const displayEditUI = useSelector((state) => state.expense.displayEditUI);
   const currCategory = useSelector((state) => state.categories.currCategory);
   const userId = useSelector((state) => state.signUp.userId);
+  const transactionToEdit = useSelector(
+    (state) => state.expense.transactionToEdit
+  );
   console.log(categoryRef.current);
   ////Verify the code below later////
   const expenseArray = useSelector((state) => state.expense.expenseArray);
@@ -58,7 +64,11 @@ const EditExpense = () => {
     handleExpenseUpdate(userId, newExpenseArray);
     dispatch(hideEditUI());
   };
-  const handleChange = () => {};
+  const changeCategoryHandler = () => {
+    dispatch(setCategoryFromEditUI());
+    console.log("transactions");
+    navigate("/category");
+  };
   //Algorithm for editing expense
   //1. Select the expense object by clicking
   //2. Extract the object from the array of expense object
@@ -87,21 +97,21 @@ const EditExpense = () => {
             <div className={styles.note}>Note</div>
           </div>
           <div className={styles.detailsRight}>
-            <div className={styles.currentDate}>date here</div>
-            <Link
-              to="/category"
+            <div className={styles.currentDate}>{transactionToEdit.date}</div>
+            <div
               className={styles.categoryLink}
-              ref={categoryRef}
+              // ref={categoryRef}
+              onClick={changeCategoryHandler}
             >
-              category link
-            </Link>
+              {transactionToEdit.category}
+            </div>
             <input
               className={styles.inputElement}
               placeholder=" Enter Amount"
               type="number"
               ref={amountRef}
               // onChange={handleChange}
-              defaultValue={200}
+              defaultValue={transactionToEdit.expenseAmount}
             />
             <div>
               <input
@@ -109,11 +119,14 @@ const EditExpense = () => {
                 type="text"
                 ref={noteRef}
                 placeholder="Enter a note(optional)"
-                value="some notes"
+                value={transactionToEdit.expenseNote}
               />
             </div>
           </div>
         </div>
+      </div>
+      <div className={styles.deleteBtnWrapper}>
+        <button className={styles.deleteBtn}>Delete</button>
       </div>
     </div>
   );

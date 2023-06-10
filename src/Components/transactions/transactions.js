@@ -4,6 +4,7 @@ import NavComponent from "../navigationComponent/navComponent";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import EditExpense from "../editExpenseComponent/editExpense";
+import { getTransactionToEdit } from "../expenseDetails/expenseSlice";
 import {
   showEditUI,
   getSelectedTransaction,
@@ -30,37 +31,10 @@ import { onAuthStateChanged } from "firebase/auth";
 import { getUserId } from "../signUpComponent/signUpSlice";
 const Transactions = () => {
   const [showLoader, setShowLoader] = useState(true);
-  // window.addEventListener("load", () => {
-  //   console.log("RELOADING!");
-  //   setTimeout(() => {
-  //     console.log("removing loader");
-  //     setShowLoader(false);
-  //   }, 5000);
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       setActiveUser(user);
-  //       dispatch(getUser(user));
-  //       dispatch(getUserId(user.uid));
-  //       dispatch(GetCategories(user.uid));
-  //       dispatch(GetExpenseObj(user.uid));
-  //       dispatch(GetSalary(user.uid));
-  //       dispatch(getTotalExpenses(user.uid));
-  //     }
-  //   });
-  // });
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user) {
-  //     setActiveUser(user);
-  //     dispatch(getUser(user));
-  //     dispatch(getUserId(user.uid));
-  //     dispatch(GetCategories(user.uid));
-  //     dispatch(GetExpenseObj(user.uid));
-  //     dispatch(GetSalary(user.uid));
-  //     dispatch(getTotalExpenses(user.uid));
-  //   }
-  // });
   const params = useParams();
   const dispatch = useDispatch();
+
+  ////////////////// SELECTORS USED /////////////////////////
   const currencySymbol = useSelector((state) => state.expense.currencySymbol);
   const expenseArray = useSelector((state) => state.expense.expenseObj);
   const displayEditUI = useSelector((state) => state.expense.displayEditUI);
@@ -68,7 +42,10 @@ const Transactions = () => {
   const mainCurrPosition = useSelector((state) => state.expense.currPosition);
   const salary = useSelector((state) => state.expense.salary);
   const expenseObj = useSelector((state) => state.expense.expenseObj);
-
+  const transactionToEdit = useSelector(
+    (state) => state.expense.transactionToEdit
+  );
+  console.log(transactionToEdit);
   let allMonthsExpenseArray = expenseObj.monthlyExpenses;
   const allMonthExpenseArrayLength = allMonthsExpenseArray.length;
   console.log(allMonthsExpenseArray);
@@ -86,8 +63,10 @@ const Transactions = () => {
     };
   }, []);
   //////// Handlers ///////////////////
-  const showEditUIHandler = () => {
+  const showEditUIHandler = (transaction, index) => {
+    console.log("Called");
     dispatch(showEditUI());
+    dispatch(getTransactionToEdit(transaction));
   };
   const dummyMonthlyExpenseObjArray = [
     {
@@ -236,7 +215,7 @@ const Transactions = () => {
       </div>
       <div
         className={styles.transactionsContaiiner}
-        onClick={showEditUIHandler}
+        // onClick={showEditUIHandler}
       >
         <div>
           {currTransactionArray.map((expense, index) => {
@@ -244,7 +223,7 @@ const Transactions = () => {
               <div
                 className={styles.transactionHistory}
                 key={index}
-                onClick={() => showEditUIHandler(index, expenseArray)}
+                onClick={() => showEditUIHandler(expense, index)}
               >
                 <div className={styles.categoryLeft}>
                   <div className={styles.expenseDetails}>
@@ -271,7 +250,6 @@ const Transactions = () => {
             );
           })}
         </div>
-        {/* <CurrencySelector /> */}
       </div>
     </>
   );

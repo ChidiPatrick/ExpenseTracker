@@ -9,6 +9,7 @@ import {
   activateBtn,
   deactivateBtn,
 } from "./categorySlice";
+import { resetCategoryFromEditUI } from "../signUpComponent/signUpSlice";
 import { getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../Firebase";
 import { HiGift, HiShoppingCart, HiTag, HiBriefcase } from "react-icons/hi";
@@ -31,6 +32,12 @@ const Category = () => {
   const categoriesObj = useSelector(
     (state) => state.categories.categoriesArray
   );
+  const transactionFromEditUI = useSelector(
+    (state) => state.signUp.categoryFromEditUI
+  );
+  let tempValueHolder = transactionFromEditUI;
+  console.log(`main answer: ${tempValueHolder}`);
+  console.log(`Updated answer: ${transactionFromEditUI}`);
   const categories = categoriesObj.categories;
   console.log(categories);
   const categoryNameRef = useRef();
@@ -48,8 +55,12 @@ const Category = () => {
         return undefined;
       }
     });
+    console.log(`main transaction: ${transactionFromEditUI}`);
+    dispatch(resetCategoryFromEditUI());
 
-    navigate("/expenseTracker");
+    transactionFromEditUI === true
+      ? navigate("/transactions")
+      : navigate("/expenseTracker");
   };
   const noCategoryUI = (
     <div className={styles.noCategoryUI}>

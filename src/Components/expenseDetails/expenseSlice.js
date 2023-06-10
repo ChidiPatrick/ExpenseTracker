@@ -24,6 +24,7 @@ const initialState = {
   user: null,
   showPopUpMessage: false,
   getExpenseObjPending: null,
+  transactionToEdit: {},
 };
 
 export const GetExpenseObj = createAsyncThunk(
@@ -226,6 +227,9 @@ const expenseSlice = createSlice({
     hidePopUp(state, action) {
       state.showPopUpMessage = false;
     },
+    getTransactionToEdit(state, action) {
+      state.transactionToEdit = action.payload;
+    },
   },
   extraReducers: (builder) => {
     // builder
@@ -274,5 +278,6 @@ export const {
   getUser,
   showPopUp,
   hidePopUp,
+  getTransactionToEdit,
 } = expenseSlice.actions;
 export default expenseSlice.reducer;
