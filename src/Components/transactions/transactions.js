@@ -53,8 +53,26 @@ const Transactions = () => {
     (state) => state.expense.currMonthTransactionArray
   );
   let [currPosition, setCurrPosition] = useState(mainCurrPosition);
-
-  console.log(currMonthTransactionArray);
+  const date = new Date();
+  // const month = date.getMonth();
+  let [transactionMonth, setTransactionMonth] = useState(date.getMonth());
+  console.log(transactionMonth);
+  const months = [
+    "Jan",
+    "Feb",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  // const month = new Date().getMonth();
+  // console.log(months[mont]);
   console.log(`Current position is: ${currPosition}`);
   useEffect(() => {
     dispatch(activateOnTransactionUI());
@@ -68,86 +86,7 @@ const Transactions = () => {
     dispatch(showEditUI());
     dispatch(getTransactionToEdit(transaction));
   };
-  const dummyMonthlyExpenseObjArray = [
-    {
-      date: "Fri Jan 19 2023",
-      expenseTransactionsArray: [
-        {
-          date: "Fri Jan 19 2023",
-          expenseAmount: 100,
-          category: "Travel",
-          time: "7:15:35 PM",
-          expenseNote: "",
-        },
-        {
-          date: "Fri Jan 19 2023",
-          expenseAmount: 100,
-          category: "Travel",
-          time: "9:15:35 PM",
-          expenseNote: "",
-        },
-        {
-          date: "Fri Jan 19 2023",
-          expenseAmount: 100,
-          category: "Travel",
-          time: "11:15:35 PM",
-          expenseNote: "",
-        },
-      ],
-    },
-    {
-      date: "Fri Feb 19 2023",
-      expenseTransactionsArray: [
-        {
-          date: "Fri Feb 19 2023",
-          expenseAmount: 100,
-          category: "Food Stuffs",
-          time: "7:15:35 PM",
-          expenseNote: "",
-        },
-        {
-          date: "Fri Feb 10 2023",
-          expenseAmount: 100,
-          category: "Food Stuffs",
-          time: "9:15:35 PM",
-          expenseNote: "",
-        },
-        {
-          date: "Fri Feb 18 2023",
-          expenseAmount: 100,
-          category: "Food Stuffs",
-          time: "11:15:35 PM",
-          expenseNote: "",
-        },
-      ],
-    },
-    {
-      date: "Fri Mar 19 2023",
-      expenseTransactionsArray: [
-        {
-          date: "Sun Mar 20 2023",
-          expenseAmount: 100,
-          category: "Game",
-          time: "7:15:35 PM",
-          expenseNote: "",
-        },
-        {
-          date: "Mon Mar 26 2023",
-          expenseAmount: 100,
-          category: "Game",
-          time: "9:15:35 PM",
-          expenseNote: "",
-        },
-        {
-          date: "Sat Mar 30 2023",
-          expenseAmount: 100,
-          category: "Game",
-          time: "11:15:35 PM",
-          expenseNote: "",
-        },
-      ],
-    },
-  ];
+
   let [currTransactionArray, setDummyTransactionArray] = useState(
     // dummyMonthlyExpenseObjArray[2].expenseTransactionsArray
     allMonthsExpenseArray[allMonthExpenseArrayLength - 1].transactions
@@ -161,8 +100,11 @@ const Transactions = () => {
       const currObj = allMonthsObjArray[newCurrPosition];
       const currTransactions = currObj.transactions;
       let currTransactionArray = currTransactions;
+      const date = new Date(currObj.dateCreated);
+      const currMonth = date.getMonth();
       setDummyTransactionArray(currTransactionArray);
       setCurrPosition(newCurrPosition);
+      setTransactionMonth(currMonth);
       return;
     } else if (currPosition === 0) {
       return;
@@ -170,13 +112,20 @@ const Transactions = () => {
   };
   //// Dis play transactions in fron //////////////////
   const moveForward = (allMonthExpenseArray, currPosition) => {
-    if (currPosition > 0 && currPosition + 1 < currTransactionArrayLength) {
+    console.log("Called forward function");
+    if (currPosition >= 0) {
+      // if (currPosition > 0 && currPosition + 1 <= currTransactionArrayLength) {
+      console.log("Test passed");
       let newCurrPosition = currPosition + 1;
       const currObj = allMonthExpenseArray[newCurrPosition];
+      console.log(currObj);
       const currTransactions = currObj.transactions;
       let currTransactionArray = currTransactions;
+      const date = new Date(currObj.dateCreated);
+      const currMonth = date.getMonth();
       setDummyTransactionArray(currTransactionArray);
       setCurrPosition(newCurrPosition);
+      setTransactionMonth(currMonth);
       return;
     }
   };
@@ -191,9 +140,10 @@ const Transactions = () => {
         >
           <HiChevronLeft className={styles.btnIcon} />
         </button>
+        <div className={styles.currMonth}>{months[transactionMonth]}</div>
         <button
           className={
-            currPosition + 1 === currTransactionArrayLength
+            currPosition === currTransactionArrayLength
               ? styles.hidden
               : styles.btnMoveBack
           }
