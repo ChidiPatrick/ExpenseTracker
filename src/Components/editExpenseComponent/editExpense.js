@@ -37,15 +37,19 @@ const EditExpense = () => {
   const editingTransaction = useSelector(
     (state) => state.expense.editingTransaction
   );
+  const currTransactionPosition = useSelector(
+    (state) => state.expense.currTransactionPosition
+  );
   console.log(editingTransaction);
   console.log(selectedMonthTransactionIndex);
   console.log(transactionToEdit);
-  console.log(allMonthExpenseArray);
+  console.log(currTransactionPosition);
   ////Verify the code below later////
   const expenseArray = useSelector((state) => state.expense.expenseArray);
   const selectedTransactionObj = useSelector(
     (state) => state.expense.selectedTransaction
   );
+  console.log(expenseArray);
   //////////////////TO LATER//////////////////////////////
   //1. Use selectedTransactionObj to modify edit transaction display
   const handleClose = () => {
@@ -67,17 +71,29 @@ const EditExpense = () => {
       dispatch(GetExpenseObj(userId));
     });
   };
-  const handleDone = (index, expenseArray, userId) => {
-    /// Check code functionality later //////
-    const newExpenseArray = [...expenseArray];
-    const updatedExpenseObj = {
-      category: currCategory,
-      expenseAmount: amountRef.current.value,
-      expenseNote: noteRef.current.value,
-    };
-    newExpenseArray[index] = updatedExpenseObj;
-    handleExpenseUpdate(userId, newExpenseArray);
-    dispatch(hideEditUI());
+  const handleDone = (
+    index,
+    allMonthExpenseArray,
+    userId,
+    currTransactionPosition
+  ) => {
+    console.log(allMonthExpenseArray[index]);
+    const currMonthArray = allMonthExpenseArray[index].expenseArray;
+    console.log(currMonthArray);
+    currMonthArray.map((expense, index) => {
+      if (index === currTransactionPosition)
+        console.log(`Found! Current position is: ${index}`);
+    });
+    // /// Check code functionality later //////
+    // const newExpenseArray = [...expenseArray];
+    // const updatedExpenseObj = {
+    //   category: currCategory,
+    //   expenseAmount: amountRef.current.value,
+    //   expenseNote: noteRef.current.value,
+    // };
+    // newExpenseArray[index] = updatedExpenseObj;
+    // handleExpenseUpdate(userId, newExpenseArray);
+    // dispatch(hideEditUI());
   };
   const changeCategoryHandler = () => {
     dispatch(setCategoryFromEditUI());
@@ -121,7 +137,17 @@ const EditExpense = () => {
     >
       <div className={styles.navigator}>
         <div onClick={handleClose}>X</div>
-        <button className={styles.saveBtn} onClick={handleDone}>
+        <button
+          className={styles.saveBtn}
+          onClick={() =>
+            handleDone(
+              selectedMonthTransactionIndex,
+              allMonthExpenseArray,
+              userId,
+              currTransactionPosition
+            )
+          }
+        >
           Done
         </button>
       </div>

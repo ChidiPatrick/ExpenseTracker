@@ -27,6 +27,7 @@ const initialState = {
   transactionToEdit: {},
   selectedMonthTransactionIndex: null,
   editingTransaction: {},
+  currTransactionPosition: null,
 };
 
 export const GetExpenseObj = createAsyncThunk(
@@ -241,6 +242,9 @@ const expenseSlice = createSlice({
     setEditingTransaction(state, action) {
       state.editingTransaction = action.payload;
     },
+    setCurrTransactionPosition(state, action) {
+      state.currTransactionPosition = action.payload;
+    },
   },
   extraReducers: (builder) => {
     // builder
@@ -293,5 +297,6 @@ export const {
   setSelectedMonthTransactionIndex,
   setEditingTransaction,
   setTransactionToEdit,
+  setCurrTransactionPosition,
 } = expenseSlice.actions;
 export default expenseSlice.reducer;

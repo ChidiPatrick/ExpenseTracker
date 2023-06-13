@@ -7,6 +7,7 @@ import EditExpense from "../editExpenseComponent/editExpense";
 import {
   getTransactionToEdit,
   setSelectedMonthTransactionIndex,
+  setCurrTransactionPosition,
 } from "../expenseDetails/expenseSlice";
 import {
   showEditUI,
@@ -88,6 +89,7 @@ const Transactions = () => {
     console.log("Called");
     dispatch(showEditUI());
     dispatch(getTransactionToEdit(transaction));
+    dispatch(setCurrTransactionPosition(index));
   };
 
   let [currTransactionArray, setDummyTransactionArray] = useState(

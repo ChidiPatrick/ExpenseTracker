@@ -1,20 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./landingPage.module.scss";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../Firebase";
+import FeedBackUI from "../spinner/feedbackUI";
 const LandingPage = () => {
   const navigate = useNavigate();
+  const [showFeedbackUI, setShowFeedbackUI] = useState(false);
   const handleSignIn = async (values) => {
-    await signInWithEmailAndPassword(auth, values.email, values.password).then(
-      (res) => {
+    await signInWithEmailAndPassword(auth, values.email, values.password)
+      .then((res) => {
         console.log("Called");
         console.log("Submitted!");
         navigate("/ExpenseSummary");
-      }
-    );
+      })
+      .catch((err) => {
+        console.log(err);
+        setShowFeedbackUI(true);
+      });
   };
   const formik = useFormik({
     initialValues: {
@@ -32,7 +37,9 @@ const LandingPage = () => {
     },
   });
 
-  return (
+  return showFeedbackUI === true ? (
+    <FeedBackUI />
+  ) : (
     <div className={styles.landingPageWrapper}>
       <header className={styles.landingPageHeader}>
         <h1 className={styles.heading}>
