@@ -14,6 +14,7 @@ const initialState = {
   totalExpense: 0,
   currCategoryColor: "",
   bntActive: false,
+  categoryChanged: false,
 };
 export const GetCategories = createAsyncThunk(
   "category/getCategories",
@@ -108,6 +109,9 @@ const CategorySlice = createSlice({
     deactivateBtn(state, action) {
       state.bntActive = false;
     },
+    setCategoryChanged(state, action) {
+      state.categoryChanged = action.payload;
+    },
   },
 });
 export const {
@@ -129,5 +133,6 @@ export const {
   getCurrCategoryColor,
   activateBtn,
   deactivateBtn,
+  setCategoryChanged,
 } = CategorySlice.actions;
 export default CategorySlice.reducer;

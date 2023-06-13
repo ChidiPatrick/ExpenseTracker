@@ -4,7 +4,10 @@ import NavComponent from "../navigationComponent/navComponent";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import EditExpense from "../editExpenseComponent/editExpense";
-import { getTransactionToEdit } from "../expenseDetails/expenseSlice";
+import {
+  getTransactionToEdit,
+  setSelectedMonthTransactionIndex,
+} from "../expenseDetails/expenseSlice";
 import {
   showEditUI,
   getSelectedTransaction,
@@ -104,6 +107,7 @@ const Transactions = () => {
       const currMonth = date.getMonth();
       setDummyTransactionArray(currTransactionArray);
       setCurrPosition(newCurrPosition);
+      dispatch(setSelectedMonthTransactionIndex(newCurrPosition));
       setTransactionMonth(currMonth);
       return;
     } else if (currPosition === 0) {
@@ -125,6 +129,7 @@ const Transactions = () => {
       const currMonth = date.getMonth();
       setDummyTransactionArray(currTransactionArray);
       setCurrPosition(newCurrPosition);
+      dispatch(setSelectedMonthTransactionIndex(newCurrPosition));
       setTransactionMonth(currMonth);
       return;
     }

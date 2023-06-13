@@ -8,7 +8,10 @@ import { hideEditUI } from "../expenseDetails/expenseSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../Firebase";
 import { doc, updateDoc } from "firebase/firestore";
-import { GetExpenseObj } from "../expenseDetails/expenseSlice";
+import {
+  GetExpenseObj,
+  setTransactionToEdit,
+} from "../expenseDetails/expenseSlice";
 import { setCategoryFromEditUI } from "../signUpComponent/signUpSlice";
 ///////////////////////////////////////////////////////
 const EditExpense = () => {
@@ -22,10 +25,22 @@ const EditExpense = () => {
   const displayEditUI = useSelector((state) => state.expense.displayEditUI);
   const currCategory = useSelector((state) => state.categories.currCategory);
   const userId = useSelector((state) => state.signUp.userId);
+  const allMonthExpenseArray = useSelector(
+    (state) => state.expense.allMonthExpenseArray
+  );
+  const selectedMonthTransactionIndex = useSelector(
+    (state) => state.expense.selectedMonthTransactionIndex
+  );
   const transactionToEdit = useSelector(
     (state) => state.expense.transactionToEdit
   );
-  console.log(categoryRef.current);
+  const editingTransaction = useSelector(
+    (state) => state.expense.editingTransaction
+  );
+  console.log(editingTransaction);
+  console.log(selectedMonthTransactionIndex);
+  console.log(transactionToEdit);
+  console.log(allMonthExpenseArray);
   ////Verify the code below later////
   const expenseArray = useSelector((state) => state.expense.expenseArray);
   const selectedTransactionObj = useSelector(
@@ -69,6 +84,28 @@ const EditExpense = () => {
     console.log("transactions");
     navigate("/category");
   };
+  //////// Change of amount handler //////////////////
+  const amountChangeHandler = () => {
+    // if (transactionToEdit.expenseAmount !== newAmount) {
+    console.log("Value changed!");
+    dispatch(
+      setTransactionToEdit({
+        ...transactionToEdit,
+        expenseAmount: amountRef.current.value,
+      })
+    );
+
+    // }
+  };
+  const noteChangeHandler = () => {
+    console.log(noteRef.current.value);
+    dispatch(
+      setTransactionToEdit({
+        ...transactionToEdit,
+        expenseNote: noteRef.current.value,
+      })
+    );
+  };
   //Algorithm for editing expense
   //1. Select the expense object by clicking
   //2. Extract the object from the array of expense object
@@ -110,7 +147,7 @@ const EditExpense = () => {
               placeholder=" Enter Amount"
               type="number"
               ref={amountRef}
-              // onChange={handleChange}
+              onChange={amountChangeHandler}
               defaultValue={transactionToEdit.expenseAmount}
             />
             <div>
@@ -120,6 +157,7 @@ const EditExpense = () => {
                 ref={noteRef}
                 placeholder="Enter a note(optional)"
                 value={transactionToEdit.expenseNote}
+                onChange={noteChangeHandler}
               />
             </div>
           </div>
