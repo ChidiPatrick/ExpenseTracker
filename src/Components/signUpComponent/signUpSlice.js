@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   userId: "",
   categoryFromEditUI: false,
+  categoryChanged: false,
 };
 const signUpSlice = createSlice({
   name: "signUpSlice",
@@ -18,8 +19,15 @@ const signUpSlice = createSlice({
     resetCategoryFromEditUI(state, action) {
       state.categoryFromEditUI = false;
     },
+    setCategoryChanged(state, action) {
+      state.categoryChanged = action.payload;
+    },
   },
 });
-export const { getUserId, resetCategoryFromEditUI, setCategoryFromEditUI } =
-  signUpSlice.actions;
+export const {
+  getUserId,
+  resetCategoryFromEditUI,
+  setCategoryFromEditUI,
+  setCategoryChanged,
+} = signUpSlice.actions;
 export default signUpSlice.reducer;

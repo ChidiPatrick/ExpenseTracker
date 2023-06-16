@@ -8,8 +8,8 @@ import {
   getCurrCategoryColor,
   activateBtn,
   deactivateBtn,
-  setCategoryChanged,
 } from "./categorySlice";
+import { setCategoryChanged } from "../signUpComponent/signUpSlice";
 import { resetCategoryFromEditUI } from "../signUpComponent/signUpSlice";
 import { getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../Firebase";

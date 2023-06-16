@@ -103,6 +103,7 @@ export const GetExpenseObj = createAsyncThunk(
             expenseData.data().expenseObj.monthlyExpenses.length - 1
           }`
         );
+        console.log("Called! Confirm");
       }
     } catch (err) {
       console.log(err);

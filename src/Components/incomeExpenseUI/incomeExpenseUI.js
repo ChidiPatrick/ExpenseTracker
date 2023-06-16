@@ -30,6 +30,7 @@ const IncomeExpenseUI = () => {
   const categoriesArray = useSelector(
     (state) => state.categories.categoriesArray
   );
+  console.log(expenseObj);
   console.log(totalExpense);
   const spendingPercentage = (totalExpense / salary) * 100;
   console.log(spendingPercentage);

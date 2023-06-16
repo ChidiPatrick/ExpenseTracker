@@ -87,9 +87,10 @@ const Transactions = () => {
   //////// Handlers ///////////////////
   const showEditUIHandler = (transaction, index) => {
     console.log("Called");
-    dispatch(showEditUI());
     dispatch(getTransactionToEdit(transaction));
     dispatch(setCurrTransactionPosition(index));
+    console.log("Just one more to move");
+    dispatch(showEditUI());
   };
 
   let [currTransactionArray, setDummyTransactionArray] = useState(
