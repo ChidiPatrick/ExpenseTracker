@@ -98,7 +98,7 @@ const IncomeExpenseUI = () => {
       </div>
     </div>
   );
-  return expenseObj && categoriesArray ? incomeExpenseUI : <Spinner />;
-  // return incomeExpenseUI;
+  // return expenseObj && categoriesArray ? incomeExpenseUI : <Spinner />;
+  return incomeExpenseUI;
 };
 export default IncomeExpenseUI;

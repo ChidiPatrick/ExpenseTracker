@@ -3,18 +3,41 @@ import styles from "./landingPage.module.scss";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase";
 import FeedBackUI from "../spinner/feedbackUI";
+import { useDispatch } from "react-redux";
+import {
+  GetSalary,
+  getUser,
+  GetExpenseObj,
+} from "../expenseDetails/expenseSlice";
+import {
+  GetCategories,
+  getTotalExpenses,
+} from "../categoryComponent/categorySlice";
+import { getUserId } from "../signUpComponent/signUpSlice";
+import Spinner from "../spinner/spinner";
 const LandingPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showFeedbackUI, setShowFeedbackUI] = useState(false);
   const handleSignIn = async (values) => {
     await signInWithEmailAndPassword(auth, values.email, values.password)
       .then((res) => {
-        console.log("Called");
-        console.log("Submitted!");
-        navigate("/ExpenseSummary");
+        console.log(res);
+        if (res.user) {
+          dispatch(getUser(res.user));
+          dispatch(getUserId(res.user.uid));
+          dispatch(GetCategories(res.user.uid));
+          dispatch(GetExpenseObj(res.user.uid));
+          dispatch(GetSalary(res.user.uid));
+          dispatch(getTotalExpenses(res.user.uid));
+          console.log("Submitted!");
+          navigate("/ExpenseSummary");
+        } else {
+          navigate("/signUpPage");
+        }
       })
       .catch((err) => {
         console.log(err);

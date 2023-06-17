@@ -49,7 +49,7 @@ const Transactions = () => {
   const transactionToEdit = useSelector(
     (state) => state.expense.transactionToEdit
   );
-  console.log(transactionToEdit);
+  console.log(expenseObj);
   let allMonthsExpenseArray = expenseObj.monthlyExpenses;
   const allMonthExpenseArrayLength = allMonthsExpenseArray.length;
   console.log(allMonthsExpenseArray);

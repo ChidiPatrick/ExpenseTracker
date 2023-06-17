@@ -46,6 +46,7 @@ export const GetExpenseObj = createAsyncThunk(
         console.log(expenseData.data());
         console.log(expenseData.data().expenseObj);
         dispatch(getExpenseObj(expenseData.data().expenseObj));
+        console.log("GET EXPENSE OBJECT REDUCER CALLED!");
         ///////////////// Simplification of data structure /////////////////////////////////
         const currMonthExpenseArrayLength =
           expenseData.data().expenseObj.monthlyExpenses.length;
@@ -136,9 +137,9 @@ const expenseSlice = createSlice({
   name: "expense",
   initialState,
   reducers: {
-    getExpenseObj(state, action) {
-      state.expenseArray = [...state.expenseArray, action.payload];
-    },
+    // getExpenseObj(state, action) {
+    //   state.expenseArray = [...state.expenseArray, action.payload];
+    // },
     addExpense(state, action) {
       state.expenseTotal = (
         parseInt(state.totalExpense) + parseInt(action.payload)
