@@ -14,7 +14,7 @@ const initialState = {
   currencySymbol: "",
   currMonthExpenseObj: null,
   monthlyExpenseArrayLength: 0,
-  allMonthExpenseArray: null,
+  allMonthsExpenseArray: null,
   currMonthTransactionArray: null,
   displayMoreUI: false,
   currPosition: 0,
@@ -197,7 +197,7 @@ const expenseSlice = createSlice({
       state.currMonthTransactionArray = action.payload;
     },
     getAllMonthsExpenseArray(state, action) {
-      state.allMonthExpenseArray = action.payload;
+      state.allMonthsExpenseArray = action.payload;
     },
     showMoreUI(state, action) {
       state.displayMoreUI = true;

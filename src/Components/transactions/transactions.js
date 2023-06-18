@@ -46,12 +46,15 @@ const Transactions = () => {
   const mainCurrPosition = useSelector((state) => state.expense.currPosition);
   const salary = useSelector((state) => state.expense.salary);
   const expenseObj = useSelector((state) => state.expense.expenseObj);
+  const allMonthsExpenseArray = useSelector(
+    (state) => state.expense.allMonthsExpenseArray
+  );
   const transactionToEdit = useSelector(
     (state) => state.expense.transactionToEdit
   );
   console.log(expenseObj);
-  let allMonthsExpenseArray = expenseObj.monthlyExpenses;
-  const allMonthExpenseArrayLength = allMonthsExpenseArray.length;
+  // let allMonthsExpenseArray = expenseObj.monthlyExpenses;
+  const allMonthsExpenseArrayLength = allMonthsExpenseArray.length;
   console.log(allMonthsExpenseArray);
   let currMonthTransactionArray = useSelector(
     (state) => state.expense.currMonthTransactionArray
@@ -95,8 +98,9 @@ const Transactions = () => {
 
   let [currTransactionArray, setDummyTransactionArray] = useState(
     // dummyMonthlyExpenseObjArray[2].expenseTransactionsArray
-    allMonthsExpenseArray[allMonthExpenseArrayLength - 1].transactions
+    allMonthsExpenseArray[allMonthsExpenseArrayLength - 1].transactions
   );
+  console.log(currTransactionArray);
   const currTransactionArrayLength = currTransactionArray.length;
   //// Show Previous months transactions handler ///////
   const moveBack = (allMonthsObjArray, currPosition) => {
@@ -151,7 +155,7 @@ const Transactions = () => {
         <div className={styles.currMonth}>{months[transactionMonth]}</div>
         <button
           className={
-            currPosition === currTransactionArrayLength
+            currPosition === allMonthsExpenseArrayLength - 1
               ? styles.hidden
               : styles.btnMoveBack
           }

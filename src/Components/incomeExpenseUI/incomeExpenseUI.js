@@ -10,7 +10,6 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import { setSpendingPercentage } from "../expenseDetails/expenseSlice";
 
 const IncomeExpenseUI = () => {
-  window.addEventListener("load", () => console.log("Loaded"));
   const dispatch = useDispatch();
   const monthlyExpenseArray = useSelector(
     (state) => state.expense.expenseArray

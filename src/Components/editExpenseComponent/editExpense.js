@@ -189,11 +189,12 @@ const EditExpense = () => {
       const data = {
         "expenseObj.monthlyExpenses": [...newAllMonthsExpenseArray],
       };
-      // await updateDoc(expenseArrayRef, data).then(() => {
-      //   console.log("Got here!");
-      // });
-
-      // dispatch(GetExpenseObj(userId));
+      await updateDoc(expenseArrayRef, data).then(() => {
+        console.log("Got here!");
+      });
+      // .then((res) => );
+      dispatch(GetExpenseObj(userId));
+      console.log("Last line of the function");
     }
   };
   const changeCategoryHandler = () => {
@@ -298,141 +299,3 @@ const EditExpense = () => {
 };
 
 export default EditExpense;
-
-const monthExpneseArrayStructure = {
-  dateCreated: "Mon May 22 2023",
-  expenseArray: [],
-  transactions: [],
-};
-const mayExpenseArray = [
-  {
-    category: "General",
-    expenseAmount: 0,
-    time: "12:18:49 PM",
-    expenseNote: "General Expense",
-    date: "Mon May 22 2023",
-  },
-  {
-    date: "Mon May 22 2023",
-    expenseAmount: 450,
-    categoryColor: "#ff9800",
-    expenseNote: "Bought oka",
-    time: "13:11:58",
-  },
-  {
-    category: "Food stuff",
-    expenseNote: "",
-    date: "Tue May 23 2023",
-    time: "4:26:07 PM",
-    expenseAmount: 2000,
-  },
-  {
-    expenseNote: "",
-    date: "Sun May 28 2023",
-    time: "8:43:05 AM",
-    category: "Rent",
-    expenseAmount: 2000,
-  },
-  {
-    date: "Sun May 28 2023",
-    categoryColor: "#9c27b0",
-    expenseAmount: 200,
-    time: "9:50:37 AM",
-    expenseNote: "",
-  },
-  {
-    categoryColor: "#03a9f4",
-    expenseNote: "",
-    time: "9:55:39 AM",
-    category: "Stationaries",
-    expenseAmount: 500,
-  },
-];
-
-const mayTransactionArray = [
-  {
-    time: "12:18:49 PM",
-    expenseNote: "General Expense",
-    date: "Mon May 22 2023",
-    expenseAmount: 0,
-    category: "General",
-  },
-  {
-    expenseAmount: 450,
-    expenseNote: "Bought two shirts",
-    date: "Mon May 22 2023",
-    category: "Travel",
-    time: "13:11:58",
-  },
-  {
-    time: "4:26:07 PM",
-    date: "Tue May 23 2023",
-    expenseNote: "",
-    expenseAmount: 2000,
-    category: "Food stuff",
-  },
-  {
-    time: "8:43:05 AM",
-    expenseNote: "",
-    date: "Sun May 28 2023",
-    expenseAmount: 2000,
-    category: "Rent",
-  },
-  {
-    category: "Clothing",
-    expenseNote: "",
-    time: "9:50:37 AM",
-    expenseAmount: 200,
-    date: "Sun May 28 2023",
-  },
-  {
-    date: "Sun May 28 2023",
-    expenseNote: "",
-    time: "9:55:39 AM",
-    category: "Stationaries",
-    expenseAmount: 500,
-  },
-];
-
-const JunExpenseArray = [
-  {
-    expenseNote: "",
-    time: "3:34:07 PM",
-    expenseAmount: 200,
-    category: "Rent",
-    categoryColor: "#ffeb3b",
-  },
-  {
-    expenseNote: "Bought two shirts",
-    date: "Wed Jun 14 2023",
-    time: "8:14:40 AM",
-    expenseAmount: 201,
-    categoryColor: "#9c27b0",
-  },
-];
-
-const juneTransactionArray = [
-  {
-    expenseAmount: 200,
-    category: "Rent",
-    time: "3:34:07 PM",
-    date: "Sun Jun 04 2023",
-    expenseNote: "",
-  },
-
-  {
-    date: "Wed Jun 14 2023",
-    expenseAmount: 151,
-    expenseNote: "Bought two shirts",
-    category: "Clothing",
-    time: "8:14:40 AM",
-  },
-
-  {
-    expenseNote: "Singlet",
-    date: "Wed Jun 14 2023",
-    category: "Clothing",
-    time: "8:15:23 AM",
-    expenseAmount: 50,
-  },
-];
