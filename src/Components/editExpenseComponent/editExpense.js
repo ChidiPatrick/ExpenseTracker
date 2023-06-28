@@ -1,11 +1,6 @@
 import React, { useRef, useState } from "react";
 import styles from "./editExpense.module.scss";
-import expenseSlice, {
-  updateExpenseArray,
-  getAllMonthsExpenseArray,
-} from "../expenseDetails/expenseSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { hideEditUI } from "../expenseDetails/expenseSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../Firebase";
 import { doc, updateDoc } from "firebase/firestore";
@@ -13,6 +8,8 @@ import {
   GetExpenseObj,
   setTransactionToEdit,
   getExpenseObj,
+  getAllMonthsExpenseArray,
+  hideEditUI,
 } from "../expenseDetails/expenseSlice";
 import { setCategoryFromEditUI } from "../signUpComponent/signUpSlice";
 
@@ -111,97 +108,95 @@ const EditExpense = () => {
     let expenseObjIndex = 0;
     let updatedSelectedMonthExpenseObj = {};
 
-    if (categoryChanged !== true) {
-      selectedMonthTransactionArray.map((expense, index) => {
-        if (index === currTransactionPosition) {
-          console.log(`Found! Current position is: ${index}`);
-          oldSelectedTransactionAmount = expense.expenseAmount;
-          transactionCategory = expense.category;
-          console.log(
-            `Old expense amount: is: ${oldSelectedTransactionAmount}`
-          );
-          console.log(`transaction category is: ${transactionCategory}`);
-          let currExpense = expense;
-          newExpense = {
-            ...currExpense,
-            expenseAmount: parseInt(amountRef.current.value),
-            expenseNote: noteRef.current.value,
-          };
-          transactionArray[index] = newExpense;
-        }
-      });
+    // if (categoryChanged !== true) {
+    selectedMonthTransactionArray.map((expense, index) => {
+      if (index === currTransactionPosition) {
+        console.log(`Found! Current position is: ${index}`);
+        oldSelectedTransactionAmount = expense.expenseAmount;
+        transactionCategory = expense.category;
+        console.log(`Old expense amount: is: ${oldSelectedTransactionAmount}`);
+        console.log(`transaction category is: ${transactionCategory}`);
+        let currExpense = expense;
+        newExpense = {
+          ...currExpense,
+          expenseAmount: parseInt(amountRef.current.value),
+          expenseNote: noteRef.current.value,
+        };
+        transactionArray[index] = newExpense;
+      }
+    });
 
-      const expenseObj = selectedMonthExpenseArray.find((expensObj, index) => {
-        if (expensObj.category === transactionCategory) {
-          expenseObjIndex = index;
-          return expensObj;
-        }
-      });
-      console.log(expenseObj);
+    const expenseObj = selectedMonthExpenseArray.find((expensObj, index) => {
+      if (expensObj.category === transactionCategory) {
+        expenseObjIndex = index;
+        return expensObj;
+      }
+    });
+    console.log(expenseObj);
 
-      /// Calculation of new category expense total //////
-      let oldCategoryTotalExpenseAmount = expenseObj.expenseAmount;
-      const totalCategoryExpenseAmountAfterDeduction =
-        oldCategoryTotalExpenseAmount - oldSelectedTransactionAmount;
-      const updatedTotalCategoryExpenseAmount =
-        parseInt(totalCategoryExpenseAmountAfterDeduction) +
-        parseInt(newExpense.expenseAmount);
-      console.log(
-        `Updated total category expense: ${updatedTotalCategoryExpenseAmount}`
-      );
-      const updatedExpenseObj = {
-        ...expenseObj,
-        expenseAmount: parseInt(updatedTotalCategoryExpenseAmount),
-      };
-      console.log(updatedExpenseObj);
+    /// Calculation of new category expense total //////
+    let oldCategoryTotalExpenseAmount = expenseObj.expenseAmount;
+    const totalCategoryExpenseAmountAfterDeduction =
+      oldCategoryTotalExpenseAmount - oldSelectedTransactionAmount;
+    const updatedTotalCategoryExpenseAmount =
+      parseInt(totalCategoryExpenseAmountAfterDeduction) +
+      parseInt(newExpense.expenseAmount);
+    console.log(
+      `Updated total category expense: ${updatedTotalCategoryExpenseAmount}`
+    );
+    const updatedExpenseObj = {
+      ...expenseObj,
+      expenseAmount: parseInt(updatedTotalCategoryExpenseAmount),
+    };
+    console.log(updatedExpenseObj);
 
-      //Created new array for different types of expense category object////
-      const oldSelectedMonthExpenseArray = [...selectedMonthExpenseArray];
-      console.log("Old expense array");
-      console.log(oldSelectedMonthExpenseArray);
-      oldSelectedMonthExpenseArray[expenseObjIndex] = updatedExpenseObj;
-      console.log(oldSelectedMonthExpenseArray);
-      //////////////////////////////////////////////////////////////////////////////////////
-      //Update the overall monthly expense array of objects ///
-      const newAllMonthsExpenseArray = [...allMonthExpenseArray];
-      console.log("Old all months expense array");
-      console.log(newAllMonthsExpenseArray);
-      newAllMonthsExpenseArray[index] = {
-        ...selectedMonthExpenseObj,
-        // expenseAmount: parseInt(updatedTotalCategoryExpenseAmount),
-        expenseArray: oldSelectedMonthExpenseArray,
-        transactions: transactionArray,
-      };
-      console.log("New object");
-      console.log({
-        ...selectedMonthExpenseObj,
-        expenseArray: oldSelectedMonthExpenseArray,
-        transactions: transactionArray,
-      });
-      console.log("New all months expense array");
-      dispatch(getAllMonthsExpenseArray(newAllMonthsExpenseArray));
-      console.log(newAllMonthsExpenseArray);
+    //Created new array for different types of expense category object////
+    const oldSelectedMonthExpenseArray = [...selectedMonthExpenseArray];
+    console.log("Old expense array");
+    console.log(oldSelectedMonthExpenseArray);
+    oldSelectedMonthExpenseArray[expenseObjIndex] = updatedExpenseObj;
+    console.log(oldSelectedMonthExpenseArray);
 
-      const newOverAllExpenseObj = { ...overAllExpenseObj };
-      newOverAllExpenseObj.monthlyExpenses = newAllMonthsExpenseArray;
-      console.log(newOverAllExpenseObj);
-      dispatch(getExpenseObj(newOverAllExpenseObj));
-      const data = {
-        "expenseObj.monthlyExpenses": [...newAllMonthsExpenseArray],
-      };
-      await updateDoc(expenseArrayRef, data).then(() => {
-        console.log("Got here!");
-      });
-      // .then((res) => );
-      dispatch(GetExpenseObj(userId));
-      console.log("Last line of the function");
-    }
+    //////////////////////////////////////////////////////////////////////////////////////
+    //// Update the overall monthly expense array of objects ///
+    const newAllMonthsExpenseArray = [...allMonthExpenseArray];
+    console.log("Old all months expense array");
+    console.log(newAllMonthsExpenseArray);
+    newAllMonthsExpenseArray[index] = {
+      ...selectedMonthExpenseObj,
+      expenseArray: oldSelectedMonthExpenseArray,
+      transactions: transactionArray,
+    };
+    console.log({
+      ...selectedMonthExpenseObj,
+      expenseArray: oldSelectedMonthExpenseArray,
+      transactions: transactionArray,
+    });
+
+    console.log("New all months expense array");
+    dispatch(getAllMonthsExpenseArray(newAllMonthsExpenseArray));
+    console.log(newAllMonthsExpenseArray);
+    const newOverAllExpenseObj = { ...overAllExpenseObj };
+    newOverAllExpenseObj.monthlyExpenses = newAllMonthsExpenseArray;
+    console.log(newOverAllExpenseObj);
+    dispatch(getAllMonthsExpenseArray(newAllMonthsExpenseArray));
+    dispatch(getExpenseObj(newOverAllExpenseObj));
+    dispatch(hideEditUI());
+    navigate(0);
+
+    const data = {
+      "expenseObj.monthlyExpenses": [...newAllMonthsExpenseArray],
+    };
+    await updateDoc(expenseArrayRef, data);
   };
+
+  ////////////////////////////////////////////////////////////////////////////
   const changeCategoryHandler = () => {
     dispatch(setCategoryFromEditUI());
     console.log("transactions");
     navigate("/category");
   };
+  //////////////////////////////////////////////////////////////////////////////
   //////// Change of amount handler //////////////////
   const amountChangeHandler = () => {
     // if (transactionToEdit.expenseAmount !== newAmount) {
@@ -224,13 +219,7 @@ const EditExpense = () => {
       })
     );
   };
-  //Algorithm for editing expense
-  //1. Select the expense object by clicking
-  //2. Extract the object from the array of expense object
-  //3. Assign new value to the extracted object
-  //4. Add the updated object to the Array of expense objects
-  //5. Update the store and the database
-  //6. Fetch the current Array of expense objects
+
   return (
     <div
       className={

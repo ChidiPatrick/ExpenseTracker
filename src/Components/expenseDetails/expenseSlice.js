@@ -210,7 +210,7 @@ const expenseSlice = createSlice({
     },
     setUpChartArray(state, action) {
       const newChartArray = [];
-      const chartArray = action.payload.map((obj, item) => {
+      action.payload.map((obj, item) => {
         if (obj.expenseAmount > 1)
           newChartArray.push({ name: obj.category, value: obj.expenseAmount });
       });

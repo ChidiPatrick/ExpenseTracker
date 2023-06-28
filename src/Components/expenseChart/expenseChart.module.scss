@@ -35,3 +35,28 @@
 .moveBackBtn {
   font-size: 25px;
 }
+
+.btnWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  width: 60%;
+  margin: 0 auto;
+}
+.btnMoveBack {
+  padding: 10px;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+}
+.hidden {
+  visibility: hidden;
+}
+.btnIcon {
+  font-size: 30px;
+}
+.currMonth {
+  font-weight: 600;
+  color: greenyellow;
+}

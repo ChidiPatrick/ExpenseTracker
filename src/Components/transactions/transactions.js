@@ -49,19 +49,28 @@ const Transactions = () => {
   const allMonthsExpenseArray = useSelector(
     (state) => state.expense.allMonthsExpenseArray
   );
+  console.log(allMonthsExpenseArray);
+  const allMonthsExpenseArrayLength = allMonthsExpenseArray.length;
+  const transactionsArray =
+    allMonthsExpenseArray[allMonthsExpenseArrayLength - 1].transactions;
   const transactionToEdit = useSelector(
     (state) => state.expense.transactionToEdit
   );
   console.log(expenseObj);
+
+  let [currTransactionArray, setDummyTransactionArray] =
+    useState(transactionsArray);
+  useEffect(() => {
+    console.log("Something changed");
+  }, [allMonthsExpenseArray]);
   // let allMonthsExpenseArray = expenseObj.monthlyExpenses;
-  const allMonthsExpenseArrayLength = allMonthsExpenseArray.length;
+
   console.log(allMonthsExpenseArray);
   let currMonthTransactionArray = useSelector(
     (state) => state.expense.currMonthTransactionArray
   );
   let [currPosition, setCurrPosition] = useState(mainCurrPosition);
   const date = new Date();
-  // const month = date.getMonth();
   let [transactionMonth, setTransactionMonth] = useState(date.getMonth());
   console.log(transactionMonth);
   const months = [
@@ -96,10 +105,6 @@ const Transactions = () => {
     dispatch(showEditUI());
   };
 
-  let [currTransactionArray, setDummyTransactionArray] = useState(
-    // dummyMonthlyExpenseObjArray[2].expenseTransactionsArray
-    allMonthsExpenseArray[allMonthsExpenseArrayLength - 1].transactions
-  );
   console.log(currTransactionArray);
   const currTransactionArrayLength = currTransactionArray.length;
   //// Show Previous months transactions handler ///////
@@ -123,7 +128,6 @@ const Transactions = () => {
   };
   //// Dis play transactions in fron //////////////////
   const moveForward = (allMonthExpenseArray, currPosition) => {
-    console.log("Called forward function");
     if (currPosition >= 0) {
       // if (currPosition > 0 && currPosition + 1 <= currTransactionArrayLength) {
       console.log("Test passed");
@@ -175,10 +179,7 @@ const Transactions = () => {
           {totalExpense}
         </div>
       </div>
-      <div
-        className={styles.transactionsContaiiner}
-        // onClick={showEditUIHandler}
-      >
+      <div className={styles.transactionsContaiiner}>
         <div>
           {currTransactionArray.map((expense, index) => {
             return (
