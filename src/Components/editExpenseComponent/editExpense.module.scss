@@ -2,6 +2,7 @@
   background-color: rgb(229, 229, 229);
   height: 100vh;
   padding: 10px;
+  position: relative;
 }
 .navigator {
   display: flex;
@@ -55,6 +56,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   // width: 100%;
 }
 .inputElement {
@@ -62,12 +64,13 @@
   background-color: transparent;
   font-size: 18px;
   border: none;
+  color: blue;
   border-bottom: solid 1px rgb(204, 204, 204);
   // width: 100%;
 }
 .categoryLink {
   text-decoration: none;
-  color: blue;
+  color: gray;
   border-bottom: solid 1px rgb(204, 204, 204);
   padding: 10px;
   // width: 100%;
@@ -79,6 +82,7 @@
   padding: 10px;
   border-bottom: solid 1px rgb(204, 204, 204);
   width: 90%;
+  color: grey;
 }
 .category {
   border-bottom: solid 1px rgb(204, 204, 204);

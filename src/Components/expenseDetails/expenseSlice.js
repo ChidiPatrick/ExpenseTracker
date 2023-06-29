@@ -28,6 +28,7 @@ const initialState = {
   selectedMonthTransactionIndex: null,
   editingTransaction: {},
   currTransactionPosition: null,
+  tempCurrMonthExpenseObjPosition: null,
 };
 
 export const GetExpenseObj = createAsyncThunk(
@@ -247,6 +248,9 @@ const expenseSlice = createSlice({
     setCurrTransactionPosition(state, action) {
       state.currTransactionPosition = action.payload;
     },
+    setTempCurrExpenseObjPosition(state, action) {
+      state.tempCurrMonthExpenseObjPosition = action.payload;
+    },
   },
   extraReducers: (builder) => {
     // builder
@@ -300,5 +304,6 @@ export const {
   setEditingTransaction,
   setTransactionToEdit,
   setCurrTransactionPosition,
+  setTempCurrExpenseObjPosition,
 } = expenseSlice.actions;
 export default expenseSlice.reducer;

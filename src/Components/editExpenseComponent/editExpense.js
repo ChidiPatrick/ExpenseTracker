@@ -12,7 +12,7 @@ import {
   hideEditUI,
 } from "../expenseDetails/expenseSlice";
 import { setCategoryFromEditUI } from "../signUpComponent/signUpSlice";
-
+import SmallSpinner from "../smallSpinner/smallSpinner";
 ///////////////////////////////////////////////////////
 const EditExpense = () => {
   const dispatch = useDispatch();
@@ -43,11 +43,17 @@ const EditExpense = () => {
     (state) => state.expense.currTransactionPosition
   );
   const categoryChanged = useSelector((state) => state.signUp.categoryChanged);
+  const tempCurrMonthExpenseObjPosition = useSelector(
+    (state) => state.expense.tempCurrMonthExpenseObjPosition
+  );
   console.log(editingTransaction);
   console.log(selectedMonthTransactionIndex);
   console.log(allMonthExpenseArray);
   console.log(currTransactionPosition);
 
+  /////// Local states ////////////////////
+  const [showUI, setShowUI] = useState(false);
+  //////////////////////////////////////////////////
   //// Firebase expense array reference ///////////
   const expenseArrayRef = doc(
     db,
@@ -83,6 +89,55 @@ const EditExpense = () => {
     updateResponds.then((res) => {
       dispatch(GetExpenseObj(userId));
     });
+  };
+  ////////////////////////////////////////////////////////////////////
+  ///// Delete Transaction handler /////////////////////
+  const deleteTransactionHandler = async (
+    allMonthExpenseArray,
+    currTransactionPosition,
+    tempCurrMonthTransactionPosition
+  ) => {
+    setShowUI(true);
+    let categoryIndex = null;
+    const newAllMonthExpenseArray = [...allMonthExpenseArray];
+    const tempCurrExpenseObj =
+      newAllMonthExpenseArray[tempCurrMonthTransactionPosition];
+    console.log(tempCurrExpenseObj);
+    const currTransactionArray = tempCurrExpenseObj.transactions;
+    const selectedTransaction = currTransactionArray[currTransactionPosition];
+    const selectedTransactionCategory = selectedTransaction.category;
+    const currExpenseArray = [...tempCurrExpenseObj.expenseArray];
+    const categoryObj = currExpenseArray.find((obj, index) => {
+      if (obj.category === selectedTransactionCategory) {
+        categoryIndex = index;
+        return obj;
+      }
+    });
+    const newCategoryExpenseAmount =
+      parseInt(categoryObj.expenseAmount) -
+      parseInt(selectedTransaction.expenseAmount);
+    const updatedTransactionArray = currTransactionArray.filter(
+      (obj, index) => index !== currTransactionPosition
+    );
+    console.log(updatedTransactionArray);
+    const updatedExpenseObj = {
+      ...tempCurrExpenseObj,
+      expenseAmount: newCategoryExpenseAmount,
+      transactions: updatedTransactionArray,
+    };
+    newAllMonthExpenseArray[tempCurrMonthExpenseObjPosition] =
+      updatedExpenseObj;
+    dispatch(getAllMonthsExpenseArray(newAllMonthExpenseArray));
+    const data = {
+      "expenseObj.monthlyExpenses": [...newAllMonthExpenseArray],
+    };
+    await updateDoc(expenseArrayRef, data)
+      .then(() => {
+        dispatch(GetExpenseObj(userId));
+      })
+      .then(() => {
+        setShowUI(false);
+      });
   };
   ///////////// HandleDone Function ///////////////////
   const handleDone = async (
@@ -255,7 +310,7 @@ const EditExpense = () => {
             <div
               className={styles.categoryLink}
               // ref={categoryRef}
-              onClick={changeCategoryHandler}
+              // onClick={changeCategoryHandler}
             >
               {transactionToEdit.category}
             </div>
@@ -281,8 +336,20 @@ const EditExpense = () => {
         </div>
       </div>
       <div className={styles.deleteBtnWrapper}>
-        <button className={styles.deleteBtn}>Delete</button>
+        <button
+          onClick={() =>
+            deleteTransactionHandler(
+              allMonthExpenseArray,
+              currTransactionPosition,
+              tempCurrMonthExpenseObjPosition
+            )
+          }
+          className={styles.deleteBtn}
+        >
+          Delete
+        </button>
       </div>
+      <SmallSpinner showUI={showUI} />
     </div>
   );
 };

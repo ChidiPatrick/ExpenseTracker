@@ -8,13 +8,9 @@ import {
   getTransactionToEdit,
   setSelectedMonthTransactionIndex,
   setCurrTransactionPosition,
+  setTempCurrExpenseObjPosition,
 } from "../expenseDetails/expenseSlice";
-import {
-  showEditUI,
-  getSelectedTransaction,
-  moveBackToPreviousMonth,
-  moveToMonthsInFront,
-} from "../expenseDetails/expenseSlice";
+import { showEditUI } from "../expenseDetails/expenseSlice";
 import {
   activateOnTransactionUI,
   deactivateOnTransactionUI,
@@ -56,22 +52,27 @@ const Transactions = () => {
   const transactionToEdit = useSelector(
     (state) => state.expense.transactionToEdit
   );
-  console.log(expenseObj);
+
+  /////////////////////////////////////////////////////////////////////
+  ///////////////// Local states ///////////////////
 
   let [currTransactionArray, setDummyTransactionArray] =
     useState(transactionsArray);
+  let [currPosition, setCurrPosition] = useState(mainCurrPosition);
+  const date = new Date();
+  let [transactionMonth, setTransactionMonth] = useState(date.getMonth());
+
+  ///////////////////////////////////////////////////////////////////////
+  //////////// useEffects //////////////////////////
   useEffect(() => {
-    console.log("Something changed");
-  }, [allMonthsExpenseArray]);
-  // let allMonthsExpenseArray = expenseObj.monthlyExpenses;
+    dispatch(setCurrTransactionPosition(currPosition));
+  }, [mainCurrPosition]);
 
   console.log(allMonthsExpenseArray);
   let currMonthTransactionArray = useSelector(
     (state) => state.expense.currMonthTransactionArray
   );
-  let [currPosition, setCurrPosition] = useState(mainCurrPosition);
-  const date = new Date();
-  let [transactionMonth, setTransactionMonth] = useState(date.getMonth());
+
   console.log(transactionMonth);
   const months = [
     "Jan",
@@ -117,6 +118,7 @@ const Transactions = () => {
       let currTransactionArray = currTransactions;
       const date = new Date(currObj.dateCreated);
       const currMonth = date.getMonth();
+      dispatch(setTempCurrExpenseObjPosition(newCurrPosition));
       setDummyTransactionArray(currTransactionArray);
       setCurrPosition(newCurrPosition);
       dispatch(setSelectedMonthTransactionIndex(newCurrPosition));
@@ -138,6 +140,7 @@ const Transactions = () => {
       let currTransactionArray = currTransactions;
       const date = new Date(currObj.dateCreated);
       const currMonth = date.getMonth();
+      dispatch(setTempCurrExpenseObjPosition(newCurrPosition));
       setDummyTransactionArray(currTransactionArray);
       setCurrPosition(newCurrPosition);
       dispatch(setSelectedMonthTransactionIndex(newCurrPosition));
