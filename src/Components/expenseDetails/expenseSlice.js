@@ -260,15 +260,15 @@ const expenseSlice = createSlice({
     //   .addCase(fetchUserSettings.fulfilled, (state, action) => {
     //     state.fetchedSettingsData = true;
     //   });
-    // builder
-    //   .addCase(GetExpenseObj.pending, (state, action) => {
-    //     console.log("called");
-    //     state.getExpenseObjPending = true;
-    //   })
-    //   .addCase(GetExpenseObj.fulfilled, (state, action) => {
-    //     console.log("called");
-    //     state.getExpenseObjPending = false;
-    //   });
+    builder
+      .addCase(GetExpenseObj.pending, (state, action) => {
+        console.log("called");
+        state.getExpenseObjPending = true;
+      })
+      .addCase(GetExpenseObj.fulfilled, (state, action) => {
+        console.log("called");
+        state.getExpenseObjPending = false;
+      });
   },
 });
 export const {

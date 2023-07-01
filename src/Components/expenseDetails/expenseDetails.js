@@ -8,11 +8,10 @@ import {
   updateExpenseArray,
   GetSalary,
 } from "./expenseSlice";
-import SignUpComponent from "../signUpComponent/signUp";
+import SmallSpinner from "../smallSpinner/smallSpinner";
 import { getSelectedCategory } from "../categoryComponent/categorySlice";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../Firebase";
-
 import { HiXMark } from "react-icons/hi2";
 // import LandingPage from "../landingPage/landingPage";
 //////////////////////////////////////////////////////////////////////////
@@ -31,7 +30,8 @@ const ExpenseDetails = () => {
   const [displayMessage, setDisplayMessage] = useState(false);
   const [showFieldStatus, setShowFieldStatus] = useState(false);
   const allExpenseArray = useSelector((state) => state.expense.expenseArray);
-  console.log(showPopUp);
+  // const isLoading = useSelector((state) => state.expense.getExpenseObjPending);
+  const isLoading = useSelector((state) => state.expense.getExpenseObjPending);
   const currMonthExpenseObj = useSelector(
     (state) => state.expense.currMonthExpenseObj
   );
@@ -48,7 +48,9 @@ const ExpenseDetails = () => {
   const amountRef = useRef();
   const noteRef = useRef();
   const date = new Date();
-  console.log(totalExpenses);
+  console.log(currCategory);
+  const currentMonth = new Date().getMonth();
+  console.log(currentMonth);
   const testingDate = new Date(expenseObj.date);
   console.log(expenseObj);
   const expenseArrayRef = doc(
@@ -99,7 +101,8 @@ const ExpenseDetails = () => {
     monthlyExpenseArray,
     totalExpenses,
     currCategoryColor,
-    salary
+    salary,
+    currCategory
   ) => {
     //// VALIDATE EXPENSE AMOUNT ////////
     if (amountRef.current.value > salary) {
@@ -172,7 +175,7 @@ const ExpenseDetails = () => {
       noteRef.current.value = "";
       return;
     } else if (currentMonth !== new Date(expenseObj.date).getMonth()) {
-      await updateDoc(expenseArrayRef, {
+      const data = {
         "expenseObj.monthlyExpenses": [
           ...monthlyExpenseArray,
           {
@@ -199,14 +202,22 @@ const ExpenseDetails = () => {
           },
         ],
         "expenseObj.date": date.toDateString(),
-      });
+      };
+      await updateDoc(expenseArrayRef, data);
+      dispatch(GetExpenseObj(userId));
     } else if (currMonthExpenseArray.length >= 1) {
       const selectedCategoryObj = currMonthExpenseArray.find(
         (expenseObj, index) => {
+          console.log(expenseObj.category);
           if (expenseObj.category === currCategory) {
             categoryObjIndex = index;
+            console.log(`This is THE selected object is
+            ${expenseObj}
+            `);
             return expenseObj;
           } else {
+            console.log(`The is selected object is
+            ${expenseObj}`);
             return undefined;
           }
         }
@@ -310,8 +321,9 @@ const ExpenseDetails = () => {
         dispatch(getSelectedCategory(""));
         await updateDoc(expenseArrayRef, {
           "expenseObj.monthlyExpenses": [...updatedMonthlyExpenseArray],
+        }).then(() => {
+          dispatch(GetExpenseObj(userId));
         });
-        dispatch(GetExpenseObj());
         amountRef.current.value = "";
         noteRef.current.value = "";
       }
@@ -348,7 +360,9 @@ const ExpenseDetails = () => {
       </p>
     </div>
   );
-  return (
+  return isLoading === true ? (
+    <SmallSpinner showUI={isLoading} />
+  ) : (
     <div className={styles.expenseDetailsWrapper}>
       {displayMessage === true ? popupUI : null}
       <nav className={styles.navigator}>
@@ -362,7 +376,8 @@ const ExpenseDetails = () => {
               monthlyExpenseArray,
               totalExpenses,
               currCategoryColor,
-              salary
+              salary,
+              currCategory
             )
           }
         >

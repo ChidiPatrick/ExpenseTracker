@@ -46,13 +46,14 @@ const EditExpense = () => {
   const tempCurrMonthExpenseObjPosition = useSelector(
     (state) => state.expense.tempCurrMonthExpenseObjPosition
   );
+  const isLoading = useSelector((state) => state.expense.getExpenseObjPending);
   console.log(editingTransaction);
   console.log(selectedMonthTransactionIndex);
   console.log(allMonthExpenseArray);
   console.log(currTransactionPosition);
 
   /////// Local states ////////////////////
-  const [showUI, setShowUI] = useState(false);
+  const [showUI, setShowUI] = useState(isLoading);
   //////////////////////////////////////////////////
   //// Firebase expense array reference ///////////
   const expenseArrayRef = doc(
@@ -95,17 +96,20 @@ const EditExpense = () => {
   const deleteTransactionHandler = async (
     allMonthExpenseArray,
     currTransactionPosition,
-    tempCurrMonthTransactionPosition
+    tempCurrMonthExpenseObjPosition
   ) => {
+    console.log("Delete transaction called");
     setShowUI(true);
     let categoryIndex = null;
     const newAllMonthExpenseArray = [...allMonthExpenseArray];
     const tempCurrExpenseObj =
-      newAllMonthExpenseArray[tempCurrMonthTransactionPosition];
+      newAllMonthExpenseArray[tempCurrMonthExpenseObjPosition];
     console.log(tempCurrExpenseObj);
     const currTransactionArray = tempCurrExpenseObj.transactions;
     const selectedTransaction = currTransactionArray[currTransactionPosition];
     const selectedTransactionCategory = selectedTransaction.category;
+
+    ////// Calculate new expense amount //////////
     const currExpenseArray = [...tempCurrExpenseObj.expenseArray];
     const categoryObj = currExpenseArray.find((obj, index) => {
       if (obj.category === selectedTransactionCategory) {
@@ -113,31 +117,43 @@ const EditExpense = () => {
         return obj;
       }
     });
-    const newCategoryExpenseAmount =
+    const newCategoryObj = { ...categoryObj };
+    const updatedCategoryTotalAmount =
       parseInt(categoryObj.expenseAmount) -
       parseInt(selectedTransaction.expenseAmount);
+
+    newCategoryObj.expenseAmount = updatedCategoryTotalAmount;
+    // const newExpenseArray = [...currExpenseArray];
+    currExpenseArray[categoryIndex] = newCategoryObj;
+    // const updatedCategoryObj = {
+    //   ...categoryObj,
+    //   expenseAmount: updatedCategoryTotalAmount,
+    // };
     const updatedTransactionArray = currTransactionArray.filter(
-      (obj, index) => index !== currTransactionPosition
+      (obj, index) => {
+        if (index === currTransactionPosition) return false;
+        else {
+          return true;
+        }
+      }
     );
     console.log(updatedTransactionArray);
     const updatedExpenseObj = {
       ...tempCurrExpenseObj,
-      expenseAmount: newCategoryExpenseAmount,
+      expenseArray: currExpenseArray,
       transactions: updatedTransactionArray,
     };
     newAllMonthExpenseArray[tempCurrMonthExpenseObjPosition] =
       updatedExpenseObj;
+    console.log(newAllMonthExpenseArray);
     dispatch(getAllMonthsExpenseArray(newAllMonthExpenseArray));
     const data = {
       "expenseObj.monthlyExpenses": [...newAllMonthExpenseArray],
     };
-    await updateDoc(expenseArrayRef, data)
-      .then(() => {
-        dispatch(GetExpenseObj(userId));
-      })
-      .then(() => {
-        setShowUI(false);
-      });
+    console.log("Delete transaction execution got here");
+    await updateDoc(expenseArrayRef, data).then(() => {
+      dispatch(GetExpenseObj(userId));
+    });
   };
   ///////////// HandleDone Function ///////////////////
   const handleDone = async (
@@ -349,7 +365,7 @@ const EditExpense = () => {
           Delete
         </button>
       </div>
-      <SmallSpinner showUI={showUI} />
+      <SmallSpinner showUI={isLoading} />
     </div>
   );
 };
